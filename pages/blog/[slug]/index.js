@@ -1,40 +1,28 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { getAllPostSlugs, getPostData } from '../../../lib/posts';
-import { MDXRemote } from 'next-mdx-remote';
+import { getAllPosts, getPostBySlug } from '../../../lib/posts';
 import { Calendar, Clock, ArrowLeft, ArrowRight, Calculator, Users } from 'lucide-react';
 
-const components = {
-  h1: ({ children }) => <h1 className="text-3xl font-bold text-gray-900 mb-6">{children}</h1>,
-  h2: ({ children }) => <h2 className="text-2xl font-bold text-gray-900 mb-4 mt-8">{children}</h2>,
-  h3: ({ children }) => <h3 className="text-xl font-bold text-gray-900 mb-3 mt-6">{children}</h3>,
-  p: ({ children }) => <p className="text-gray-600 mb-4 leading-relaxed">{children}</p>,
-  ul: ({ children }) => <ul className="list-disc list-inside text-gray-600 mb-4 space-y-2">{children}</ul>,
-  ol: ({ children }) => <ol className="list-decimal list-inside text-gray-600 mb-4 space-y-2">{children}</ol>,
-  li: ({ children }) => <li>{children}</li>,
-  strong: ({ children }) => <strong className="font-bold text-gray-900">{children}</strong>,
-  blockquote: ({ children }) => <blockquote className="border-l-4 border-indigo-500 pl-4 py-2 mb-4 bg-indigo-50 text-gray-700">{children}</blockquote>,
-};
 
 export default function Post({ post }) {
   return (
     <>
       <Head>
         <title>{post.title} | Blog CLT ou PJ</title>
-        <meta name="description" content={post.excerpt} />
+        <meta name="description" content={post.description} />
         <meta name="keywords" content={post.tags?.join(', ')} />
         <link rel="canonical" href={`https://calculadora-cltvspj.vercel.app/blog/${post.slug}`} />
 
         {/* Open Graph */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:description" content={post.description} />
         <meta property="og:site_name" content="CLT ou PJ" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.excerpt} />
+        <meta name="twitter:description" content={post.description} />
       </Head>
 
       <div className="min-h-screen bg-gray-50">
@@ -90,12 +78,10 @@ export default function Post({ post }) {
           </div>
 
           {/* Article Content */}
-          <article className="mdx-content">
-            <MDXRemote
-              components={components}
-              source={post.content}
-            />
-          </article>
+          <article
+            className="mdx-content"
+            dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+          />
 
           {/* Affiliate CTA */}
           <div className="affiliate-cta">
@@ -151,7 +137,11 @@ export default function Post({ post }) {
 }
 
 export async function getStaticPaths() {
-  const paths = getAllPostSlugs();
+  const posts = await getAllPosts();
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug }
+  }));
+
   return {
     paths,
     fallback: false,
@@ -159,7 +149,14 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const post = await getPostData(params.slug);
+  const post = await getPostBySlug(params.slug);
+
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       post,
