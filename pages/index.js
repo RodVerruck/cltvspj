@@ -444,7 +444,7 @@ export default function Home() {
         <footer className="bg-gray-900 text-white py-8 mt-12">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <p className="text-gray-400 text-sm">
-              © 2024 CLT ou PJ - Calculadora gratuita | Dados atualizados conforme legislação brasileira 2024
+              &copy; 2026 CLT ou PJ - Calculadora gratuita | Dados atualizados conforme legislação brasileira 2026
             </p>
             <p className="text-gray-500 text-xs mt-2">
               Esta é uma ferramenta de simulação. Consulte um contador para decisões financeiras importantes.
