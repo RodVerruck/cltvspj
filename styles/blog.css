@@ -439,83 +439,87 @@
 
 /* ── Corpo do artigo ── */
 .mdx-content {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #374151;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #4b5563;
   font-family: var(--fonte-corpo);
 }
 
 .mdx-content h1 {
   font-family: 'Sora', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 900;
   color: var(--cor-texto);
-  margin: 0 0 2rem;
+  margin: 0 0 3rem;
   letter-spacing: -0.03em;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .mdx-content h2 {
   font-family: 'Sora', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 800;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--cor-texto);
-  margin: 3.5rem 0 1.5rem;
+  margin: 4rem 0 2rem;
   letter-spacing: -0.02em;
-  padding: 1.25rem 1.5rem;
+  padding: 1.5rem 2rem;
   background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
   border-left: 5px solid #3b82f6;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 16px 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mdx-content h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin: 3rem 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px dashed #bfdbfe;
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.mdx-content h3 {
-  font-family: 'Sora', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #1e40af;
-  margin: 2.75rem 0 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px dashed #bfdbfe;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .mdx-content h4 {
   font-family: 'Sora', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #1e293b;
-  margin: 2rem 0 0.75rem;
+  color: #374151;
+  margin: 2.5rem 0 1rem;
 }
 
 .mdx-content p {
-  margin-bottom: 1.75rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
 .mdx-content p+p {
-  margin-top: 1.75rem;
+  margin-top: 2rem;
 }
 
 .mdx-content p+h2,
 .mdx-content ul+h2,
 .mdx-content table+h2 {
-  margin-top: 4rem;
+  margin-top: 5rem;
 }
 
 .mdx-content ul,
 .mdx-content ol {
-  margin-bottom: 2rem;
-  padding-left: 1.75rem;
+  margin-bottom: 2.5rem;
+  padding-left: 2rem;
 }
 
 .mdx-content li {
-  margin-bottom: 0.75rem;
-  padding-left: 0.5rem;
+  margin-bottom: 1rem;
+  padding-left: 0.75rem;
   line-height: 1.7;
+  font-size: 0.95rem;
+  color: #4b5563;
 }
 
 .mdx-content ul li::marker {
@@ -577,10 +581,29 @@
   transition: background 0.15s;
 }
 
+/* Destaque para tabela comparativa - coluna recomendada */
+.mdx-content table td:nth-child(2) {
+  background: #f0fdf4;
+  border-left: 2px solid #22c55e;
+  border-right: 2px solid #22c55e;
+  font-weight: 500;
+}
+
+.mdx-content table th:nth-child(2) {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-left: 2px solid #16a34a;
+  border-right: 2px solid #16a34a;
+}
+
+.mdx-content table tr:nth-child(even) td:nth-child(2) {
+  background: #dcfce7;
+}
+
 /* Strong */
 .mdx-content strong {
   font-weight: 700;
-  color: var(--cor-texto);
+  color: #1f2937;
+  font-size: 1.05em;
 }
 
 /* Links */
@@ -649,6 +672,7 @@
   padding: 1rem 1.25rem;
   color: #78350f;
   margin: 1.75rem 0;
+  font-size: 0.95rem;
 }
 
 .mdx-content blockquote {
@@ -680,7 +704,76 @@
   border: none;
   height: 2px;
   background: linear-gradient(90deg, var(--cor-borda), transparent);
-  margin: 2.75rem 0;
+  margin: 3rem 0;
+}
+
+/* ── Navegação do Artigo ── */
+.table-of-contents {
+  background: white;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--sombra-card);
+}
+
+.table-of-contents h3 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cor-texto);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.table-of-contents button {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
+  background: transparent;
+  cursor: pointer;
+}
+
+.table-of-contents button:hover {
+  background: #f8fafc;
+}
+
+.table-of-contents button.active {
+  background: #eff6ff;
+  color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.table-of-contents .section-number {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  width: 1.5rem;
+  text-align: center;
+}
+
+.table-of-contents .section-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  flex: 1;
+}
+
+.table-of-contents .chevron {
+  color: #9ca3af;
+  transition: transform 0.2s ease;
+}
+
+.table-of-contents button:hover .chevron {
+  transform: translateX(2px);
 }
 
 /* ── CTA Afiliado ── */
@@ -770,14 +863,6 @@
   transform: translateY(-3px);
   box-shadow: 0 12px 32px rgba(245, 158, 11, 0.6);
   background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-}
-
-.affiliate-card small {
-  display: block;
-  margin-top: 1.5rem;
-  font-size: 0.85rem;
-  color: #94a3b8;
-  opacity: 0.8;
 }
 
 /* ── CTA Calculadora ── */

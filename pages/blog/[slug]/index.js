@@ -1,10 +1,62 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { getAllPosts, getPostBySlug } from '../../../lib/posts';
-import { Calendar, Clock, ArrowLeft, ArrowRight, Calculator, Users } from 'lucide-react';
-
+import { Calendar, Clock, ArrowLeft, ArrowRight, Calculator, Users, List, ChevronRight } from 'lucide-react';
 
 export default function Post({ post, relatedPosts }) {
+  const [readingProgress, setReadingProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState('');
+
+  // Sumário de seções do artigo
+  const tableOfContents = [
+    { id: 'o-que-e-o-simples-nacional', title: 'O que é o Simples Nacional?' },
+    { id: 'os-anexos-do-simples-nacional', title: 'Os Anexos do Simples Nacional' },
+    { id: 'como-saber-qual-anexo-e-o-seu', title: 'Como saber qual Anexo é o seu?' },
+    { id: 'exemplo-de-calculo-real-por-profissao', title: 'Exemplo de cálculo real por profissão' },
+    { id: 'como-o-imposto-e-calculado-na-pratica', title: 'Como o imposto é calculado na prática' },
+    { id: 'simples-nacional-vs-lucro-presumido', title: 'Simples Nacional vs Lucro Presumido' },
+    { id: 'resumo-o-que-voce-precisa-saber', title: 'Resumo: O que você precisa saber' },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight - windowHeight;
+      const scrolled = window.scrollY;
+      const progress = (scrolled / documentHeight) * 100;
+      setReadingProgress(Math.min(progress, 100));
+
+      // Detectar seção ativa
+      const sections = tableOfContents.map(section => ({
+        ...section,
+        element: document.getElementById(section.id)
+      }));
+
+      const currentSection = sections.find(section => {
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+
+      if (currentSection) {
+        setActiveSection(currentSection.id);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   return (
     <>
       <Head>
@@ -26,8 +78,13 @@ export default function Post({ post, relatedPosts }) {
       </Head>
 
       <div className="min-h-screen bg-gray-50">
+        {/* Fixed Progress Bar */}
+        <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+          <div className="h-1 bg-blue-600 transition-all duration-300" style={{ width: `${readingProgress}%` }}></div>
+        </div>
+
         {/* Header */}
-        <header className="bg-white border-b border-gray-200">
+        <header className="bg-white border-b border-gray-200 pt-1">
           <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/blog" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition">
               <ArrowLeft size={20} />
@@ -42,6 +99,31 @@ export default function Post({ post, relatedPosts }) {
 
         {/* Post Container */}
         <div className="post-container">
+          {/* Table of Contents */}
+          <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+            <div className="flex items-center gap-2 mb-4">
+              <List size={18} className="text-blue-600" />
+              <h3 className="font-semibold text-gray-900">Sumário do Artigo</h3>
+            </div>
+            <nav className="space-y-2">
+              {tableOfContents.map((section, index) => (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className={`w-full text-left flex items-center justify-between p-3 rounded-lg transition-colors ${activeSection === section.id
+                      ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-600'
+                      : 'hover:bg-gray-50 text-gray-700 border-l-4 border-transparent'
+                    }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-gray-500 w-6">{index + 1}</span>
+                    <span className="text-sm">{section.title}</span>
+                  </div>
+                  <ChevronRight size={16} className="text-gray-400" />
+                </button>
+              ))}
+            </nav>
+          </div>
           {/* Breadcrumb */}
           <div className="breadcrumb">
             <Link href="/blog">Blog</Link> / <span>{post.title}</span>
@@ -89,7 +171,16 @@ export default function Post({ post, relatedPosts }) {
               >
                 Abrir Contador PJ →
               </a>
-              <small>*Parceria afiliada - ganhamos comissão, você não paga nada extra</small>
+            </div>
+          </div>
+
+          {/* Affiliate Disclaimer */}
+          <div className="mt-4 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-full">
+              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="text-xs text-gray-600 font-medium">Parceria afiliada: ganhamos comissão, você não paga nada extra</span>
             </div>
           </div>
 
