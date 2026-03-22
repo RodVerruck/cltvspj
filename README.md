@@ -89,3 +89,4 @@ Este projeto está configurado para deploy no Vercel.
 ## 📄 Licença
 
 Este projeto é privado e de uso interno.
+# Deploy limpo - 03/22/2026 18:01:40
