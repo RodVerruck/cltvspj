@@ -111,8 +111,8 @@ export default function Home() {
         {/* Canonical */}
         <link rel="canonical" href="https://calculadora-cltvspj.vercel.app" />
 
-        {/* Google AdSense - Adicione seu ID quando aprovado */}
-        {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossOrigin="anonymous"></script> */}
+        {/* Google AdSense */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2888261288759622" crossOrigin="anonymous"></script>
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">

@@ -15,7 +15,7 @@ export default function AdSense({ slot, format = 'auto', responsive = true }) {
     <ins
       className="adsbygoogle"
       style={{ display: 'block' }}
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" // Substitua pelo seu ID do AdSense quando aprovado
+      data-ad-client="ca-pub-2888261288759622"
       data-ad-slot={slot}
       data-ad-format={format}
       data-full-width-responsive={responsive.toString()}
