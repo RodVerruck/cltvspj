@@ -67,6 +67,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       .process(content)
 
     const contentHtml = processedContent.toString()
+      .replace(/^<h1[^>]*>.*?<\/h1>\s*/i, ''); // remove o primeiro h1 do markdown
 
     return {
       slug,

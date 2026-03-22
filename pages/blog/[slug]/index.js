@@ -80,9 +80,9 @@ export default function Post({ post, relatedPosts }) {
           <div className="affiliate-cta">
             <div className="affiliate-card">
               <h3>Precisa abrir seu CNPJ?</h3>
-              <p>A Contsign cuida de toda a burocracia para você focar no que realmente importa: seu trabalho.</p>
+              <p>A Contasign cuida de toda a burocracia para você focar no que realmente importa: seu trabalho.</p>
               <a
-                href="https://contsign.com.br/torne-se-um-afiliado/"
+                href="https://contasign.com.br"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="affiliate-button"
