@@ -4,7 +4,7 @@ import { getAllPosts, getPostBySlug } from '../../../lib/posts';
 import { Calendar, Clock, ArrowLeft, ArrowRight, Calculator, Users } from 'lucide-react';
 
 
-export default function Post({ post }) {
+export default function Post({ post, relatedPosts }) {
   return (
     <>
       <Head>
@@ -50,14 +50,10 @@ export default function Post({ post }) {
           {/* Post Header */}
           <div className="post-header">
             <div className="post-meta">
-              <div className="post-tag">
-                <Calendar size={12} />
-                {new Date(post.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </div>
-              <div className="post-reading-time">
-                <Clock size={12} />
-                {post.readingTime || "5 min"} de leitura
-              </div>
+              {post.tags?.map((tag) => (
+                <span key={tag} className="post-tag">{tag}</span>
+              ))}
+              <span className="post-reading-time">⏱ {post.readingTime}</span>
             </div>
 
             <h1 className="post-header h1">
@@ -68,12 +64,9 @@ export default function Post({ post }) {
               {post.excerpt}
             </p>
 
-            <div className="post-meta">
-              {post.tags?.map((tag) => (
-                <span key={tag} className="post-tag">
-                  #{tag}
-                </span>
-              ))}
+            <div className="post-header-footer">
+              <span className="post-author">✍️ {post.author || "Equipe CLT ou PJ"}</span>
+              <span className="post-scroll-hint">↓ Continue lendo</span>
             </div>
           </div>
 
@@ -114,22 +107,24 @@ export default function Post({ post }) {
           </div>
 
           {/* Related Posts */}
-          <div className="related-posts">
-            <div className="post-card">
-              <h2>CLT ou PJ: Qual Vale Mais?</h2>
-              <p className="post-description">Descubra qual regime compensa mais para seu perfil profissional</p>
-              <Link href="/blog/clt-ou-pj-qual-vale-mais" className="read-more">
-                Ler mais →
-              </Link>
-            </div>
-            <div className="post-card">
-              <h2>Como Calcular Salário PJ</h2>
-              <p className="post-description">Guia completo para definir seu valor hora como PJ</p>
-              <Link href="/blog/como-calcular-salario-pj" className="read-more">
-                Ler mais →
-              </Link>
-            </div>
-          </div>
+          {relatedPosts && relatedPosts.length > 0 && (
+            <section className="related-posts">
+              <h2 className="related-title">📖 Continue lendo</h2>
+              <div className="related-grid">
+                {relatedPosts.map((related) => (
+                  <a key={related.slug} href={`/blog/${related.slug}`} className="related-card">
+                    <div className="related-tags">
+                      {related.tags?.slice(0, 1).map(tag => (
+                        <span key={tag} className="post-tag">{tag}</span>
+                      ))}
+                    </div>
+                    <h3>{related.title}</h3>
+                    <span className="read-more">Ler artigo →</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </div>
     </>
@@ -150,6 +145,10 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const post = await getPostBySlug(params.slug);
+  const allPosts = await getAllPosts();
+  const relatedPosts = allPosts
+    .filter(p => p.slug !== params.slug)
+    .slice(0, 3);
 
   if (!post) {
     return {
@@ -160,6 +159,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       post,
+      relatedPosts,
     },
   };
 }
