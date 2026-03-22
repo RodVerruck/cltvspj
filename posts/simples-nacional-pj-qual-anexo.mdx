@@ -42,12 +42,16 @@ Profissões que geralmente se enquadram:
 - Agências de marketing digital
 - Arquitetura (em alguns casos)
 
+<div className="overflow-x-auto my-6">
+
 | Faturamento 12 meses | Alíquota |
 |---|---|
 | Até R$ 180.000 | 6,00% |
 | R$ 180.001 – R$ 360.000 | 11,20% |
 | R$ 360.001 – R$ 720.000 | 13,50% |
 | R$ 720.001 – R$ 1.800.000 | 16,00% |
+
+</div>
 
 ### Anexo IV – Médio
 
@@ -80,6 +84,8 @@ A regra principal é o **CNAE** (código de atividade da empresa). Mas existe um
 
 ### O que é o Fator R?
 
+<div className="bg-blue-50 border-l-4 border-blue-600 rounded-r-lg p-6 my-6">
+
 O Fator R determina se uma empresa do Anexo V pode migrar para o Anexo III (muito mais vantajoso). O cálculo é:
 
 **Fator R = Folha de pagamento dos últimos 12 meses ÷ Receita bruta dos últimos 12 meses**
@@ -95,32 +101,62 @@ Para um PJ solo (sem funcionários), a folha de pagamento inclui o **pró-labore
 
 Isso é uma estratégia legal e muito usada por contadores para reduzir a carga tributária.
 
+</div>
+
 ---
 
 ## Exemplo de cálculo real por profissão
 
-### Desenvolvedor de software – Faturamento R$ 12.000/mês
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
 
-- Anexo: III
-- Alíquota: 6%
-- Imposto mensal: **R$ 720**
-- Líquido antes de outros custos: R$ 11.280
+<div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+  <div className="mb-4">
+    <h3 className="text-lg font-bold text-gray-900 mb-1">Desenvolvedor de Software</h3>
+    <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">Anexo III</span>
+  </div>
+  <div className="space-y-2 text-sm text-gray-600">
+    <p><span className="font-semibold">Faturamento:</span> R$ 12.000/mês</p>
+    <p><span className="font-semibold">Alíquota:</span> 6%</p>
+  </div>
+  <div className="mt-4 pt-4 border-t border-gray-100">
+    <p className="text-2xl font-bold text-blue-600">R$ 720</p>
+    <p className="text-xs text-gray-500 mt-1">Imposto mensal</p>
+  </div>
+</div>
 
-### Advogado – Faturamento R$ 15.000/mês
+<div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+  <div className="mb-4">
+    <h3 className="text-lg font-bold text-gray-900 mb-1">Advogado</h3>
+    <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">Anexo IV</span>
+  </div>
+  <div className="space-y-2 text-sm text-gray-600">
+    <p><span className="font-semibold">Faturamento:</span> R$ 15.000/mês</p>
+    <p><span className="font-semibold">Alíquota:</span> 4,5% + INSS 20%</p>
+    <p><span className="font-semibold">Pró-labore:</span> R$ 3.000</p>
+  </div>
+  <div className="mt-4 pt-4 border-t border-gray-100">
+    <p className="text-2xl font-bold text-blue-600">~R$ 1.275</p>
+    <p className="text-xs text-gray-500 mt-1">Total de impostos</p>
+  </div>
+</div>
 
-- Anexo: IV
-- Alíquota: 4,5% (+ INSS patronal 20% sobre pró-labore)
-- Pró-labore de R$ 3.000 → INSS patronal: R$ 600
-- Simples: R$ 675
-- Total de impostos: **~R$ 1.275**
-- Alíquota real: ~8,5%
+<div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+  <div className="mb-4">
+    <h3 className="text-lg font-bold text-gray-900 mb-1">Consultor de Marketing</h3>
+    <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full">Anexo V</span>
+  </div>
+  <div className="space-y-2 text-sm text-gray-600">
+    <p><span className="font-semibold">Faturamento:</span> R$ 20.000/mês</p>
+    <p><span className="font-semibold">Alíquota:</span> 15,5%</p>
+    <p><span className="font-semibold">Com Fator R:</span> 6% (Anexo III)</p>
+  </div>
+  <div className="mt-4 pt-4 border-t border-gray-100">
+    <p className="text-2xl font-bold text-green-600">R$ 1.900</p>
+    <p className="text-xs text-gray-500 mt-1">Economia mensal</p>
+  </div>
+</div>
 
-### Consultor de marketing – Faturamento R$ 20.000/mês (Anexo V sem Fator R)
-
-- Alíquota: 15,5%
-- Imposto mensal: **R$ 3.100**
-- Com Fator R aplicado (pró-labore ≥ R$ 5.600): migra para Anexo III (6%)
-- Economia: **R$ 1.900/mês** apenas ajustando o pró-labore
+</div>
 
 ---
 
@@ -142,11 +178,15 @@ Na prática, seu contador faz esse cálculo automaticamente. O importante é ent
 
 Para a maioria dos PJs com faturamento até R$ 360.000/ano, o Simples Nacional é mais vantajoso. Mas acima disso, pode valer a pena simular o **Lucro Presumido**:
 
+<div className="overflow-x-auto my-6">
+
 | Regime | Quando vantajoso |
 |---|---|
 | Simples Nacional | Faturamento até ~R$ 30.000/mês |
 | Lucro Presumido | Faturamento acima de R$ 30.000–40.000/mês |
 | Lucro Real | Empresas com muitas despesas dedutíveis |
+
+</div>
 
 Sempre consulte seu contador antes de mudar de regime.
 
@@ -165,4 +205,4 @@ Sempre consulte seu contador antes de mudar de regime.
 
 Antes de aceitar ou recusar uma proposta PJ, use nossa calculadora para ver quanto você vai pagar de imposto e quanto vai sobrar de verdade.
 
-👉 **[Simular agora — Calculadora CLT vs PJ gratuita](#)**
+👉 <button className="bg-transparent border border-blue-600 text-blue-600 px-6 py-3 rounded-full hover:bg-blue-50 transition-colors font-semibold">Simular agora — Calculadora CLT vs PJ gratuita</button>

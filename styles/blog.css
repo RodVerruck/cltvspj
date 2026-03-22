@@ -659,67 +659,72 @@
 }
 
 .affiliate-card {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border: 1.5px solid #fcd34d;
-  border-radius: 16px;
-  padding: 2rem;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+  border: 1px solid #475569;
+  border-radius: 20px;
+  padding: 2.5rem;
   position: relative;
   overflow: hidden;
+  color: white;
 }
 
 .affiliate-card::before {
   content: '🏢';
   position: absolute;
-  right: 1.5rem;
+  right: 2rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 4rem;
-  opacity: 0.12;
+  font-size: 5rem;
+  opacity: 0.15;
 }
 
 .affiliate-card h3 {
   font-family: var(--fonte-titulo);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 800;
-  color: #78350f;
-  margin-bottom: 0.6rem;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.02em;
 }
 
 .affiliate-card p {
-  color: #92400e;
-  font-size: 0.95rem;
-  margin-bottom: 1.4rem;
+  color: #cbd5e1;
+  font-size: 1rem;
+  margin-bottom: 1.8rem;
   line-height: 1.6;
-  max-width: 480px;
+  max-width: 520px;
 }
 
 .affiliate-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--cor-acento);
-  color: #1a1a1a;
-  padding: 0.8rem 1.75rem;
-  border-radius: 10px;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-decoration: none;
   font-family: var(--fonte-titulo);
-  transition: transform 0.18s, box-shadow 0.18s;
-  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+  border: none;
+  cursor: pointer;
 }
 
 .affiliate-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 16px rgba(245, 158, 11, 0.45);
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.6);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
 }
 
 .affiliate-card small {
   display: block;
-  margin-top: 0.85rem;
-  font-size: 0.73rem;
-  color: #a16207;
-  opacity: 0.75;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  opacity: 0.8;
 }
 
 /* ── CTA Calculadora ── */
