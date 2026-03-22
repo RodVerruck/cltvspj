@@ -111,6 +111,9 @@ export default function Home() {
         {/* Canonical */}
         <link rel="canonical" href="https://calculadora-cltvspj.vercel.app" />
 
+        {/* Google AdSense Account */}
+        <meta name="google-adsense-account" content="ca-pub-2888261288759622" />
+
         {/* Google AdSense */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2888261288759622" crossOrigin="anonymous"></script>
       </Head>
