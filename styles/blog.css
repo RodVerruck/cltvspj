@@ -437,39 +437,65 @@
 
 /* ── Corpo do artigo ── */
 .mdx-content {
-  font-size: 1.05rem;
-  line-height: 1.9;
+  font-size: 1.1rem;
+  line-height: 1.8;
   color: #374151;
   font-family: var(--fonte-corpo);
 }
 
+.mdx-content h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 2rem;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
 .mdx-content h2 {
   font-family: 'Sora', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 3.5rem 0 1.25rem;
+  margin: 3.5rem 0 1.5rem;
   letter-spacing: -0.02em;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
   border-left: 5px solid #3b82f6;
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 12px 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mdx-content h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 2.75rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px dashed #bfdbfe;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.mdx-content h3 {
+.mdx-content h4 {
   font-family: 'Sora', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #1e40af;
-  margin: 2.5rem 0 0.75rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px dashed #bfdbfe;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 2rem 0 0.75rem;
+}
+
+.mdx-content p {
+  margin-bottom: 1.75rem;
+}
+
+.mdx-content p+p {
+  margin-top: 1.75rem;
 }
 
 .mdx-content p+h2,
@@ -478,19 +504,16 @@
   margin-top: 4rem;
 }
 
-.mdx-content p {
-  margin-bottom: 1.5rem;
-}
-
 .mdx-content ul,
 .mdx-content ol {
-  margin-bottom: 1.75rem;
-  padding-left: 1.5rem;
+  margin-bottom: 2rem;
+  padding-left: 1.75rem;
 }
 
 .mdx-content li {
-  margin-bottom: 0.65rem;
-  padding-left: 0.35rem;
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+  line-height: 1.7;
 }
 
 .mdx-content ul li::marker {
@@ -501,12 +524,13 @@
 .mdx-content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 2.25rem 0;
-  font-size: 0.93rem;
-  border-radius: 14px;
+  margin: 2.5rem 0;
+  font-size: 0.95rem;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(30, 64, 175, 0.1);
+  box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);
   border: 1px solid #dbeafe;
+  background: white;
 }
 
 .mdx-content thead tr {
@@ -514,25 +538,29 @@
 }
 
 .mdx-content th {
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   text-align: left;
   font-weight: 700;
   color: white;
   font-family: 'Sora', sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .mdx-content td {
-  padding: 0.85rem 1.25rem;
-  border-bottom: 1px solid #eff6ff;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
   color: #1e293b;
-  font-size: 0.93rem;
+  font-size: 0.95rem;
 }
 
-.mdx-content tbody tr:nth-child(even) td {
-  background: #f8faff;
+.mdx-content tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.mdx-content tbody tr:nth-child(odd) {
+  background: white;
 }
 
 .mdx-content tbody tr:last-child td {
@@ -655,74 +683,97 @@
 
 /* ── CTA Afiliado ── */
 .affiliate-cta {
-  margin: 3rem 0;
+  margin: 4rem 0 0;
+  padding-top: 3rem;
+  border-top: 1px solid #e5e7eb;
 }
 
 .affiliate-card {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   border: 1px solid #475569;
-  border-radius: 20px;
-  padding: 2.5rem;
+  border-radius: 24px;
+  padding: 3rem;
   position: relative;
   overflow: hidden;
   color: white;
+  text-align: center;
 }
 
 .affiliate-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.affiliate-card::after {
   content: '🏢';
   position: absolute;
   right: 2rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 5rem;
-  opacity: 0.15;
+  font-size: 6rem;
+  opacity: 0.08;
+  z-index: 0;
+}
+
+.affiliate-card>* {
+  position: relative;
+  z-index: 1;
 }
 
 .affiliate-card h3 {
   font-family: var(--fonte-titulo);
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #ffffff;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
   letter-spacing: -0.02em;
 }
 
 .affiliate-card p {
   color: #cbd5e1;
-  font-size: 1rem;
-  margin-bottom: 1.8rem;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
   line-height: 1.6;
-  max-width: 520px;
+  max-width: 580px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .affiliate-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 12px;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #111827;
+  padding: 1.25rem 2.5rem;
+  border-radius: 16px;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 1.1rem;
   text-decoration: none;
   font-family: var(--fonte-titulo);
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
   border: none;
   cursor: pointer;
 }
 
 .affiliate-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.6);
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(245, 158, 11, 0.6);
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
 }
 
 .affiliate-card small {
   display: block;
-  margin-top: 1rem;
-  font-size: 0.8rem;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
   color: #94a3b8;
   opacity: 0.8;
 }

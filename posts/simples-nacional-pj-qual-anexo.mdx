@@ -8,7 +8,9 @@ tags: ["simples nacional", "impostos", "pj", "cnpj", "tributário"]
 readingTime: "8 min"
 ---
 
-# Simles Nacional para PJ: Qual Anexo Usar e Quanto Você Vai Pagar de Imposto
+<div className="max-w-screen-md mx-auto px-6 md:px-10 py-12">
+
+# Simples Nacional para PJ: Qual Anexo Usar e Quanto Você Vai Pagar de Imposto
 
 Uma das maiores vantagens de trabalhar como PJ no Brasil é a carga tributária reduzida pelo **Simples Nacional**. Mas o quanto você vai pagar depende do **Anexo** em que sua atividade se encaixa — e muita gente paga imposto errado por não saber disso.
 
@@ -42,7 +44,7 @@ Profissões que geralmente se enquadram:
 - Agências de marketing digital
 - Arquitetura (em alguns casos)
 
-<div className="overflow-x-auto my-6">
+<div className="overflow-x-auto my-10 shadow-inner bg-gray-50 rounded-lg">
 
 | Faturamento 12 meses | Alíquota |
 |---|---|
@@ -84,22 +86,38 @@ A regra principal é o **CNAE** (código de atividade da empresa). Mas existe um
 
 ### O que é o Fator R?
 
-<div className="bg-blue-50 border-l-4 border-blue-600 rounded-r-lg p-6 my-6">
+<div className="bg-white border border-gray-200 rounded-xl shadow-md p-6 my-8 border-l-4 border-blue-400">
 
-O Fator R determina se uma empresa do Anexo V pode migrar para o Anexo III (muito mais vantajoso). O cálculo é:
-
-**Fator R = Folha de pagamento dos últimos 12 meses ÷ Receita bruta dos últimos 12 meses**
-
-Se o resultado for **maior ou igual a 28%**, a empresa pode tributar pelo Anexo III.
-
-Para um PJ solo (sem funcionários), a folha de pagamento inclui o **pró-labore do sócio**. Ou seja: se você pagar um pró-labore que represente 28% ou mais do seu faturamento, pode usar o Anexo III mesmo que sua atividade seja originalmente do V.
-
-**Exemplo prático:**
-- Faturamento mensal: R$ 15.000
-- Pró-labore: R$ 4.500 (30% do faturamento)
-- Fator R: 30% → aplica Anexo III (6%) ✅
-
-Isso é uma estratégia legal e muito usada por contadores para reduzir a carga tributária.
+<div className="flex items-start gap-3">
+  <div className="flex-shrink-0">
+    <svg className="w-6 h-6 text-blue-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  </div>
+  <div>
+    <h4 className="text-lg font-semibold text-gray-900 mb-3">Fator R: O Segredo para Economizar Impostos</h4>
+    <p className="text-gray-700 mb-4">O Fator R determina se uma empresa do Anexo V pode migrar para o Anexo III (muito mais vantajoso). O cálculo é:</p>
+    
+    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
+      <p className="font-mono text-center text-blue-700 font-semibold">Fator R = Folha de pagamento dos últimos 12 meses ÷ Receita bruta dos últimos 12 meses</p>
+    </div>
+    
+    <p className="text-gray-700 mb-4">Se o resultado for <strong>maior ou igual a 28%</strong>, a empresa pode tributar pelo Anexo III.</p>
+    
+    <p className="text-gray-700 mb-4">Para um PJ solo (sem funcionários), a folha de pagamento inclui o <strong>pró-labore do sócio</strong>. Ou seja: se você pagar um pró-labore que represente 28% ou mais do seu faturamento, pode usar o Anexo III mesmo que sua atividade seja originalmente do V.</p>
+    
+    <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
+      <p className="font-semibold text-green-800 mb-2">Exemplo prático:</p>
+      <ul className="text-sm text-green-700 space-y-1">
+        <li>• Faturamento mensal: R$ 15.000</li>
+        <li>• Pró-labore: R$ 4.500 (30% do faturamento)</li>
+        <li>• Fator R: 30% → aplica Anexo III (6%) ✅</li>
+      </ul>
+    </div>
+    
+    <p className="text-gray-600 text-sm mt-4">Isso é uma estratégia legal e muito usada por contadores para reduzir a carga tributária.</p>
+  </div>
+</div>
 
 </div>
 
@@ -107,52 +125,97 @@ Isso é uma estratégia legal e muito usada por contadores para reduzir a carga 
 
 ## Exemplo de cálculo real por profissão
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 my-12">
 
-<div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-  <div className="mb-4">
-    <h3 className="text-lg font-bold text-gray-900 mb-1">Desenvolvedor de Software</h3>
-    <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">Anexo III</span>
+<div className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+  <div className="flex items-center gap-3 mb-4">
+    <div className="bg-blue-100 p-3 rounded-lg">
+      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    </div>
+    <div>
+      <h3 className="text-lg font-bold text-gray-900">Desenvolvedor de Software</h3>
+      <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mt-1">Anexo III</span>
+    </div>
   </div>
-  <div className="space-y-2 text-sm text-gray-600">
-    <p><span className="font-semibold">Faturamento:</span> R$ 12.000/mês</p>
-    <p><span className="font-semibold">Alíquota:</span> 6%</p>
+  <div className="space-y-3 text-sm text-gray-600">
+    <div className="flex justify-between">
+      <span className="font-semibold">Faturamento:</span>
+      <span>R$ 12.000/mês</span>
+    </div>
+    <div className="flex justify-between">
+      <span className="font-semibold">Alíquota:</span>
+      <span>6%</span>
+    </div>
   </div>
-  <div className="mt-4 pt-4 border-t border-gray-100">
-    <p className="text-2xl font-bold text-blue-600">R$ 720</p>
-    <p className="text-xs text-gray-500 mt-1">Imposto mensal</p>
+  <div className="mt-6 pt-4 border-t border-gray-100">
+    <p className="text-3xl font-bold text-blue-700">R$ 720</p>
+    <p className="text-sm text-gray-500 mt-1">Imposto mensal</p>
   </div>
 </div>
 
-<div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-  <div className="mb-4">
-    <h3 className="text-lg font-bold text-gray-900 mb-1">Advogado</h3>
-    <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">Anexo IV</span>
+<div className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+  <div className="flex items-center gap-3 mb-4">
+    <div className="bg-amber-100 p-3 rounded-lg">
+      <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+      </svg>
+    </div>
+    <div>
+      <h3 className="text-lg font-bold text-gray-900">Advogado</h3>
+      <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full mt-1">Anexo IV</span>
+    </div>
   </div>
-  <div className="space-y-2 text-sm text-gray-600">
-    <p><span className="font-semibold">Faturamento:</span> R$ 15.000/mês</p>
-    <p><span className="font-semibold">Alíquota:</span> 4,5% + INSS 20%</p>
-    <p><span className="font-semibold">Pró-labore:</span> R$ 3.000</p>
+  <div className="space-y-3 text-sm text-gray-600">
+    <div className="flex justify-between">
+      <span className="font-semibold">Faturamento:</span>
+      <span>R$ 15.000/mês</span>
+    </div>
+    <div className="flex justify-between">
+      <span className="font-semibold">Alíquota:</span>
+      <span>4,5% + INSS 20%</span>
+    </div>
+    <div className="flex justify-between">
+      <span className="font-semibold">Pró-labore:</span>
+      <span>R$ 3.000</span>
+    </div>
   </div>
-  <div className="mt-4 pt-4 border-t border-gray-100">
-    <p className="text-2xl font-bold text-blue-600">~R$ 1.275</p>
-    <p className="text-xs text-gray-500 mt-1">Total de impostos</p>
+  <div className="mt-6 pt-4 border-t border-gray-100">
+    <p className="text-3xl font-bold text-blue-700">~R$ 1.275</p>
+    <p className="text-sm text-gray-500 mt-1">Total de impostos</p>
   </div>
 </div>
 
-<div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-  <div className="mb-4">
-    <h3 className="text-lg font-bold text-gray-900 mb-1">Consultor de Marketing</h3>
-    <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full">Anexo V</span>
+<div className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+  <div className="flex items-center gap-3 mb-4">
+    <div className="bg-purple-100 p-3 rounded-lg">
+      <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+      </svg>
+    </div>
+    <div>
+      <h3 className="text-lg font-bold text-gray-900">Consultor de Marketing</h3>
+      <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full mt-1">Anexo V</span>
+    </div>
   </div>
-  <div className="space-y-2 text-sm text-gray-600">
-    <p><span className="font-semibold">Faturamento:</span> R$ 20.000/mês</p>
-    <p><span className="font-semibold">Alíquota:</span> 15,5%</p>
-    <p><span className="font-semibold">Com Fator R:</span> 6% (Anexo III)</p>
+  <div className="space-y-3 text-sm text-gray-600">
+    <div className="flex justify-between">
+      <span className="font-semibold">Faturamento:</span>
+      <span>R$ 20.000/mês</span>
+    </div>
+    <div className="flex justify-between">
+      <span className="font-semibold">Alíquota:</span>
+      <span>15,5%</span>
+    </div>
+    <div className="flex justify-between">
+      <span className="font-semibold">Com Fator R:</span>
+      <span>6% (Anexo III)</span>
+    </div>
   </div>
-  <div className="mt-4 pt-4 border-t border-gray-100">
-    <p className="text-2xl font-bold text-green-600">R$ 1.900</p>
-    <p className="text-xs text-gray-500 mt-1">Economia mensal</p>
+  <div className="mt-6 pt-4 border-t border-gray-100">
+    <p className="text-3xl font-bold text-green-600">R$ 1.900</p>
+    <p className="text-sm text-gray-500 mt-1">Economia mensal</p>
   </div>
 </div>
 
@@ -178,7 +241,7 @@ Na prática, seu contador faz esse cálculo automaticamente. O importante é ent
 
 Para a maioria dos PJs com faturamento até R$ 360.000/ano, o Simples Nacional é mais vantajoso. Mas acima disso, pode valer a pena simular o **Lucro Presumido**:
 
-<div className="overflow-x-auto my-6">
+<div className="overflow-x-auto my-10 shadow-inner bg-gray-50 rounded-lg">
 
 | Regime | Quando vantajoso |
 |---|---|
@@ -205,4 +268,6 @@ Sempre consulte seu contador antes de mudar de regime.
 
 Antes de aceitar ou recusar uma proposta PJ, use nossa calculadora para ver quanto você vai pagar de imposto e quanto vai sobrar de verdade.
 
-👉 <button className="bg-transparent border border-blue-600 text-blue-600 px-6 py-3 rounded-full hover:bg-blue-50 transition-colors font-semibold">Simular agora — Calculadora CLT vs PJ gratuita</button>
+👉 <a href="/" className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:bg-blue-700 transition-colors">Simular agora — Calculadora CLT vs PJ gratuita</a>
+
+</div>
