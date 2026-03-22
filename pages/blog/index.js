@@ -26,20 +26,11 @@ export default function Blog({ allPosts }) {
 
         {/* Blog Container */}
         <div className="blog-container">
-          <div className="blog-header">
-            <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Calendar size={16} />
-              Guias e Artigos Especializados
-            </div>
-
-            <h1 className="blog-header h1">
-              Domine o mundo <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">CLT e PJ</span>
-            </h1>
-
-            <p className="blog-header p">
-              Guias completos, dicas práticas e tudo que você precisa saber para tomar as melhores decisões financeiras e profissionais.
-            </p>
-          </div>
+          <header className="blog-header">
+            <span className="blog-header-badge">📚 Base de Conhecimento</span>
+            <h1>Blog CLT ou PJ</h1>
+            <p>Tudo que você precisa saber para tomar a melhor decisão de carreira e tributação no Brasil.</p>
+          </header>
 
           {/* Posts Grid */}
           <div className="posts-grid">
@@ -77,7 +68,7 @@ export default function Blog({ allPosts }) {
                   href={`/blog/${post.slug}`}
                   className="read-more"
                 >
-                  Ler artigo completo →
+                  Ler artigo <span>→</span>
                 </Link>
               </article>
             ))}
