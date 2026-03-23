@@ -43,7 +43,7 @@ function TLDRCard() {
           </p>
         </div>
         <div className="tldr-cta-row">
-          <Link href="/" className="btn-primary">
+          <Link href="#fator-r" className="btn-primary">
             Calcular meu Fator R
             <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 8h10M9 4l4 4-4 4" />
