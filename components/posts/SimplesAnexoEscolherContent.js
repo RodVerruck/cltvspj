@@ -65,7 +65,7 @@ function FatorRCard() {
   const isOrange = fr !== null && fr < 28;
 
   return (
-    <div className="fatorr-wrap">
+    <div className="bg-blue-50 border-2 border-blue-300 rounded-2xl p-8 my-12 shadow-lg">
       <div className="fatorr-header">
         <span className="fatorr-label">Fórmula do Fator R</span>
         <span className="fatorr-badge">Conceito central</span>
@@ -97,7 +97,7 @@ function FatorRCard() {
         </div>
       </div>
       <div className="fatorr-calc">
-        <p className="calc-label">Calcule o seu agora</p>
+        <h3 className="text-xl font-semibold mb-4 text-primary">Calcule o seu agora</h3>
         <div className="calc-inputs">
           <div className="input-group">
             <label>Faturamento mensal (R$)</label>
