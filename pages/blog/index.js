@@ -13,16 +13,14 @@ export default function Blog({ allPosts }) {
         <link rel="canonical" href="https://calculadora-cltvspj.vercel.app/blog" />
       </Head>
 
-      <div className="min-h-screen bg-gray-50">
+      <div className="page-root">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition">
-              <span>← Calculadora</span>
-            </Link>
-            <h1 className="text-xl font-bold text-gray-900">CLT ou PJ?</h1>
-            <div className="w-24"></div>
-          </div>
+        <header className="site-header">
+          <Link href="/" className="header-back">
+            <span>← Calculadora</span>
+          </Link>
+          <span className="header-brand">CLT ou PJ?</span>
+          <div style={{ width: '96px' }}></div>
         </header>
 
         {/* Blog Container */}
