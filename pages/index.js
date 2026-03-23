@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, Users, ArrowRight, Briefcase } from 'lucide-react';
+import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, Users, ArrowRight, Briefcase, Info } from 'lucide-react';
 
 export default function Home() {
   const [salary, setSalary] = useState('8000');
@@ -183,8 +183,14 @@ export default function Home() {
 
               <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     Salário Bruto Mensal
+                    <div className="group relative">
+                      <Info size={14} className="text-gray-400 cursor-help" />
+                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg z-10">
+                        Valor do salário antes dos descontos de INSS e IRPF
+                      </div>
+                    </div>
                   </label>
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
@@ -236,8 +242,14 @@ export default function Home() {
 
               <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     Valor da Hora (PJ)
+                    <div className="group relative">
+                      <Info size={14} className="text-gray-400 cursor-help" />
+                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg z-10">
+                        Quanto você cobra por hora de trabalho como PJ
+                      </div>
+                    </div>
                   </label>
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
@@ -252,8 +264,14 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     Horas Trabalhadas/Mês
+                    <div className="group relative">
+                      <Info size={14} className="text-gray-400 cursor-help" />
+                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg z-10">
+                        Total de horas que você trabalha por mês (geralmente 160h = 8h/dia × 20 dias)
+                      </div>
+                    </div>
                   </label>
                   <input
                     type="number"
