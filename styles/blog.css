@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════
    BLOG CLT OU PJ — Design System Completo
-   Paleta: Verde editorial (#1c5c3e)
+   Paleta: Azul (#1e40af)
    Fontes: Instrument Serif + DM Sans
    ════════════════════════════════════════ */
 
@@ -8,18 +8,18 @@
 
 /* ── Tokens ── */
 :root {
-  --ink: #1a1a18;
-  --ink2: #4a4a47;
-  --ink3: #8a8a86;
-  --paper: #faf9f6;
+  --ink: #0f172a;
+  --ink2: #475569;
+  --ink3: #94a3b8;
+  --paper: #f8fafc;
   --white: #ffffff;
-  --rule: #e8e6e0;
+  --rule: #e2e8f0;
 
-  --green: #1c5c3e;
-  --green-light: #e8f4ed;
-  --green-mid: #4a9e6b;
-  --green-border: #c3dece;
-  --green-hover: #174d34;
+  --green: #1e40af;
+  --green-light: #eff6ff;
+  --green-mid: #3b82f6;
+  --green-border: #bfdbfe;
+  --green-hover: #1e3a8a;
 
   --orange: #92420e;
   --orange-light: #fef3ea;
@@ -58,7 +58,7 @@
   text-align: center;
   margin-bottom: 3.5rem;
   padding: 4rem 2rem 3.5rem;
-  background: var(--green);
+  background: linear-gradient(135deg, var(--green) 0%, #1d4ed8 50%, #2563eb 100%);
   border-radius: var(--radius-lg);
   position: relative;
   overflow: hidden;
@@ -718,7 +718,7 @@ body {
 }
 
 .anexo-pill--green .anexo-desc {
-  color: #2a7a50;
+  color: #2563eb;
 }
 
 .anexo-pill--orange .anexo-desc {
@@ -1258,7 +1258,7 @@ body {
 }
 
 .compare-td--green {
-  background: #f0f9f4;
+  background: #eff6ff;
   color: var(--green);
   font-weight: 500;
 }
@@ -1901,7 +1901,7 @@ body {
 }
 
 .mdx-content table tr:nth-child(even) td:nth-child(2) {
-  background: #d5efe0;
+  background: #dbeafe;
 }
 
 /* Strong */
