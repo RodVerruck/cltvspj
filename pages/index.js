@@ -126,9 +126,14 @@ export default function Home() {
               <Calculator className="text-indigo-600" size={28} />
               <h1 className="text-xl font-bold text-gray-900">CLT ou PJ?</h1>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Users size={16} />
-              <span>{totalUsers.toLocaleString('pt-BR')} cálculos hoje</span>
+            <div className="flex items-center gap-6">
+              <a href="/blog" className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition">
+                Blog
+              </a>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Users size={16} />
+                <span>{totalUsers.toLocaleString('pt-BR')} cálculos hoje</span>
+              </div>
             </div>
           </div>
         </header>
