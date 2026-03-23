@@ -782,6 +782,7 @@ export async function getStaticPaths() {
   };
 }
 
+// Forçando refresh - 23/03/2026
 export async function getStaticProps({ params }) {
   const post = await getPostBySlug(params.slug);
   const allPosts = await getAllPosts();
