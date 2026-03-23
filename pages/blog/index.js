@@ -18,9 +18,10 @@ export default function Blog({ allPosts }) {
         <header className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition">
-              <span>← Voltar</span>
+              <span>← Calculadora</span>
             </Link>
-            <h1 className="text-xl font-bold text-gray-900">Blog CLT ou PJ</h1>
+            <h1 className="text-xl font-bold text-gray-900">CLT ou PJ?</h1>
+            <div className="w-24"></div>
           </div>
         </header>
 
