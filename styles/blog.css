@@ -184,7 +184,8 @@
   font-family: var(--sans);
 }
 
-.post-card h2 {
+.post-card h2,
+.post-card-title {
   font-family: var(--serif);
   font-size: 1.1rem;
   font-weight: 400;
@@ -192,13 +193,15 @@
   color: var(--ink);
 }
 
-.post-card h2 a {
+.post-card h2 a,
+.post-card-title a {
   text-decoration: none;
   color: inherit;
   transition: color 0.15s;
 }
 
-.post-card h2 a:hover {
+.post-card h2 a:hover,
+.post-card-title a:hover {
   color: var(--blue);
 }
 
@@ -234,7 +237,8 @@
   color: white;
 }
 
-.cta-banner h2 {
+.cta-banner h2,
+.cta-banner-title {
   font-family: var(--serif);
   font-size: 1.5rem;
   font-weight: 400;
@@ -243,7 +247,8 @@
   letter-spacing: -0.01em;
 }
 
-.cta-banner p {
+.cta-banner p,
+.cta-banner-desc {
   font-family: var(--sans);
   font-size: 0.9rem;
   opacity: 0.78;
@@ -276,12 +281,6 @@
 /* ════════════════════════════════════════
    POST — /blog/[slug]
    ════════════════════════════════════════ */
-
-body {
-  font-family: var(--sans);
-  background: var(--paper);
-  color: var(--ink);
-}
 
 .progress-rail {
   position: fixed;

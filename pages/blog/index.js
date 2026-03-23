@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { getAllPosts } from '../../lib/posts';
-import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import AdSense from '../../components/AdSense';
+import { SITE_URL } from '../../lib/config';
 
 export default function Blog({ allPosts }) {
   return (
@@ -12,7 +14,14 @@ export default function Blog({ allPosts }) {
         <title>Blog CLT ou PJ | Dicas e Guias Completo</title>
         <meta name="description" content="Guias completos sobre CLT vs PJ. Saiba quanto ganhar, como abrir CNPJ, impostos e dicas para freelancers." />
         <meta name="keywords" content="blog clt pj, guia clt pj, dicas pj, abrir cnpj, simples nacional" />
-        <link rel="canonical" href="https://calculadora-cltvspj.vercel.app/blog" />
+        <link rel="canonical" href={`${SITE_URL}/blog`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${SITE_URL}/blog`} />
+        <meta property="og:title" content="Blog CLT ou PJ | Dicas e Guias Completo" />
+        <meta property="og:description" content="Guias completos sobre CLT vs PJ. Saiba quanto ganhar, como abrir CNPJ, impostos e dicas para freelancers." />
+        <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
       </Head>
 
       <div className="page-root">
@@ -40,14 +49,14 @@ export default function Blog({ allPosts }) {
                   </div>
                 </div>
 
-                <h2 className="post-card h2">
+                <h2 className="post-card-title">
                   <Link href={`/blog/${post.slug}`}>
                     {post.title}
                   </Link>
                 </h2>
 
                 <p className="post-description">
-                  {post.excerpt}
+                  {post.description}
                 </p>
 
                 <div className="post-meta">
@@ -70,8 +79,8 @@ export default function Blog({ allPosts }) {
 
           {/* CTA Banner */}
           <div className="cta-banner">
-            <h2 className="cta-banner h2">Pronto para calcular?</h2>
-            <p className="cta-banner p">
+            <h2 className="cta-banner-title">Pronto para calcular?</h2>
+            <p className="cta-banner-desc">
               Use nossa calculadora gratuita para comparar CLT vs PJ em segundos
             </p>
             <Link

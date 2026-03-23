@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
-import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, Users, ArrowRight, Briefcase, Info } from 'lucide-react';
+import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, ArrowRight, Briefcase, Info } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import AdSense from '../components/AdSense';
+import { SITE_URL } from '../lib/config';
 
 export default function Home() {
   const [salary, setSalary] = useState('8000');
@@ -15,26 +17,35 @@ export default function Home() {
   const [pjRate, setPjRate] = useState('100');
   const [hoursPerMonth, setHoursPerMonth] = useState('160');
   const [showResults, setShowResults] = useState(false);
-  const [totalUsers, setTotalUsers] = useState(12847);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTotalUsers(prev => prev + Math.floor(Math.random() * 3));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const calculateINSS = (sal) => {
+    const bands = [
+      { limit: 1518.00, rate: 0.075 },
+      { limit: 2793.88, rate: 0.09 },
+      { limit: 4190.83, rate: 0.12 },
+      { limit: 8157.41, rate: 0.14 },
+    ];
+    let inss = 0;
+    let prev = 0;
+    for (const { limit, rate } of bands) {
+      if (sal <= prev) break;
+      inss += (Math.min(sal, limit) - prev) * rate;
+      prev = limit;
+    }
+    return inss;
+  };
 
   const calculateCLT = () => {
     const sal = parseFloat(salary) || 0;
     const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
 
-    const inss = Math.min(sal * 0.14, 908.85);
+    const inss = calculateINSS(sal);
     const irpfBase = sal - inss;
     let irpf = 0;
-    if (irpfBase > 4664.68) irpf = irpfBase * 0.275 - 869.36;
-    else if (irpfBase > 3751.05) irpf = irpfBase * 0.225 - 636.13;
-    else if (irpfBase > 2826.65) irpf = irpfBase * 0.15 - 354.80;
-    else if (irpfBase > 2112.00) irpf = irpfBase * 0.075 - 158.40;
+    if (irpfBase > 4664.68) irpf = irpfBase * 0.275 - 896.00;
+    else if (irpfBase > 3751.05) irpf = irpfBase * 0.225 - 662.77;
+    else if (irpfBase > 2826.65) irpf = irpfBase * 0.15 - 381.44;
+    else if (irpfBase > 2259.20) irpf = irpfBase * 0.075 - 169.44;
 
     const netSalary = sal - inss - Math.max(irpf, 0);
     const fgts = sal * 0.08;
@@ -59,30 +70,25 @@ export default function Home() {
     const hours = parseFloat(hoursPerMonth) || 0;
     const monthlyGross = rate * hours;
 
-    const issqn = monthlyGross * 0.05;
-    const inss = 1518.00;
-    const irpj = monthlyGross * 0.048;
-    const csll = monthlyGross * 0.0288;
-    const pisCofins = monthlyGross * 0.0365;
+    // DAS Simples Nacional Anexo III (6%) — cobre IRPJ, CSLL, PIS, COFINS, CPP e ISS
+    const simplesDAS = monthlyGross * 0.06;
+    // INSS sobre pró-labore mínimo (salário mínimo × 11% — parcela do segurado)
+    const inssProLabore = Math.min(monthlyGross, 1518.00) * 0.11;
 
-    const totalTaxes = issqn + inss + irpj + csll + pisCofins;
+    const totalTaxes = simplesDAS + inssProLabore;
     const netMonthly = monthlyGross - totalTaxes;
 
     return {
       gross: monthlyGross,
       net: netMonthly,
-      issqn,
-      inss,
-      irpj,
-      csll,
-      pisCofins,
+      simplesDAS,
+      inssProLabore,
       totalTaxes
     };
   };
 
   const handleCalculate = () => {
     setShowResults(true);
-    setTotalUsers(prev => prev + 1);
   };
 
   const clt = calculateCLT();
@@ -101,23 +107,22 @@ export default function Home() {
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content="Calculadora CLT x PJ 2026 | Veja Qual Compensa Mais" />
         <meta property="og:description" content="Compare seu salário CLT com PJ em segundos. Cálculo completo com TODOS os impostos e benefícios." />
         <meta property="og:site_name" content="CLT ou PJ" />
+        <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Calculadora CLT x PJ 2026" />
         <meta name="twitter:description" content="Descubra quanto você realmente ganha como CLT vs PJ" />
+        <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
 
         {/* Canonical */}
-        <link rel="canonical" href="https://calculadora-cltvspj.vercel.app" />
-
-        {/* Google AdSense Account */}
-        <meta name="google-adsense-account" content="ca-pub-2888261288759622" />
-
-        {/* Google AdSense */}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2888261288759622" crossOrigin="anonymous"></script>
+        <link rel="canonical" href={SITE_URL} />
       </Head>
 
       <div className="page-root">
@@ -388,16 +393,12 @@ export default function Home() {
                     <span className="font-semibold">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">(-) Simples Nacional</span>
-                    <span className="font-semibold text-red-600">-R$ {(pj.irpj + pj.csll + pj.pisCofins).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="text-gray-600">(-) DAS Simples Nacional (6%)</span>
+                    <span className="font-semibold text-red-600">-R$ {pj.simplesDAS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">(-) ISS (5%)</span>
-                    <span className="font-semibold text-red-600">-R$ {pj.issqn.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">(-) INSS PJ</span>
-                    <span className="font-semibold text-red-600">-R$ {pj.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="text-gray-600">(-) INSS Pró-labore (11%)</span>
+                    <span className="font-semibold text-red-600">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-3 bg-accent-50 rounded-lg px-3 mt-2">
                     <span className="font-bold text-gray-900">Total de Impostos</span>
