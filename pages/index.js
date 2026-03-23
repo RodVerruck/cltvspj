@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, Users, ArrowRight, Briefcase, Info } from 'lucide-react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Home() {
   const [salary, setSalary] = useState('8000');
@@ -118,65 +120,48 @@ export default function Home() {
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2888261288759622" crossOrigin="anonymous"></script>
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Calculator className="text-indigo-600" size={28} />
-              <h1 className="text-xl font-bold text-gray-900">CLT ou PJ?</h1>
-            </div>
-            <div className="flex items-center gap-6">
-              <a href="/blog" className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition">
-                Blog
-              </a>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Users size={16} />
-                <span>{totalUsers.toLocaleString('pt-BR')} cálculos hoje</span>
-              </div>
-            </div>
-          </div>
-        </header>
+      <div className="page-root">
+        <Header />
 
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 py-12 text-center">
-          <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+        <section className="max-w-5xl mx-auto px-4 py-12 text-center">
+          <div className="inline-flex items-center gap-2 bg-brand-50 text-brand-500 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <TrendingUp size={16} />
             Ferramenta #1 para comparar CLT e PJ no Brasil
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Descubra quanto você <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">realmente</span> ganha
+          <h2 className="font-serif text-4xl md:text-5xl font-normal text-gray-900 mb-4 tracking-tight">
+            Descubra quanto você <span className="text-brand-500">realmente</span> ganha
           </h2>
 
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-8 leading-relaxed">
             Compare seu salário CLT com uma proposta PJ em segundos. Cálculo completo com TODOS os impostos, benefícios e encargos.
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-center mb-12">
-            <div className="flex items-center gap-2 text-green-700 bg-green-50 px-4 py-2 rounded-lg">
-              <CheckCircle size={20} />
+          <div className="flex flex-wrap gap-3 justify-center mb-12">
+            <div className="flex items-center gap-2 text-green-700 bg-green-50 px-4 py-2 rounded-lg text-sm">
+              <CheckCircle size={16} />
               <span className="font-medium">100% Gratuito</span>
             </div>
-            <div className="flex items-center gap-2 text-blue-700 bg-blue-50 px-4 py-2 rounded-lg">
-              <CheckCircle size={20} />
+            <div className="flex items-center gap-2 text-brand-500 bg-brand-50 px-4 py-2 rounded-lg text-sm">
+              <CheckCircle size={16} />
               <span className="font-medium">Cálculo Preciso</span>
             </div>
-            <div className="flex items-center gap-2 text-purple-700 bg-purple-50 px-4 py-2 rounded-lg">
-              <CheckCircle size={20} />
+            <div className="flex items-center gap-2 text-brand-500 bg-brand-50 px-4 py-2 rounded-lg text-sm">
+              <CheckCircle size={16} />
               <span className="font-medium">Resultado Instantâneo</span>
             </div>
           </div>
         </section>
 
         {/* Calculator Section */}
-        <section className="max-w-7xl mx-auto px-4 pb-12">
+        <section className="max-w-5xl mx-auto px-4 pb-12">
           <div className="grid md:grid-cols-2 gap-6">
             {/* CLT Form */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-200">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-blue-100 rounded-xl">
-                  <Briefcase className="text-blue-600" size={24} />
+                <div className="p-3 bg-brand-50 rounded-xl">
+                  <Briefcase className="text-brand-500" size={24} />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Regime CLT</h3>
               </div>
@@ -232,10 +217,10 @@ export default function Home() {
             </div>
 
             {/* PJ Form */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-200">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-purple-100 rounded-xl">
-                  <DollarSign className="text-purple-600" size={24} />
+                <div className="p-3 bg-accent-50 rounded-xl">
+                  <DollarSign className="text-accent-400" size={24} />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Regime PJ</h3>
               </div>
@@ -257,7 +242,7 @@ export default function Home() {
                       type="number"
                       value={pjRate}
                       onChange={(e) => setPjRate(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition text-lg"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-accent-400 focus:outline-none transition text-lg"
                       placeholder="100"
                     />
                   </div>
@@ -277,14 +262,14 @@ export default function Home() {
                     type="number"
                     value={hoursPerMonth}
                     onChange={(e) => setHoursPerMonth(e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition text-lg"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-accent-400 focus:outline-none transition text-lg"
                     placeholder="160"
                   />
                 </div>
 
-                <div className="bg-purple-50 rounded-xl p-5">
+                <div className="bg-accent-50 rounded-xl p-5">
                   <h4 className="font-semibold text-gray-900 mb-2">Faturamento Mensal</h4>
-                  <p className="text-3xl font-bold text-purple-600">
+                  <p className="text-3xl font-bold text-accent-400">
                     R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
@@ -317,8 +302,8 @@ export default function Home() {
 
         {/* Results Section */}
         {showResults && (
-          <section className="max-w-7xl mx-auto px-4 pb-12">
-            <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl shadow-2xl p-8 md:p-12 text-white mb-8">
+          <section className="max-w-5xl mx-auto px-4 pb-12">
+            <div className="bg-brand-500 rounded-2xl shadow-lg p-8 md:p-12 text-white mb-8">
               <h3 className="text-3xl font-bold mb-6 text-center"> Seu Resultado</h3>
 
               <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -414,13 +399,13 @@ export default function Home() {
                     <span className="text-gray-600">(-) INSS PJ</span>
                     <span className="font-semibold text-red-600">-R$ {pj.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-3 bg-purple-50 rounded-lg px-3 mt-2">
+                  <div className="flex justify-between py-3 bg-accent-50 rounded-lg px-3 mt-2">
                     <span className="font-bold text-gray-900">Total de Impostos</span>
                     <span className="font-bold text-red-600">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-3 bg-purple-50 rounded-lg px-3">
+                  <div className="flex justify-between py-3 bg-accent-50 rounded-lg px-3">
                     <span className="font-bold text-gray-900">Valor Líquido Mensal</span>
-                    <span className="font-bold text-purple-600 text-lg">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="font-bold text-accent-400 text-lg">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
               </div>
@@ -445,35 +430,25 @@ export default function Home() {
         )}
 
         {/* Info Section */}
-        <section className="max-w-7xl mx-auto px-4 py-12 border-t border-gray-200">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">⚠️ Pontos Importantes</h3>
+        <section className="max-w-5xl mx-auto px-4 py-12 border-t border-gray-200">
+          <h3 className="font-serif text-2xl font-normal text-gray-900 mb-6 text-center">Pontos Importantes</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl p-6 shadow-md">
-              <h4 className="font-bold text-gray-900 mb-2">CLT tem estabilidade</h4>
-              <p className="text-sm text-gray-600">FGTS, férias remuneradas, 13º salário e direitos trabalhistas garantidos</p>
+            <div className="bg-white rounded-xl p-6 border border-gray-200">
+              <h4 className="font-semibold text-gray-900 mb-2">CLT tem estabilidade</h4>
+              <p className="text-sm text-gray-500 leading-relaxed">FGTS, férias remuneradas, 13º salário e direitos trabalhistas garantidos</p>
             </div>
-            <div className="bg-white rounded-xl p-6 shadow-md">
-              <h4 className="font-bold text-gray-900 mb-2">PJ tem mais lucro líquido</h4>
-              <p className="text-sm text-gray-600">Mas você precisa pagar seu próprio plano de saúde, aposentadoria e não tem férias pagas</p>
+            <div className="bg-white rounded-xl p-6 border border-gray-200">
+              <h4 className="font-semibold text-gray-900 mb-2">PJ tem mais lucro líquido</h4>
+              <p className="text-sm text-gray-500 leading-relaxed">Mas você precisa pagar seu próprio plano de saúde, aposentadoria e não tem férias pagas</p>
             </div>
-            <div className="bg-white rounded-xl p-6 shadow-md">
-              <h4 className="font-bold text-gray-900 mb-2">Considere sua situação</h4>
-              <p className="text-sm text-gray-600">Avalie segurança x ganhos, momento de vida e planejamento financeiro</p>
+            <div className="bg-white rounded-xl p-6 border border-gray-200">
+              <h4 className="font-semibold text-gray-900 mb-2">Considere sua situação</h4>
+              <p className="text-sm text-gray-500 leading-relaxed">Avalie segurança x ganhos, momento de vida e planejamento financeiro</p>
             </div>
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="bg-gray-900 text-white py-8 mt-12">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <p className="text-gray-400 text-sm">
-              &copy; 2026 CLT ou PJ - Calculadora gratuita | Dados atualizados conforme legislação brasileira 2026
-            </p>
-            <p className="text-gray-500 text-xs mt-2">
-              Esta é uma ferramenta de simulação. Consulte um contador para decisões financeiras importantes.
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

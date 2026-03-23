@@ -3,8 +3,6 @@
    Paleta: Azul (#1e40af) + Instrument Serif + DM Sans
    ════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
-
 /* ── Tokens ── */
 :root {
   --ink: #0f172a;
@@ -42,14 +40,6 @@
   --radius: 10px;
   --radius-lg: 14px;
   --radius-xl: 18px;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 /* ════════════════════════════════════════
@@ -316,11 +306,28 @@ body {
   z-index: 90;
   background: rgba(248, 250, 252, 0.94);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 0.5px solid var(--rule);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 24px;
+  padding: 14px 24px;
+  max-width: 100%;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.header-logo svg {
+  color: var(--blue);
 }
 
 .header-back {
@@ -331,10 +338,30 @@ body {
   color: var(--ink3);
   text-decoration: none;
   transition: color 0.15s;
+  font-family: var(--sans);
 }
 
 .header-back:hover {
   color: var(--ink);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-nav-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink3);
+  text-decoration: none;
+  transition: color 0.15s;
+  font-family: var(--sans);
+}
+
+.header-nav-link:hover {
+  color: var(--blue);
 }
 
 .header-brand {
@@ -352,14 +379,85 @@ body {
   font-weight: 500;
   background: var(--blue);
   color: white;
-  padding: 7px 13px;
+  padding: 8px 16px;
   border-radius: 7px;
   text-decoration: none;
   transition: background 0.15s;
+  font-family: var(--sans);
 }
 
 .header-cta:hover {
   background: var(--blue-hover);
+}
+
+/* ── Footer ── */
+.site-footer {
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 48px;
+  font-family: var(--sans);
+}
+
+.footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 32px;
+}
+
+.footer-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-logo {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: white;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+.footer-bottom {
+  text-align: center;
+}
+
+.footer-bottom p {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+}
+
+.footer-disclaimer {
+  margin-top: 6px;
+  font-size: 11px !important;
+  color: rgba(255, 255, 255, 0.25) !important;
 }
 
 .page-root {

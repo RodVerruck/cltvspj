@@ -2,6 +2,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { getAllPosts } from '../../lib/posts';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 export default function Blog({ allPosts }) {
   return (
@@ -14,14 +16,7 @@ export default function Blog({ allPosts }) {
       </Head>
 
       <div className="page-root">
-        {/* Header */}
-        <header className="site-header">
-          <Link href="/" className="header-back">
-            <span>← Calculadora</span>
-          </Link>
-          <span className="header-brand">CLT ou PJ?</span>
-          <div style={{ width: '96px' }}></div>
-        </header>
+        <Header />
 
         {/* Blog Container */}
         <div className="blog-container">
@@ -87,6 +82,7 @@ export default function Blog({ allPosts }) {
             </Link>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );

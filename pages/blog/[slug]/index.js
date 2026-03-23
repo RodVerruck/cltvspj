@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { getAllPosts, getPostBySlug } from '../../../lib/posts';
 import { ArrowLeft, Calculator, List, ChevronRight } from 'lucide-react';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 
 /* ─────────────────────────────────────────
    COMPONENTE: TL;DR Hero Card
@@ -617,10 +619,6 @@ export default function Post({ post, relatedPosts }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.description} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-
       </Head>
 
       <div className="page-root">
@@ -629,17 +627,7 @@ export default function Post({ post, relatedPosts }) {
           <div className="progress-fill" style={{ width: `${readingProgress}%` }} />
         </div>
 
-        {/* Header */}
-        <header className="site-header">
-          <Link href="/blog" className="header-back">
-            <ArrowLeft size={16} />
-            Voltar ao Blog
-          </Link>
-          <Link href="/" className="header-cta">
-            <Calculator size={14} />
-            Calculadora
-          </Link>
-        </header>
+        <Header />
 
         <div className="post-layout">
 
@@ -911,6 +899,7 @@ export default function Post({ post, relatedPosts }) {
 
           </main>
         </div>
+        <Footer />
       </div>
     </>
   );
