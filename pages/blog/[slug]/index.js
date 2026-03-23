@@ -717,7 +717,7 @@ export default function Post({ post, relatedPosts }) {
             <div className="bottom-cta">
               <div>
                 <div className="bottom-cta-eyebrow">Calculadora gratuita</div>
-                <div className="bottom-cta-title">Descubra seu anexo<br />e sua economia anual</div>
+                <div className="bottom-cta-title">Compare CLT vs PJ<br />e descubra o que vale mais</div>
               </div>
               <Link href="/" className="btn-white">
                 Calcular agora
