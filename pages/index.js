@@ -262,7 +262,7 @@ export default function Home() {
                 <div className="bg-purple-50 rounded-xl p-5">
                   <h4 className="font-semibold text-gray-900 mb-2">Faturamento Mensal</h4>
                   <p className="text-3xl font-bold text-purple-600">
-                    R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
 
@@ -296,23 +296,23 @@ export default function Home() {
         {showResults && (
           <section className="max-w-7xl mx-auto px-4 pb-12">
             <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl shadow-2xl p-8 md:p-12 text-white mb-8">
-              <h3 className="text-3xl font-bold mb-6 text-center">📊 Seu Resultado</h3>
+              <h3 className="text-3xl font-bold mb-6 text-center"> Seu Resultado</h3>
 
               <div className="grid md:grid-cols-3 gap-6 mb-8">
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
                   <p className="text-white/80 text-sm font-medium mb-2">CLT Líquido + Benefícios</p>
-                  <p className="text-3xl font-bold">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                  <p className="text-3xl font-bold">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
 
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
                   <p className="text-white/80 text-sm font-medium mb-2">PJ Líquido Mensal</p>
-                  <p className="text-3xl font-bold">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                  <p className="text-3xl font-bold">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
 
                 <div className={`backdrop-blur-lg rounded-2xl p-6 border ${difference >= 0 ? 'bg-green-500/20 border-green-300/30' : 'bg-red-500/20 border-red-300/30'}`}>
                   <p className="text-white/80 text-sm font-medium mb-2">Diferença</p>
                   <p className="text-3xl font-bold">
-                    {difference >= 0 ? '+' : ''}R$ {Math.abs(difference).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    {difference >= 0 ? '+' : ''}R$ {Math.abs(difference).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                   <p className="text-sm mt-1">({percentDiff}%)</p>
                 </div>
@@ -321,13 +321,13 @@ export default function Home() {
               <div className={`text-center p-6 rounded-2xl ${difference >= 0 ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
                 <p className="text-2xl font-bold mb-2">
                   {difference >= 0
-                    ? '🎉 Como PJ você ganha MAIS!'
-                    : '⚠️ CLT é mais vantajoso neste caso'}
+                    ? ' Como PJ você ganha MAIS!'
+                    : ' CLT é mais vantajoso neste caso'}
                 </p>
                 <p className="text-white/90">
                   {difference >= 0
-                    ? `Você teria R$ ${Math.abs(difference).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} a mais por mês como PJ`
-                    : `Você perderia R$ ${Math.abs(difference).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} por mês como PJ`}
+                    ? `Você teria R$ ${Math.abs(difference).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} a mais por mês como PJ`
+                    : `Você perderia R$ ${Math.abs(difference).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} por mês como PJ`}
                 </p>
               </div>
             </div>
@@ -339,35 +339,35 @@ export default function Home() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">Salário Bruto</span>
-                    <span className="font-semibold">R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold">R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">(-) INSS</span>
-                    <span className="font-semibold text-red-600">-R$ {clt.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-red-600">-R$ {clt.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">(-) IRPF</span>
-                    <span className="font-semibold text-red-600">-R$ {clt.irpf.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-red-600">-R$ {clt.irpf.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">(+) Benefícios</span>
-                    <span className="font-semibold text-green-600">+R$ {clt.benefits.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-green-600">+R$ {clt.benefits.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">FGTS (8%)</span>
-                    <span className="font-semibold text-blue-600">R$ {clt.fgts.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-blue-600">R$ {clt.fgts.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">13º Salário (mensal)</span>
-                    <span className="font-semibold text-blue-600">R$ {clt.decimoTerceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-blue-600">R$ {clt.decimoTerceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">Férias (mensal)</span>
-                    <span className="font-semibold text-blue-600">R$ {clt.ferias.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-blue-600">R$ {clt.ferias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-3 bg-blue-50 rounded-lg px-3 mt-2">
                     <span className="font-bold text-gray-900">Valor Líquido Total</span>
-                    <span className="font-bold text-blue-600 text-lg">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-bold text-blue-600 text-lg">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
               </div>
@@ -377,27 +377,27 @@ export default function Home() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">Faturamento Bruto</span>
-                    <span className="font-semibold">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">(-) Simples Nacional</span>
-                    <span className="font-semibold text-red-600">-R$ {(pj.irpj + pj.csll + pj.pisCofins).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-red-600">-R$ {(pj.irpj + pj.csll + pj.pisCofins).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">(-) ISS (5%)</span>
-                    <span className="font-semibold text-red-600">-R$ {pj.issqn.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-red-600">-R$ {pj.issqn.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">(-) INSS PJ</span>
-                    <span className="font-semibold text-red-600">-R$ {pj.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-red-600">-R$ {pj.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-3 bg-purple-50 rounded-lg px-3 mt-2">
                     <span className="font-bold text-gray-900">Total de Impostos</span>
-                    <span className="font-bold text-red-600">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-bold text-red-600">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-3 bg-purple-50 rounded-lg px-3">
                     <span className="font-bold text-gray-900">Valor Líquido Mensal</span>
-                    <span className="font-bold text-purple-600 text-lg">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <span className="font-bold text-purple-600 text-lg">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
               </div>
@@ -405,7 +405,7 @@ export default function Home() {
 
             {/* CTA Section */}
             <div className="mt-12 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8 text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">💰 Quer abrir sua PJ com desconto?</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4"> Quer abrir sua PJ com desconto?</h3>
               <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
                 Parceiros exclusivos com condições especiais para quem usa nossa calculadora
               </p>
