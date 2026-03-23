@@ -256,6 +256,16 @@ export default function SimplesAnexoEscolherContent() {
 
       <div className="section-divider" />
 
+      <section id="introducao" className="content-section">
+        <p className="text-lg text-muted-foreground mb-6">
+          Sabemos que a sopa de letrinhas da Receita Federal pode assustar, mas vamos
+          resolver isso juntos de forma simples. O Fator R é o conceito central que
+          define o seu anexo, e entender ele pode economizar milhares de reais por ano.
+        </p>
+      </section>
+
+      <div className="section-divider" />
+
       <section id="passo-a-passo" className="content-section">
         <h2 className="section-h2">Passo a passo: descubra seu anexo em 3 perguntas</h2>
         <div className="steps-list">

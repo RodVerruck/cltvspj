@@ -685,7 +685,7 @@ export default function Post({ post, relatedPosts }) {
               <span className="meta-dot" />
               <span>{post.readingTime} de leitura</span>
               <span className="meta-dot" />
-              <span>Atualizado {post.date ? new Date(post.date).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }) : 'jan 2025'}</span>
+              <span>Atualizado {post.date ? new Date(post.date).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }) : 'jan 2026'}</span>
             </div>
 
             {/* Sumário inline mobile */}
