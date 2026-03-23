@@ -160,6 +160,22 @@ export default function SimplesAnexoContent() {
             </div>
           </div>
         </div>
+
+        <div style={{ padding: '16px 20px 0', background: 'var(--white)' }}>
+          <p style={{
+            fontSize: 13,
+            color: 'var(--ink3)',
+            lineHeight: 1.6,
+            margin: 0,
+            fontStyle: 'italic'
+          }}>
+            <strong>Por que isso existe?</strong> O governo criou o Fator R para incentivar
+            empresas de serviços de alto valor intelectual a pagarem salários (pró-labore)
+            e gerarem empregos. Se você 'valoriza' sua equipe (ou a si mesmo) pagando um
+            pró-labore de pelo menos 28%, você é 'premiado' com a alíquota menor do Anexo III.
+          </p>
+        </div>
+
         <div style={{ padding: '14px 20px', background: 'var(--blue-light)', borderTop: '0.5px solid var(--blue-border)' }}>
           <p style={{ fontSize: 13, color: 'var(--blue-text)', lineHeight: 1.6, margin: 0 }}>
             <strong>Exemplo prático:</strong> faturamento R$ 15.000 · pró-labore R$ 4.500 (30%) → Fator R = 30% → <strong>Anexo III (6%)</strong>

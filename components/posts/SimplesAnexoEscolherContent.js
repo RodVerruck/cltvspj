@@ -322,6 +322,22 @@ export default function SimplesAnexoEscolherContent() {
         <h2 className="section-h2">O que é o Fator R?</h2>
         <p className="section-lead">O conceito central que define o seu anexo — e consequentemente sua carga tributária.</p>
         <FatorRCard />
+        <div className="context-box" style={{
+          background: 'var(--blue-light)',
+          border: '0.5px solid var(--blue-border)',
+          borderLeft: '3px solid var(--blue)',
+          borderRadius: '0 10px 10px 0',
+          padding: '16px 20px',
+          margin: '20px 0',
+          fontSize: 14,
+          lineHeight: 1.6,
+          color: 'var(--blue-text)'
+        }}>
+          <strong>Por que isso existe?</strong> O governo criou o Fator R para incentivar
+          empresas de serviços de alto valor intelectual a pagarem salários (pró-labore)
+          e gerarem empregos. Se você 'valoriza' sua equipe (ou a si mesmo) pagando um
+          pró-labore de pelo menos 28%, você é 'premiado' com a alíquota menor do Anexo III.
+        </div>
       </section>
 
       <div className="section-divider" />
