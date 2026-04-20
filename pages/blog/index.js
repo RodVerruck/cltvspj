@@ -42,36 +42,23 @@ export default function Blog({ allPosts }) {
                   href={`/blog/${post.slug}`}
                   className={`group block ${index === 0 ? 'md:col-span-2 lg:col-span-1' : ''}`}
                 >
-                  <div
-                    className={`relative w-full mb-4 rounded overflow-hidden ${index === 0 ? 'h-64 md:h-80' : 'h-48'}`}
-                    style={{
-                      background: index % 3 === 0
-                        ? 'linear-gradient(135deg, #0c4a3e 0%, #1a1614 100%)'
-                        : index % 3 === 1
-                          ? 'linear-gradient(135deg, #c2410c 0%, #1a1614 100%)'
-                          : '#ebe5d6',
-                    }}
-                  >
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span
-                        className={`font-display italic text-[120px] leading-none ${index % 3 === 2 ? 'text-ink/20' : 'text-paper/25'}`}
-                      >
-                        {['§', 'R$', '%'][index % 3]}
-                      </span>
-                    </div>
+                  <div className="w-full h-48 rounded mb-4 relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-money to-ink">
+                    <span className="font-display text-9xl text-white/20 italic leading-none">
+                      {['§', 'R$', '%'][index % 3]}
+                    </span>
                   </div>
 
-                  <div className="flex gap-3 font-mono text-xs text-ink-muted mb-2.5 tracking-wide">
+                  <div className="font-mono text-xs uppercase text-ink-muted tracking-widest mb-2">
                     <span>{post.readingTime || '5 min'}</span>
-                    <span className="text-ink-fade">·</span>
+                    <span className="text-ink-fade mx-2">·</span>
                     <span>{new Date(post.date).toLocaleDateString('pt-BR')}</span>
                   </div>
 
-                  <h3 className={`font-display tracking-editorial text-ink group-hover:text-money transition-colors mb-2.5 leading-tight ${index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>
+                  <h3 className="font-display text-2xl leading-tight text-ink hover:text-money transition-colors mb-2">
                     {post.title}
                   </h3>
 
-                  <p className={`text-ink-muted leading-relaxed ${index === 0 ? 'text-base' : 'text-sm'}`}>
+                  <p className="text-sm text-ink-muted leading-relaxed">
                     {post.description}
                   </p>
                 </Link>
