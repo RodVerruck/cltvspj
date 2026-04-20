@@ -650,7 +650,7 @@ export default function Post({ post, relatedPosts }) {
 
         {/* POST BODY */}
         <div className="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-16">
-          <div className="post-content max-w-[680px] mx-auto first-letter:font-display first-letter:text-[5.5rem] first-letter:text-money first-letter:float-left first-letter:leading-[0.8] first-letter:mr-2 first-letter:mt-1 first-letter:[-webkit-text-stroke:1px_currentColor]">
+          <div className="post-content max-w-[680px] mx-auto first-letter:font-display first-letter:text-[6rem] first-letter:text-money first-letter:float-left first-letter:leading-[0.65] first-letter:mr-3 first-letter:mt-1 first-letter:mb-[-10px] first-letter:[-webkit-text-stroke:1px_currentColor]">
             {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
               <SimplesAnexoEscolherContent />
             ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (

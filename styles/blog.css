@@ -122,20 +122,28 @@
 }
 
 .post-content ul {
-  list-style-type: disc;
-  list-style-position: outside;
+  list-style-type: none;
   padding-left: 1.5rem;
-  margin: 1.5rem 0;
-}
-
-.post-content ul::marker {
-  color: var(--money);
+  margin: 2rem 0;
 }
 
 .post-content ul li {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   line-height: 1.7;
   color: var(--ink);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.post-content ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  background: var(--money);
+  border-radius: 50%;
 }
 
 .post-content li {
@@ -156,16 +164,15 @@
 
 /* BLOCKQUOTE */
 .post-content blockquote {
-  border-left: 4px solid var(--money);
+  border-left: 2px solid var(--money);
   padding: 1.5rem 2rem;
-  margin: 2rem 0;
-  background: rgba(12, 74, 62, 0.08);
-  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 2.5rem 0;
+  background: rgba(12, 74, 62, 0.15);
+  border-radius: 0 8px 8px 0;
 }
 
 .post-content blockquote p {
   font-family: var(--f-display);
-  font-style: italic;
   font-size: 1.35rem;
   color: var(--ink);
   margin-bottom: 0;
