@@ -156,48 +156,40 @@ export default function Home() {
       <div className="page-root">
         <Header />
 
-        {/* Banner Lei 15.270/2025 */}
-        <div className="max-w-4xl mx-auto mt-4 px-4">
-          <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
-            <CheckCircle className="text-green-600" size={20} />
-            <div>
-              <p className="text-sm font-semibold text-green-900">
-                Atualizado para a Lei 15.270/2025
-              </p>
-              <p className="text-xs text-green-700">
-                Nova isenção de IR até R$ 5.000/mês e redutor progressivo até R$ 7.350 — vigência 2026.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Hero Section */}
-        <section className="max-w-5xl mx-auto px-4 py-12 text-center">
-          <div className="inline-flex items-center gap-2 bg-brand-50 text-brand-500 px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <TrendingUp size={16} />
-            Ferramenta #1 para comparar CLT e PJ no Brasil
-          </div>
-
-          <h2 className="font-serif text-4xl md:text-5xl font-normal text-gray-900 mb-4 tracking-tight">
-            Descubra quanto você <span className="text-brand-500">realmente</span> ganha
-          </h2>
-
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Compare seu salário CLT com uma proposta PJ em segundos. Cálculo completo com TODOS os impostos, benefícios e encargos.
-          </p>
-
-          <div className="flex flex-wrap gap-3 justify-center mb-12">
-            <div className="flex items-center gap-2 text-green-700 bg-green-50 px-4 py-2 rounded-lg text-sm">
-              <CheckCircle size={16} />
-              <span className="font-medium">100% Gratuito</span>
+        <section className="border-b border-rule py-16 md:py-24">
+          <div className="max-w-6xl mx-auto px-6 md:px-8">
+            <div className="eyebrow mb-7">
+              <span className="eyebrow-dot"></span>
+              <span>Atualizado · Lei 15.270/2025 vigente em 2026</span>
             </div>
-            <div className="flex items-center gap-2 text-brand-500 bg-brand-50 px-4 py-2 rounded-lg text-sm">
-              <CheckCircle size={16} />
-              <span className="font-medium">Cálculo Preciso</span>
-            </div>
-            <div className="flex items-center gap-2 text-brand-500 bg-brand-50 px-4 py-2 rounded-lg text-sm">
-              <CheckCircle size={16} />
-              <span className="font-medium">Resultado Instantâneo</span>
+
+            <h1 className="font-display text-display-lg tracking-editorial text-ink mb-8 max-w-4xl">
+              CLT <em className="italic text-money">ou</em> PJ.<br />
+              Descubra em 60 segundos.
+            </h1>
+
+            <p className="text-lg md:text-xl text-ink-muted leading-relaxed max-w-2xl mb-12">
+              A calculadora definitiva para comparar regimes - já com a nova isenção de IR até R$ 5.000, redutor progressivo e retenção de dividendos. Sem cadastro, sem enrolação.
+            </p>
+
+            <div className="flex flex-wrap gap-8 md:gap-10 pt-7 border-t border-rule">
+              <div>
+                <div className="font-display text-3xl text-ink leading-none mb-1">2026</div>
+                <div className="text-xs uppercase tracking-wider text-ink-muted">Tabela atualizada</div>
+              </div>
+              <div>
+                <div className="font-display text-3xl text-ink leading-none mb-1">R$ 5k</div>
+                <div className="text-xs uppercase tracking-wider text-ink-muted">Isenção total IR</div>
+              </div>
+              <div>
+                <div className="font-display text-3xl text-ink leading-none mb-1">3 min</div>
+                <div className="text-xs uppercase tracking-wider text-ink-muted">Para concluir</div>
+              </div>
+              <div>
+                <div className="font-display text-3xl text-ink leading-none mb-1">0</div>
+                <div className="text-xs uppercase tracking-wider text-ink-muted">Cadastros pedidos</div>
+              </div>
             </div>
           </div>
         </section>
