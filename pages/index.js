@@ -508,8 +508,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-        )
-  }
 
         {/* Info Section */}
         <section className="max-w-5xl mx-auto px-4 py-12 border-t border-gray-200">
