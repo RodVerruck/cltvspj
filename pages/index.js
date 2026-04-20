@@ -195,42 +195,40 @@ export default function Home() {
         </section>
 
         {/* Calculator Section */}
-        <section className="max-w-5xl mx-auto px-4 pb-12">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* CLT Form */}
-            <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-200">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-brand-50 rounded-xl">
-                  <Briefcase className="text-brand-500" size={24} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900">Regime CLT</h3>
-              </div>
+        <section id="calc" className="border-b border-rule py-16 md:py-24">
+          <div className="max-w-6xl mx-auto px-6 md:px-8">
+            <div className="section-head">
+              <span className="section-num">§ 01</span>
+              <h2 className="section-title">Insira seus números</h2>
+              <p className="section-desc">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
+            </div>
 
-              <div className="space-y-5">
-                <div>
-                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    Salário Bruto Mensal
-                    <div className="group relative">
-                      <Info size={14} className="text-gray-400 cursor-help" />
-                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg z-10">
-                        Valor do salário antes dos descontos de INSS e IRPF
-                      </div>
-                    </div>
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
+            <div className="grid md:grid-cols-2 gap-6 md:gap-12">
+              {/* BLOCO CLT */}
+              <div className="bg-white border border-rule rounded p-6 md:p-8 relative">
+                <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
+
+                <div className="flex items-baseline justify-between mb-6">
+                  <h3 className="font-display text-2xl text-ink">Proposta CLT</h3>
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-ink-muted">Regime atual</span>
+                </div>
+
+                <div className="mb-5">
+                  <label className="field-label">Salário bruto mensal</label>
+                  <div className="input-row">
+                    <span className="input-prefix">R$</span>
                     <input
-                      type="number"
+                      type="text"
                       value={salary}
                       onChange={(e) => setSalary(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition text-lg"
-                      placeholder="8000"
+                      className="editorial-input"
                     />
+                    <span className="input-suffix">/mês</span>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-5">
-                  <h4 className="font-semibold text-gray-900 mb-4">Benefícios Mensais</h4>
+                <div className="bg-paper-dark rounded p-5 mb-5">
+                  <h4 className="font-semibold text-ink mb-4">Benefícios Mensais</h4>
                   <div className="space-y-3">
                     {[
                       { key: 'vr', label: 'Vale Refeição' },
@@ -239,14 +237,14 @@ export default function Home() {
                       { key: 'seguroVida', label: 'Seguro de Vida' }
                     ].map(({ key, label }) => (
                       <div key={key}>
-                        <label className="block text-sm text-gray-600 mb-1">{label}</label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">R$</span>
+                        <label className="field-label">{label}</label>
+                        <div className="input-row">
+                          <span className="input-prefix">R$</span>
                           <input
-                            type="number"
+                            type="text"
                             value={benefits[key]}
                             onChange={(e) => setBenefits({ ...benefits, [key]: e.target.value })}
-                            className="w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition"
+                            className="editorial-input"
                           />
                         </div>
                       </div>
@@ -254,89 +252,74 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* PJ Form */}
-            <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-200">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-accent-50 rounded-xl">
-                  <DollarSign className="text-accent-400" size={24} />
+              {/* BLOCO PJ */}
+              <div className="bg-white border border-rule rounded p-6 md:p-8 relative">
+                <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
+
+                <div className="flex items-baseline justify-between mb-6">
+                  <h3 className="font-display text-2xl text-ink">Proposta PJ</h3>
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-ink-muted">Alternativa</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Regime PJ</h3>
-              </div>
 
-              <div className="space-y-5">
-                <div>
-                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    Valor da Hora (PJ)
-                    <div className="group relative">
-                      <Info size={14} className="text-gray-400 cursor-help" />
-                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg z-10">
-                        Quanto você cobra por hora de trabalho como PJ
-                      </div>
-                    </div>
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
+                <div className="mb-5">
+                  <label className="field-label">Valor da hora (PJ)</label>
+                  <div className="input-row">
+                    <span className="input-prefix">R$</span>
                     <input
-                      type="number"
+                      type="text"
                       value={pjRate}
                       onChange={(e) => setPjRate(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-accent-400 focus:outline-none transition text-lg"
-                      placeholder="100"
+                      className="editorial-input"
                     />
+                    <span className="input-suffix">/hora</span>
                   </div>
                 </div>
 
-                <div>
-                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    Horas Trabalhadas/Mês
-                    <div className="group relative">
-                      <Info size={14} className="text-gray-400 cursor-help" />
-                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg z-10">
-                        Total de horas que você trabalha por mês (geralmente 160h = 8h/dia × 20 dias)
-                      </div>
-                    </div>
-                  </label>
-                  <input
-                    type="number"
-                    value={hoursPerMonth}
-                    onChange={(e) => setHoursPerMonth(e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-accent-400 focus:outline-none transition text-lg"
-                    placeholder="160"
-                  />
+                <div className="mb-5">
+                  <label className="field-label">Horas trabalhadas/mês</label>
+                  <div className="input-row">
+                    <input
+                      type="text"
+                      value={hoursPerMonth}
+                      onChange={(e) => setHoursPerMonth(e.target.value)}
+                      className="editorial-input"
+                    />
+                    <span className="input-suffix">horas</span>
+                  </div>
                 </div>
 
-                <div className="bg-accent-50 rounded-xl p-5">
-                  <h4 className="font-semibold text-gray-900 mb-2">Faturamento Mensal</h4>
-                  <p className="text-3xl font-bold text-accent-400">
-                    R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                <div className="bg-money-light rounded p-5 mb-5">
+                  <h4 className="font-semibold text-ink mb-2">Faturamento Mensal</h4>
+                  <p className="font-display text-3xl text-money">
+                    R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </p>
                 </div>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <div className="bg-hot-light border border-hot rounded p-4">
                   <div className="flex gap-2">
-                    <AlertCircle className="text-amber-600 flex-shrink-0 mt-0.5" size={20} />
+                    <AlertCircle className="text-hot flex-shrink-0 mt-0.5" size={20} />
                     <div>
-                      <p className="text-sm text-amber-900 font-medium">Simples Nacional</p>
-                      <p className="text-xs text-amber-700 mt-1">Cálculo baseado no Anexo III (Alíquota 6%)</p>
+                      <p className="text-sm text-hot font-medium">Simples Nacional</p>
+                      <p className="text-xs text-hot/80 mt-1">Cálculo baseado no Anexo III (Alíquota 6%)</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Calculate Button */}
-          <div className="text-center mt-8">
-            <button
-              onClick={handleCalculate}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white px-12 py-4 rounded-xl font-bold text-lg shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transform hover:scale-105 transition"
-            >
-              <Calculator size={24} />
-              Calcular Agora
-              <ArrowRight size={20} />
-            </button>
+            <div className="mt-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <p className="font-display italic text-ink-muted text-base max-w-sm leading-snug">
+                "Não é sobre qual paga mais, é sobre qual faz sentido pra tua vida."
+              </p>
+              <button
+                onClick={handleCalculate}
+                className="btn-money"
+              >
+                Calcular comparativo
+                <span>×</span>
+              </button>
+            </div>
           </div>
         </section>
 
