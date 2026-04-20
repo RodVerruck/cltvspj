@@ -628,7 +628,7 @@ export default function Post({ post, relatedPosts }) {
               <span>{post.readingTime || '5 min'}</span>
             </div>
 
-            <h1 className="font-display text-[clamp(40px,5vw,72px)] leading-[0.95] tracking-[-0.03em] text-ink[-webkit-text-stroke:0.5px_currentColor] mb-6">
+            <h1 className="font-display text-[clamp(40px,5vw,72px)] leading-[0.95] tracking-[-0.03em] text-ink [-webkit-text-stroke:0.5px_currentColor] [text-shadow:0_0_1px_currentColor] mb-6">
               {post.title}
             </h1>
 
@@ -650,7 +650,7 @@ export default function Post({ post, relatedPosts }) {
 
         {/* POST BODY */}
         <div className="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-16">
-          <div className="post-content max-w-[680px] mx-auto">
+          <div className="post-content max-w-[680px] mx-auto first-letter:font-display first-letter:text-[5.5rem] first-letter:text-money first-letter:float-left first-letter:leading-[0.8] first-letter:mr-2 first-letter:mt-1 first-letter:[-webkit-text-stroke:1px_currentColor]">
             {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
               <SimplesAnexoEscolherContent />
             ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
