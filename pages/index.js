@@ -156,6 +156,21 @@ export default function Home() {
       <div className="page-root">
         <Header />
 
+        {/* Banner Lei 15.270/2025 */}
+        <div className="max-w-4xl mx-auto mt-4 px-4">
+          <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+            <CheckCircle className="text-green-600" size={20} />
+            <div>
+              <p className="text-sm font-semibold text-green-900">
+                Atualizado para a Lei 15.270/2025
+              </p>
+              <p className="text-xs text-green-700">
+                Nova isenção de IR até R$ 5.000/mês e redutor progressivo até R$ 7.350 — vigência 2026.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className="max-w-5xl mx-auto px-4 py-12 text-center">
           <div className="inline-flex items-center gap-2 bg-brand-50 text-brand-500 px-4 py-2 rounded-full text-sm font-medium mb-6">
