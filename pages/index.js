@@ -508,20 +508,23 @@ export default function Home() {
                 )}
 
                 {/* CTA Section */}
-                <div className="mt-12 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8 text-center">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4"> Quer abrir sua PJ com desconto?</h3>
-                  <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-                    Parceiros exclusivos com condições especiais para quem usa nossa calculadora
-                  </p>
-                  <div className="flex flex-wrap gap-4 justify-center">
-                    <a href="#" className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition shadow-lg">
-                      Abrir Conta PJ com Cashback
-                    </a>
-                    <a href="#" className="bg-white text-gray-900 border-2 border-gray-300 px-8 py-3 rounded-xl font-bold hover:bg-gray-50 transition">
-                      Falar com Contador
-                    </a>
+                <div className="mt-12">
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8 text-center">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4"> Quer abrir sua PJ com desconto?</h3>
+                    <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
+                      Parceiros exclusivos com condições especiais para quem usa nossa calculadora
+                    </p>
+                    <div className="flex flex-wrap gap-4 justify-center">
+                      <a href="#" className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition shadow-lg">
+                        Abrir Conta PJ com Cashback
+                      </a>
+                      <a href="#" className="bg-white text-gray-900 border-2 border-gray-300 px-8 py-3 rounded-xl font-bold hover:bg-gray-50 transition">
+                        Falar com Contador
+                      </a>
+                    </div>
                   </div>
                 </div>
+              </div>
             </section>
           )
         }
@@ -548,5 +551,5 @@ export default function Home() {
         <Footer />
       </div >
     </>
-  );
+  )
 }
