@@ -8,37 +8,32 @@ export default function AffiliateCTA({
   const isCompact = variant === 'compact';
 
   return (
-    <div
-      className={`
-        my-8 border-l-4 border-money bg-paper-dark px-6 py-5
-        ${isCompact ? 'flex items-center gap-6' : ''}
-      `}
-    >
+    <div className="bg-money text-paper p-8 md:p-10 rounded-lg my-12 relative overflow-hidden">
       <div className="flex-1">
-        <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-2">
-          Recomendação editorial
-        </div>
-        <h4 className={`font-display text-ink leading-tight ${isCompact ? 'text-xl' : 'text-2xl'} mb-2`}>
+        <span className="font-mono text-xs text-paper/60 uppercase tracking-widest mb-4 block">
+          Recomendação Editorial
+        </span>
+        <h4 className={`font-display text-paper leading-tight ${isCompact ? 'text-xl' : 'text-3xl md:text-4xl'} mb-4`}>
           {title}
         </h4>
         {!isCompact && description && (
-          <p className="text-sm text-ink-muted leading-relaxed mb-4 max-w-2xl">
+          <p className="text-paper/80 text-[15px] leading-relaxed mb-8 max-w-2xl">
             {description}
           </p>
         )}
       </div>
-      <div className={isCompact ? 'flex-shrink-0' : ''}>
+      <div>
         <a
           href={`/go/${partner}`}
           rel="sponsored nofollow"
-          className="inline-flex items-center gap-2 bg-ink hover:bg-money text-paper px-5 py-2.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
+          className="bg-paper text-money px-6 py-3.5 font-medium rounded transition-transform hover:-translate-y-px inline-flex items-center gap-2"
         >
           {buttonText}
-          <span>×</span>
+          <span>→</span>
         </a>
       </div>
       {!isCompact && (
-        <p className="text-[11px] text-ink-fade mt-3 italic">
+        <p className="text-[11px] text-paper/50 mt-4 italic">
           Link de parceria. Não muda o preço pra você.
         </p>
       )}
