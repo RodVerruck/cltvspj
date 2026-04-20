@@ -5,6 +5,8 @@ import { getAllPosts, getPostBySlug } from '../../../lib/posts';
 import { ArrowLeft, Calculator, List } from 'lucide-react';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AffiliateCTA from '../../../components/AffiliateCTA';
+import PostContent from '../../../components/posts/PostContent';
 import SimplesAnexoEscolherContent from '../../../components/posts/SimplesAnexoEscolherContent';
 import SimplesAnexoContent from '../../../components/posts/SimplesAnexoContent';
 import { SITE_URL } from '../../../lib/config';
@@ -604,7 +606,6 @@ export default function Post({ post, relatedPosts }) {
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
   const scrollTo = id => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -612,166 +613,93 @@ export default function Post({ post, relatedPosts }) {
   return (
     <>
       <Head>
-        <title>{post.title} | Blog CLT ou PJ</title>
+        <title>{post.title} | CLT vs PJ</title>
         <meta name="description" content={post.description} />
-        <meta name="keywords" content={post.tags?.join(', ')} />
-        <link rel="canonical" href={`${SITE_URL}/blog/${post.slug}`} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`${SITE_URL}/blog/${post.slug}`} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.description} />
-        <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.description} />
-        <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
       </Head>
+      <Header />
 
-      <div className="page-root">
-        {/* Barra de progresso */}
-        <div className="progress-rail">
-          <div className="progress-fill" style={{ width: `${readingProgress}%` }} />
+      <main>
+        {/* POST HEADER */}
+        <div className="border-b border-rule py-12 md:py-16">
+          <div className="max-w-3xl mx-auto px-6 md:px-8">
+            <div className="flex items-center gap-2 font-mono text-xs text-ink-muted uppercase tracking-widest mb-6">
+              <a href="/blog" className="hover:text-money transition-colors">Blog</a>
+              <span className="text-ink-fade">·</span>
+              <span>{post.readingTime || '5 min'}</span>
+            </div>
+
+            <h1 className="font-display text-display-sm md:text-display-md tracking-editorial text-ink leading-tight mb-6">
+              {post.title}
+            </h1>
+
+            <p className="text-lg text-ink-muted leading-relaxed mb-8 max-w-2xl">
+              {post.description}
+            </p>
+
+            <div className="flex items-center gap-4 pt-6 border-t border-rule">
+              <div className="font-mono text-xs text-ink-muted tracking-wide">
+                Atualizado {post.date}
+              </div>
+              <span className="text-ink-fade text-xs">·</span>
+              <div className="font-mono text-xs text-ink-muted tracking-wide">
+                Calculadora CLT vs PJ
+              </div>
+            </div>
+          </div>
         </div>
 
-        <Header />
-
-        <div className="post-layout">
-
-          {/* ── Sumário lateral (desktop) ── */}
-          <aside className="toc-sidebar">
-            <div className="toc-wrap">
-              <div className="toc-label">
-                <List size={14} />
-                Neste artigo
-              </div>
-              <nav>
-                {tableOfContents.map((s, i) => (
-                  <button
-                    key={s.id}
-                    onClick={() => scrollTo(s.id)}
-                    className={`toc-item ${activeSection === s.id ? 'toc-item--active' : ''}`}
-                  >
-                    <span className="toc-num">{i + 1}</span>
-                    <span className="toc-text">{s.title}</span>
-                  </button>
-                ))}
-              </nav>
-            </div>
-          </aside>
-
-          {/* ── Conteúdo principal ── */}
-          <main className="post-main">
-
-            {/* Breadcrumb */}
-            <div className="breadcrumb">
-              <Link href="/blog">Blog</Link>
-              <span className="breadcrumb-sep">›</span>
-              <span>{post.tags?.[0] ?? 'Artigo'}</span>
-            </div>
-
-            {/* Tags */}
-            <div className="tag-row">
-              {post.tags?.map((t, i) => (
-                <span key={t} className={`tag ${i === 0 ? 'tag--main' : ''}`}>{t}</span>
-              ))}
-              <span className="tag-time">⏱ {post.readingTime}</span>
-            </div>
-
-            {/* Título */}
-            <h1 className="post-title">{post.title}</h1>
-
-            <div className="post-meta-row">
-              <span>{post.author || 'Equipe CLT ou PJ'}</span>
-              <span className="meta-dot" />
-              <span>{post.readingTime} de leitura</span>
-              <span className="meta-dot" />
-              <span>Atualizado {post.date ? new Date(post.date).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }) : 'jan 2026'}</span>
-            </div>
-
-            {/* Sumário inline mobile */}
-            <div className="toc-inline">
-              <div className="toc-label"><List size={14} />Neste artigo</div>
-              <nav className="toc-inline-grid">
-                {tableOfContents.map((s, i) => (
-                  <button key={s.id} onClick={() => scrollTo(s.id)} className="toc-inline-item">
-                    <span>{i + 1}.</span> {s.title}
-                  </button>
-                ))}
-              </nav>
-            </div>
-
-            {/* ── Conteúdo: customizado por slug, genérico via markdown para os demais ── */}
+        {/* POST BODY */}
+        <div className="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-16">
+          <div className="post-content">
             {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
               <SimplesAnexoEscolherContent />
             ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
               <SimplesAnexoContent />
             ) : (
-              /* ── Conteúdo genérico via markdown ── */
-              <article
-                className="mdx-content"
-                dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-              />
+              <PostContent content={post.contentHtml} />
             )}
+          </div>
 
-            {/* ── CTA final ── */}
-            <div className="bottom-cta">
-              <div>
-                <div className="bottom-cta-eyebrow">Calculadora gratuita</div>
-                <div className="bottom-cta-title">Compare CLT vs PJ<br />e descubra o que vale mais</div>
-              </div>
-              <Link href="/" className="btn-white">
-                Calcular agora
-                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 8h10M9 4l4 4-4 4" />
-                </svg>
-              </Link>
-            </div>
-
-            {/* ── Afiliado ── */}
-            <div className="affiliate-block">
-              <div className="affiliate-inner">
-                <div>
-                  <div className="affiliate-title">Precisa abrir seu CNPJ?</div>
-                  <div className="affiliate-desc">A Contasign cuida de toda a burocracia para você focar no que importa.</div>
-                </div>
-                <a href="https://contasign.com.br" target="_blank" rel="noopener noreferrer" className="btn-affiliate">
-                  Abrir CNPJ →
-                </a>
-              </div>
-              <div className="affiliate-disclaimer">
-                <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 7v4M8 5.5v.5" /></svg>
-                Parceria afiliada: ganhamos comissão, você não paga nada extra
-              </div>
-            </div>
-
-            {/* ── Posts relacionados ── */}
-            {relatedPosts?.length > 0 && (
-              <section className="related-section">
-                <h2 className="related-title">Continue lendo</h2>
-                <div className="related-grid">
-                  {relatedPosts.map(r => (
-                    <a key={r.slug} href={`/blog/${r.slug}`} className="related-card">
-                      <div className="related-tags">
-                        {r.tags?.slice(0, 1).map(t => <span key={t} className="tag">{t}</span>)}
-                      </div>
-                      <h3 className="related-card-title">{r.title}</h3>
-                      <span className="related-read">Ler artigo →</span>
-                    </a>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            <p className="footnote">Este artigo tem fins informativos. Para decisões fiscais definitivas, consulte um contador.</p>
-
-          </main>
+          {/* AFFILIATE CTA dentro do post */}
+          <div className="mt-12 pt-10 border-t border-rule">
+            <AffiliateCTA
+              partner="contabilizei"
+              title="Decidiu virar PJ? Precisa de contador."
+              description="A Contabilizei abre seu CNPJ, cuida do DAS mensal, pró-labore e obrigações fiscais. Plano a partir de R$ 89/mês."
+              buttonText="Conhecer Contabilizei"
+            />
+          </div>
         </div>
-        <Footer />
-      </div>
+
+        {/* POSTS RELACIONADOS */}
+        {relatedPosts && relatedPosts.length > 0 && (
+          <div className="border-t border-rule py-12 md:py-16 bg-paper-dark">
+            <div className="max-w-3xl mx-auto px-6 md:px-8">
+              <div className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-8">
+                Continue lendo
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {relatedPosts.map(p => (
+                  <a key={p.slug} href={`/blog/${p.slug}`} className="group block">
+                    <div className="font-mono text-xs text-ink-muted mb-2 tracking-wide">
+                      {p.date}
+                    </div>
+                    <h3 className="font-display text-xl tracking-editorial text-ink group-hover:text-money transition-colors leading-tight mb-1">
+                      {p.title}
+                    </h3>
+                    <p className="text-sm text-ink-muted line-clamp-2">{p.description}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      <Footer />
     </>
   );
 }
-
 
 /* ─── getStaticPaths / getStaticProps (inalterados) ─── */
 export async function getStaticPaths() {
