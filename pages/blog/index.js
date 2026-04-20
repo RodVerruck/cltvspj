@@ -27,70 +27,58 @@ export default function Blog({ allPosts }) {
       <div className="page-root">
         <Header />
 
-        {/* Blog Container */}
-        <div className="blog-container">
-          <header className="blog-header">
-            <span className="blog-header-badge">📚 Base de Conhecimento</span>
-            <h1>Blog CLT ou PJ</h1>
-            <p>Tudo que você precisa saber para tomar a melhor decisão de carreira e tributação no Brasil.</p>
-          </header>
+        <section className="border-b border-rule py-16 md:py-24">
+          <div className="max-w-6xl mx-auto px-6 md:px-8">
+            <div className="section-head">
+              <span className="section-num">§ 01</span>
+              <h2 className="section-title">Artigos</h2>
+              <p className="section-desc">Análises da decisão CLT vs PJ e do impacto das novas regras tributárias.</p>
+            </div>
 
-          {/* Posts Grid */}
-          <div className="posts-grid">
-            {allPosts.map((post) => (
-              <article key={post.slug} className="post-card">
-                <div className="post-meta">
-                  <div className="post-tag">
-                    <Clock size={12} />
-                    {post.readingTime || "5 min"}
-                  </div>
-                  <div className="post-reading-time">
-                    {new Date(post.date).toLocaleDateString('pt-BR')}
-                  </div>
-                </div>
-
-                <h2 className="post-card-title">
-                  <Link href={`/blog/${post.slug}`}>
-                    {post.title}
-                  </Link>
-                </h2>
-
-                <p className="post-description">
-                  {post.description}
-                </p>
-
-                <div className="post-meta">
-                  {post.tags?.map((tag) => (
-                    <span key={tag} className="post-tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+              {allPosts.map((post, index) => (
                 <Link
+                  key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="read-more"
+                  className={`group block ${index === 0 ? 'md:col-span-2 lg:col-span-1' : ''}`}
                 >
-                  Ler artigo <span>→</span>
-                </Link>
-              </article>
-            ))}
-          </div>
+                  <div
+                    className={`relative w-full mb-4 rounded overflow-hidden ${index === 0 ? 'h-64 md:h-80' : 'h-48'}`}
+                    style={{
+                      background: index % 3 === 0
+                        ? 'linear-gradient(135deg, #0c4a3e 0%, #1a1614 100%)'
+                        : index % 3 === 1
+                          ? 'linear-gradient(135deg, #c2410c 0%, #1a1614 100%)'
+                          : '#ebe5d6',
+                    }}
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span
+                        className={`font-display italic text-[120px] leading-none ${index % 3 === 2 ? 'text-ink/20' : 'text-paper/25'}`}
+                      >
+                        {['§', 'R$', '%'][index % 3]}
+                      </span>
+                    </div>
+                  </div>
 
-          {/* CTA Banner */}
-          <div className="cta-banner">
-            <h2 className="cta-banner-title">Pronto para calcular?</h2>
-            <p className="cta-banner-desc">
-              Use nossa calculadora gratuita para comparar CLT vs PJ em segundos
-            </p>
-            <Link
-              href="/"
-              className="cta-button"
-            >
-              Usar Calculadora Gratuita
-            </Link>
+                  <div className="flex gap-3 font-mono text-xs text-ink-muted mb-2.5 tracking-wide">
+                    <span>{post.readingTime || '5 min'}</span>
+                    <span className="text-ink-fade">·</span>
+                    <span>{new Date(post.date).toLocaleDateString('pt-BR')}</span>
+                  </div>
+
+                  <h3 className={`font-display tracking-editorial text-ink group-hover:text-money transition-colors mb-2.5 leading-tight ${index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>
+                    {post.title}
+                  </h3>
+
+                  <p className={`text-ink-muted leading-relaxed ${index === 0 ? 'text-base' : 'text-sm'}`}>
+                    {post.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
         <Footer />
       </div>
     </>
