@@ -37,10 +37,10 @@ export async function getAllPosts(): Promise<PostMeta[]> {
 
       return {
         slug,
-        title: data.title,
-        description: data.description,
-        date: data.date,
-        author: data.author,
+        title: data.title || '',
+        description: data.description || '',
+        date: data.date || '',
+        author: data.author || null,
         tags: data.tags || [],
         readingTime: data.readingTime || '5 min',
       } as PostMeta
@@ -71,10 +71,10 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     return {
       slug,
-      title: data.title,
-      description: data.description,
-      date: data.date,
-      author: data.author,
+      title: data.title || '',
+      description: data.description || '',
+      date: data.date || '',
+      author: data.author || null,
       tags: data.tags || [],
       readingTime: data.readingTime || '5 min',
       content,
