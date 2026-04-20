@@ -317,208 +317,201 @@ export default function Home() {
               Calcular comparativo
             </button>
           </div>
-      </div>
-    </section >
+          <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
 
-      {/* Results Section */ }
-  {
-    showResults && (
-      <section className="bg-paper-dark border-b border-rule-strong relative overflow-hidden py-24">
-        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+          <div className="max-w-6xl mx-auto px-6 md:px-8 relative">
+            <div className="section-head">
+              <span className="section-num">§ 02</span>
+              <h2 className="section-title">Resultado</h2>
+              <p className="section-desc">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
+            </div>
 
-        <div className="max-w-6xl mx-auto px-6 md:px-8 relative">
-          <div className="section-head">
-            <span className="section-num">§ 02</span>
-            <h2 className="section-title">Resultado</h2>
-            <p className="section-desc">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
-          </div>
-
-          {/* HERO NUMBER */}
-          <div className="mb-12">
-            <span className="font-display italic text-2xl md:text-3xl text-ink-muted block mb-2">
-              {pj.net > clt.net ? 'PJ paga, no seu caso,' : 'CLT paga, no seu caso,'}
-            </span>
-            <span className={`font-display text-[clamp(80px,14vw,200px)] leading-[0.9] tracking-tight ${pj.net > clt.net ? 'text-money' : 'text-hot'
-              } block my-3`}>
-              R$ {Math.abs(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-            </span>
-            <span className="font-display italic text-2xl md:text-3xl text-ink-muted block">
-              a mais por mês - R$ {Math.abs((pj.net - clt.net) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} por ano.
-            </span>
-
-            <div className="mt-6">
-              <span className={`inline-flex items-center gap-2 font-mono text-sm px-3 py-1.5 rounded-full ${pj.net > clt.net
-                ? 'text-money bg-money-light'
-                : 'text-hot bg-hot-light'
-                }`}>
-                <span>{pj.net > clt.net ? '×' : '×'}</span>
-                <span>
-                  {Math.abs(((pj.net - clt.net) / clt.net) * 100).toFixed(1)}% em relação ao {pj.net > clt.net ? 'CLT' : 'PJ'} líquido
-                </span>
+            {/* HERO NUMBER */}
+            <div className="mb-12">
+              <span className="font-display italic text-2xl md:text-3xl text-ink-muted block mb-2">
+                {pj.net > clt.net ? 'PJ paga, no seu caso,' : 'CLT paga, no seu caso,'}
               </span>
-            </div>
-          </div>
+              <span className={`font-display text-[clamp(80px,14vw,200px)] leading-[0.9] tracking-tight ${pj.net > clt.net ? 'text-money' : 'text-hot'
+                } block my-3`}>
+                R$ {Math.abs(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </span>
+              <span className="font-display italic text-2xl md:text-3xl text-ink-muted block">
+                a mais por mês - R$ {Math.abs((pj.net - clt.net) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} por ano.
+              </span>
 
-          {/* COMPARE */}
-          <div className="result-compare grid md:grid-cols-[1fr_auto_1fr] gap-8 pt-12 border-t border-rule items-start">
-            <div className={pj.net <= clt.net ? 'md:order-1' : ''}>
-              <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como CLT</div>
-              <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${clt.net >= pj.net ? 'text-money' : 'text-ink'
-                }`}>
-                R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-              </div>
-              <div className="text-sm text-ink-muted">líquido + benefícios, já com Lei 15.270</div>
-            </div>
-
-            <div className="w-px bg-rule hidden md:block"></div>
-
-            <div className={pj.net <= clt.net ? 'md:order-0' : ''}>
-              <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como PJ</div>
-              <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${pj.net > clt.net ? 'text-money' : 'text-ink'
-                }`}>
-                R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-              </div>
-              <div className="text-sm text-ink-muted">Simples Anexo III com Fator R otimizado</div>
-            </div>
-          </div>
-
-          {/* Detailed Breakdown */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h4 className="text-xl font-bold text-gray-900 mb-4">Detalhamento CLT</h4>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Salário Bruto</span>
-                  <span className="font-semibold">R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">(-) INSS</span>
-                  <span className="font-semibold text-red-600">-R$ {clt.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">(-) IRPF</span>
-                  <span className="font-semibold text-red-600">-R$ {clt.irpf.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">(+) Benefícios</span>
-                  <span className="font-semibold text-green-600">+R$ {clt.benefits.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">FGTS (8%)</span>
-                  <span className="font-semibold text-blue-600">R$ {clt.fgts.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">13º Salário (mensal)</span>
-                  <span className="font-semibold text-blue-600">R$ {clt.decimoTerceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Férias (mensal)</span>
-                  <span className="font-semibold text-blue-600">R$ {clt.ferias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-3 bg-blue-50 rounded-lg px-3 mt-2">
-                  <span className="font-bold text-gray-900">Valor Líquido Total</span>
-                  <span className="font-bold text-blue-600 text-lg">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
+              <div className="mt-6">
+                <span className={`inline-flex items-center gap-2 font-mono text-sm px-3 py-1.5 rounded-full ${pj.net > clt.net
+                  ? 'text-money bg-money-light'
+                  : 'text-hot bg-hot-light'
+                  }`}>
+                  <span>{pj.net > clt.net ? '×' : '×'}</span>
+                  <span>
+                    {Math.abs(((pj.net - clt.net) / clt.net) * 100).toFixed(1)}% em relação ao {pj.net > clt.net ? 'CLT' : 'PJ'} líquido
+                  </span>
+                </span>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h4 className="text-xl font-bold text-gray-900 mb-4">Detalhamento PJ</h4>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Faturamento Bruto</span>
-                  <span className="font-semibold">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            {/* COMPARE */}
+            <div className="result-compare grid md:grid-cols-[1fr_auto_1fr] gap-8 pt-12 border-t border-rule items-start">
+              <div className={pj.net <= clt.net ? 'md:order-1' : ''}>
+                <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como CLT</div>
+                <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${clt.net >= pj.net ? 'text-money' : 'text-ink'
+                  }`}>
+                  R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">(-) DAS Simples Nacional (6%)</span>
-                  <span className="font-semibold text-red-600">-R$ {pj.simplesDAS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <div className="text-sm text-ink-muted">líquido + benefícios, já com Lei 15.270</div>
+              </div>
+
+              <div className="w-px bg-rule hidden md:block"></div>
+
+              <div className={pj.net <= clt.net ? 'md:order-0' : ''}>
+                <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como PJ</div>
+                <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${pj.net > clt.net ? 'text-money' : 'text-ink'
+                  }`}>
+                  R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-600">(-) INSS Pró-labore (11%)</span>
-                  <span className="font-semibold text-red-600">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-3 bg-accent-50 rounded-lg px-3 mt-2">
-                  <span className="font-bold text-gray-900">Total de Impostos</span>
-                  <span className="font-bold text-red-600">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-                <div className="flex justify-between py-3 bg-accent-50 rounded-lg px-3">
-                  <span className="font-bold text-gray-900">Valor Líquido Mensal</span>
-                  <span className="font-bold text-accent-400 text-lg">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
+                <div className="text-sm text-ink-muted">Simples Anexo III com Fator R otimizado</div>
               </div>
             </div>
-          </div>
 
-          {/* Conditional CTA for PJ > CLT */}
-          {pj.net > clt.net && (
-            <section className="py-16 md:py-20 bg-money text-paper">
-              <div className="max-w-6xl mx-auto px-6 md:px-8">
-                <div className="grid md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-center">
-                  <div>
-                    <div className="font-mono text-xs uppercase tracking-[0.15em] text-paper/60 mb-4">
-                      Recomendação contextual
-                    </div>
-                    <h3 className="font-display text-4xl md:text-[44px] leading-[1.05] tracking-editorial mb-4">
-                      Pra virar PJ,<br />você vai precisar<br />de contador.
-                    </h3>
-                    <p className="text-base leading-relaxed text-paper/80 mb-8 max-w-lg">
-                      Abertura de CNPJ, DAS mensal, pró-labore, DEFIS, DIRF. A Contabilizei cuida de tudo online com plano a partir de R$ 89/mês - primeiros dois meses grátis pra quem vem daqui.
-                    </p>
-                    <a
-                      href="/go/contabilizei"
-                      rel="sponsored nofollow"
-                      className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-7 py-4 rounded font-medium transition-all hover:-translate-y-px"
-                    >
-                      Conhecer Contabilizei
-                      <span>×</span>
-                    </a>
-                    <p className="text-xs text-paper/50 mt-5 italic">
-                      Link de parceria. Não muda o preço pra você e ajuda a manter a calculadora gratuita.
-                    </p>
+            {/* Detailed Breakdown */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h4 className="text-xl font-bold text-gray-900 mb-4">Detalhamento CLT</h4>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Salário Bruto</span>
+                    <span className="font-semibold">R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-
-                  <div className="md:pl-12 md:border-l border-paper/20">
-                    <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
-                      <span className="font-display text-lg italic text-paper">Contabilizei</span>
-                      <span className="text-paper/60">a partir de R$ 89/mês</span>
-                    </div>
-                    <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
-                      <span className="font-display text-lg italic text-paper">Agilize</span>
-                      <span className="text-paper/60">a partir de R$ 99/mês</span>
-                    </div>
-                    <div className="flex justify-between items-baseline py-3 font-mono text-sm text-paper/75">
-                      <span className="font-display text-lg italic text-paper">Conube</span>
-                      <span className="text-paper/60">a partir de R$ 79/mês</span>
-                    </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">(-) INSS</span>
+                    <span className="font-semibold text-red-600">-R$ {clt.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">(-) IRPF</span>
+                    <span className="font-semibold text-red-600">-R$ {clt.irpf.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">(+) Benefícios</span>
+                    <span className="font-semibold text-green-600">+R$ {clt.benefits.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">FGTS (8%)</span>
+                    <span className="font-semibold text-blue-600">R$ {clt.fgts.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">13º Salário (mensal)</span>
+                    <span className="font-semibold text-blue-600">R$ {clt.decimoTerceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Férias (mensal)</span>
+                    <span className="font-semibold text-blue-600">R$ {clt.ferias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-3 bg-blue-50 rounded-lg px-3 mt-2">
+                    <span className="font-bold text-gray-900">Valor Líquido Total</span>
+                    <span className="font-bold text-blue-600 text-lg">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
               </div>
-            </section>
-          )}
 
-          {/* CTA Section */}
-          <div className="mt-12">
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8 text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4"> Quer abrir sua PJ com desconto?</h3>
-              <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-                Parceiros exclusivos com condições especiais para quem usa nossa calculadora
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <a href="#" className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition shadow-lg">
-                  Abrir Conta PJ com Cashback
-                </a>
-                <a href="#" className="bg-white text-gray-900 border-2 border-gray-300 px-8 py-3 rounded-xl font-bold hover:bg-gray-50 transition">
-                  Falar com Contador
-                </a>
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h4 className="text-xl font-bold text-gray-900 mb-4">Detalhamento PJ</h4>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Faturamento Bruto</span>
+                    <span className="font-semibold">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">(-) DAS Simples Nacional (6%)</span>
+                    <span className="font-semibold text-red-600">-R$ {pj.simplesDAS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">(-) INSS Pró-labore (11%)</span>
+                    <span className="font-semibold text-red-600">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-3 bg-accent-50 rounded-lg px-3 mt-2">
+                    <span className="font-bold text-gray-900">Total de Impostos</span>
+                    <span className="font-bold text-red-600">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between py-3 bg-accent-50 rounded-lg px-3">
+                    <span className="font-bold text-gray-900">Valor Líquido Mensal</span>
+                    <span className="font-bold text-accent-400 text-lg">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Conditional CTA for PJ > CLT */}
+            {pj.net > clt.net && (
+              <section className="py-16 md:py-20 bg-money text-paper">
+                <div className="max-w-6xl mx-auto px-6 md:px-8">
+                  <div className="grid md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-center">
+                    <div>
+                      <div className="font-mono text-xs uppercase tracking-[0.15em] text-paper/60 mb-4">
+                        Recomendação contextual
+                      </div>
+                      <h3 className="font-display text-4xl md:text-[44px] leading-[1.05] tracking-editorial mb-4">
+                        Pra virar PJ,<br />você vai precisar<br />de contador.
+                      </h3>
+                      <p className="text-base leading-relaxed text-paper/80 mb-8 max-w-lg">
+                        Abertura de CNPJ, DAS mensal, pró-labore, DEFIS, DIRF. A Contabilizei cuida de tudo online com plano a partir de R$ 89/mês - primeiros dois meses grátis pra quem vem daqui.
+                      </p>
+                      <a
+                        href="/go/contabilizei"
+                        rel="sponsored nofollow"
+                        className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-7 py-4 rounded font-medium transition-all hover:-translate-y-px"
+                      >
+                        Conhecer Contabilizei
+                        <span>×</span>
+                      </a>
+                      <p className="text-xs text-paper/50 mt-5 italic">
+                        Link de parceria. Não muda o preço pra você e ajuda a manter a calculadora gratuita.
+                      </p>
+                    </div>
+
+                    <div className="md:pl-12 md:border-l border-paper/20">
+                      <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
+                        <span className="font-display text-lg italic text-paper">Contabilizei</span>
+                        <span className="text-paper/60">a partir de R$ 89/mês</span>
+                      </div>
+                      <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
+                        <span className="font-display text-lg italic text-paper">Agilize</span>
+                        <span className="text-paper/60">a partir de R$ 99/mês</span>
+                      </div>
+                      <div className="flex justify-between items-baseline py-3 font-mono text-sm text-paper/75">
+                        <span className="font-display text-lg italic text-paper">Conube</span>
+                        <span className="text-paper/60">a partir de R$ 79/mês</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* CTA Section */}
+            <div className="mt-12">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4"> Quer abrir sua PJ com desconto?</h3>
+                <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
+                  Parceiros exclusivos com condições especiais para quem usa nossa calculadora
+                </p>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <a href="#" className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition shadow-lg">
+                    Abrir Conta PJ com Cashback
+                  </a>
+                  <a href="#" className="bg-white text-gray-900 border-2 border-gray-300 px-8 py-3 rounded-xl font-bold hover:bg-gray-50 transition">
+                    Falar com Contador
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    )
+        </section>
+        )
   }
 
-  {/* Info Section */ }
+        {/* Info Section */}
         <section className="max-w-5xl mx-auto px-4 py-12 border-t border-gray-200">
           <h3 className="font-serif text-2xl font-normal text-gray-900 mb-6 text-center">Pontos Importantes</h3>
           <div className="grid md:grid-cols-3 gap-6">
