@@ -164,7 +164,7 @@ export default function Home() {
               <span>Atualizado · Lei 15.270/2025 vigente em 2026</span>
             </div>
 
-            <h1 className="font-display text-[clamp(48px,7vw,104px)] leading-[0.95] tracking-tight text-ink mb-8 max-w-4xl">
+            <h1 className="font-display text-[clamp(60px,8vw,110px)] leading-[0.9] tracking-[-0.04em] text-ink mb-8 max-w-4xl" style={{ WebkitTextStroke: '0.5px currentColor' }}>
               CLT <em className="italic text-money">ou</em> PJ.<br />
               Descubra em 60 segundos.
             </h1>
@@ -173,21 +173,21 @@ export default function Home() {
               A calculadora definitiva para comparar regimes - já com a nova isenção de IR até R$ 5.000, redutor progressivo e retenção de dividendos. Sem cadastro, sem enrolação.
             </p>
 
-            <div className="flex flex-wrap gap-8 md:gap-10 pt-7 border-t border-rule">
+            <div className="flex flex-wrap gap-x-12 gap-y-6 pt-8 border-t border-rule">
               <div>
-                <div className="font-display text-3xl text-ink leading-none mb-1">2026</div>
+                <div className="font-display text-4xl text-ink">2026</div>
                 <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Tabela atualizada</div>
               </div>
               <div>
-                <div className="font-display text-3xl text-ink leading-none mb-1">R$ 5k</div>
+                <div className="font-display text-4xl text-ink">R$ 5k</div>
                 <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Isenção total IR</div>
               </div>
               <div>
-                <div className="font-display text-3xl text-ink leading-none mb-1">3 min</div>
+                <div className="font-display text-4xl text-ink">3 min</div>
                 <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Para concluir</div>
               </div>
               <div>
-                <div className="font-display text-3xl text-ink leading-none mb-1">0</div>
+                <div className="font-display text-4xl text-ink">0</div>
                 <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Cadastros pedidos</div>
               </div>
             </div>
