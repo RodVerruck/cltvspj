@@ -18,6 +18,7 @@ export default function Home() {
   const [hoursPerMonth, setHoursPerMonth] = useState('160');
   const [showResults, setShowResults] = useState(false);
   const [regime, setRegime] = useState('simples');
+  const [showingResults, setShowingResults] = useState(false);
 
   const calculateINSS = (sal) => {
     const bands = [
@@ -325,24 +326,25 @@ export default function Home() {
                   "Não é sobre qual paga mais, é sobre qual faz sentido pra tua vida."
                 </p>
                 <button
-                  onClick={handleCalculate}
+                  onClick={() => { setShowResults(true); setShowingResults(true); setTimeout(() => document.getElementById('resultado')?.scrollIntoView({ behavior: 'smooth' }), 100); }}
                   className="bg-money hover:bg-money-hover text-white px-8 py-4 rounded font-medium transition-all"
                 >
-                  Calcular comparativo
+                  {showingResults ? 'Recalcular' : 'Calcular comparativo'}
                 </button>
               </div>
             </div>
-          </section>
+</section>
 
-          <section className="py-16 md:py-24 relative bg-paper-dark">
+          {showingResults && (
+          <section id="resultado" className="py-16 md:py-24 relative bg-paper-dark">
             <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
               <div className="absolute inset-0 opacity-[0.10] pointer-events-none z-0" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
 
-            <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6 mb-10 pb-5 border-b border-rule">
-              <span className="font-mono text-sm text-ink-muted tracking-wide">§ 02</span>
-              <h2 className="font-display text-3xl md:text-4xl text-ink tracking-tight">Resultado</h2>
-              <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
-            </div>
+              <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6 mb-10 pb-5 border-b border-rule">
+                <span className="font-mono text-sm text-ink-muted tracking-wide">§ 02</span>
+                <h2 className="font-display text-3xl md:text-4xl text-ink tracking-tight">Resultado</h2>
+                <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
+              </div>
 
             {/* HERO NUMBER */}
             <div className="mb-12 relative">
@@ -371,32 +373,26 @@ export default function Home() {
             </div>
 
             {/* COMPARE */}
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 mt-16 pt-12 border-t border-rule items-start relative">
-              <div className={pj.net <= clt.net ? 'md:order-1' : ''}>
-                <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como CLT</div>
-                <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${clt.net >= pj.net ? 'text-money' : 'text-ink'
-                  }`}>
-                  R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                </div>
-                <div className="text-sm text-ink-muted">líquido + benefícios, já com Lei 15.270</div>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 mt-16 mb-16 pt-12 border-t border-rule items-start">
+              <div className="flex flex-col">
+                <span className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-2">Como CLT</span>
+                <span className={`font-display text-5xl text-ink leading-none mb-2 ${clt.net >= pj.net ? 'text-money' : ''}`}>R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                <span className="text-sm text-ink-muted">Líquido + benefícios, já com Lei 15.270</span>
               </div>
 
-              <div className="hidden md:block w-full h-full min-h-[120px] bg-rule"></div>
+              <div className="hidden md:block w-full h-full min-h-[100px] bg-rule"></div>
 
-              <div className={pj.net <= clt.net ? 'md:order-0' : ''}>
-                <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como PJ</div>
-                <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${pj.net > clt.net ? 'text-money' : 'text-ink'
-                  }`}>
-                  R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                </div>
-                <div className="text-sm text-ink-muted">Simples Anexo III com Fator R otimizado</div>
+              <div className="flex flex-col">
+                <span className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-2">Como PJ</span>
+                <span className={`font-display text-5xl text-ink leading-none mb-2 ${pj.net > clt.net ? 'text-money' : ''}`}>R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                <span className="text-sm text-ink-muted">Simples Anexo III com Fator R otimizado</span>
               </div>
             </div>
 
             {/* Detailed Breakdown */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-transparent border border-rule rounded-md p-6">
-                <h4 className="font-display text-xl text-ink mb-4">Detalhamento CLT</h4>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-paper-dark/50 border border-rule rounded-lg p-8">
+                <h4 className="font-display text-2xl text-ink mb-6">Detalhamento CLT</h4>
                 <div className="space-y-0 text-sm">
                   <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">Salário Bruto</span>
@@ -433,8 +429,8 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="bg-transparent border border-rule rounded-md p-6">
-                <h4 className="font-display text-xl text-ink mb-4">Detalhamento PJ</h4>
+              <div className="bg-paper-dark/50 border border-rule rounded-lg p-8">
+                <h4 className="font-display text-2xl text-ink mb-6">Detalhamento PJ</h4>
                 <div className="space-y-0 text-sm">
                   <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">Faturamento Bruto</span>
@@ -461,6 +457,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+          )}
 
         {/* Conditional CTA for PJ > CLT */}
         {pj.net > clt.net && (
