@@ -18,45 +18,32 @@ Evite erro no imposto e economize milhares de reais por ano escolhendo o anexo c
 
 ## TL;DR: Resumo Rápido
 
-<div className="tldr-card">
-  <strong>Se você tem pressa, aqui está o essencial:</strong>
+<div className="tldr-card bg-money-light border-l-4 border-money p-6 rounded-r-lg mb-8">
+  <h4 className="font-mono text-sm font-bold text-money uppercase tracking-wider mb-4">Resumo Rápido (40 seg)</h4>
+  <p className="mb-6 text-ink">Qual anexo usar depende da sua atividade - e, para serviços, do seu Fator R.</p>
   
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-    <div>
-      <strong>Anexo I</strong>
-      <p>Comércio em geral (loja, e-commerce, distribuidora)</p>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <div className="bg-white p-3 rounded border border-money/20">
+      <span className="font-bold text-ink block mb-1">I. Comércio</span>
+      <span className="text-sm text-ink-muted">Loja, e-commerce</span>
     </div>
-    <div>
-      <strong>Anexo II</strong>
-      <p>Indústria (fábrica, produção em série)</p>
+    <div className="bg-white p-3 rounded border border-money/20">
+      <span className="font-bold text-ink block mb-1">II. Indústria</span>
+      <span className="text-sm text-ink-muted">Fábrica, produção</span>
     </div>
-    <div>
-      <strong>Anexo III</strong>
-      <p>Serviços com Fator R >= 28% (dev, designer, consultoria)</p>
+    <div className="bg-white p-3 rounded border border-money/20">
+      <span className="font-bold text-money block mb-1">III. Serviços (Fator R &gt;= 28%)</span>
+      <span className="text-sm text-ink-muted">Alíquotas menores (a partir de 6%)</span>
     </div>
-    <div>
-      <strong>Anexo IV</strong>
-      <p>Serviços de construção civil</p>
-    </div>
-    <div>
-      <strong>Anexo V</strong>
-      <p>Serviços com Fator R < 28% (médico, advogado, arquiteto)</p>
+    <div className="bg-white p-3 rounded border border-hot/20">
+      <span className="font-bold text-hot block mb-1">V. Serviços (Fator R &lt; 28%)</span>
+      <span className="text-sm text-ink-muted">Alíquotas maiores (a partir de 15%)</span>
     </div>
   </div>
 
-  <div className="mt-6 p-4 bg-paper border border-money rounded-lg">
-    <strong className="text-money font-mono text-sm">Regra de Ouro:</strong>
-    <div className="formula-display mt-2">
-      <span className="formula-text">Fator R = (Folha de Pagamento ÷ Faturamento) × 100</span>
-      <span className="formula-label">>= 28% = Anexo III (alíquotas menores)</span>
-      <span className="formula-label">< 28% = Anexo V (alíquotas maiores)</span>
-    </div>
-  </div>
-
-  <div className="mt-6 text-center">
-    <a href="/" className="btn-money">
-      Calcular meu Fator R
-    </a>
+  <div className="bg-paper-dark p-4 rounded text-sm border border-rule">
+    <strong className="font-mono text-money tracking-wide uppercase text-xs block mb-1">Regra de Ouro</strong>
+    Prestadores de serviço devem calcular o Fator R. Se &gt;= 28%, usam o Anexo III. Se &lt; 28%, caem no Anexo V (imposto até 40% mais caro).
   </div>
 </div>
 
