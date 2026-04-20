@@ -20,6 +20,10 @@ module.exports = {
         rule: {
           DEFAULT: '#d4cdbe',
           strong: '#b8afa0',
+          'stronger': '#a8a192',
+        },
+        surface: {
+          DEFAULT: '#ffffff',
         },
         money: {
           DEFAULT: '#0c4a3e',

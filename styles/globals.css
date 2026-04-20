@@ -12,8 +12,10 @@
     --ink-muted: #6b6357;
     --ink-fade: #a8a192;
     --rule: #d4cdbe;
+    --rule-strong: #b8afa0;
     --money: #0c4a3e;
     --hot: #c2410c;
+    --surface: #ffffff;
   }
 
   html {
@@ -94,6 +96,12 @@
   /* Link editorial sublinhado */
   .link-editorial {
     @apply inline-flex items-center gap-2 font-mono text-sm text-ink-muted underline underline-offset-4 decoration-1 hover:text-ink transition-colors;
+  }
+
+  /* Background pattern para seção de resultados */
+  .bg-grid-pattern {
+    background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
 }
 
