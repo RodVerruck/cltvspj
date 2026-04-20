@@ -462,39 +462,49 @@ export default function Home() {
 
                 {/* Conditional CTA for PJ > CLT */}
                 {pj.net > clt.net && (
-                  <div className="mt-8 p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border-2 border-green-200">
-                    <div className="flex items-start gap-3 mb-3">
-                      <span className="text-2xl">💡</span>
-                      <div>
-                        <h3 className="text-lg font-bold text-green-900">
-                          PJ compensa no seu caso
-                        </h3>
-                        <p className="text-sm text-green-800 mt-1">
-                          Pelo cálculo, você ganharia aproximadamente{' '}
-                          <strong>R$ {(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>{' '}
-                          a mais por mês como PJ.
-                        </p>
+                  <section className="py-16 md:py-20 bg-money text-paper">
+                    <div className="max-w-6xl mx-auto px-6 md:px-8">
+                      <div className="grid md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-center">
+                        <div>
+                          <div className="font-mono text-xs uppercase tracking-[0.15em] text-paper/60 mb-4">
+                            Recomendação contextual
+                          </div>
+                          <h3 className="font-display text-4xl md:text-[44px] leading-[1.05] tracking-editorial mb-4">
+                            Pra virar PJ,<br />você vai precisar<br />de contador.
+                          </h3>
+                          <p className="text-base leading-relaxed text-paper/80 mb-8 max-w-lg">
+                            Abertura de CNPJ, DAS mensal, pró-labore, DEFIS, DIRF. A Contabilizei cuida de tudo online com plano a partir de R$ 89/mês - primeiros dois meses grátis pra quem vem daqui.
+                          </p>
+                          <a
+                            href="/go/contabilizei"
+                            rel="sponsored nofollow"
+                            className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-7 py-4 rounded font-medium transition-all hover:-translate-y-px"
+                          >
+                            Conhecer Contabilizei
+                            <span>×</span>
+                          </a>
+                          <p className="text-xs text-paper/50 mt-5 italic">
+                            Link de parceria. Não muda o preço pra você e ajuda a manter a calculadora gratuita.
+                          </p>
+                        </div>
+
+                        <div className="md:pl-12 md:border-l border-paper/20">
+                          <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
+                            <span className="font-display text-lg italic text-paper">Contabilizei</span>
+                            <span className="text-paper/60">a partir de R$ 89/mês</span>
+                          </div>
+                          <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
+                            <span className="font-display text-lg italic text-paper">Agilize</span>
+                            <span className="text-paper/60">a partir de R$ 99/mês</span>
+                          </div>
+                          <div className="flex justify-between items-baseline py-3 font-mono text-sm text-paper/75">
+                            <span className="font-display text-lg italic text-paper">Conube</span>
+                            <span className="text-paper/60">a partir de R$ 79/mês</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="bg-white rounded-lg p-4 border border-green-100">
-                      <p className="text-sm text-gray-700 mb-3">
-                        Pra virar PJ você vai precisar abrir um CNPJ, escolher o regime tributário certo e fazer a contabilidade mensal.
-                        A <strong>Contabilizei</strong> cuida de tudo online — abertura grátis do CNPJ e planos mensais a partir de R$ 89.
-                      </p>
-                      <a
-                        href="/go/contabilizei"
-                        rel="sponsored nofollow"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold text-sm transition-colors"
-                      >
-                        Conhecer a Contabilizei
-                        <span>→</span>
-                      </a>
-                      <p className="text-xs text-gray-500 mt-2">
-                        Conteúdo com link de parceria. Usar este link não muda o preço pra você e ajuda a manter a calculadora gratuita.
-                      </p>
-                    </div>
-                  </div>
+                  </section>
                 )}
 
                 {/* CTA Section */}
