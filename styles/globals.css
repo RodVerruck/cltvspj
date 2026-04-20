@@ -22,7 +22,6 @@
 
   body {
     @apply bg-paper text-ink font-sans antialiased;
-    font-feature-settings: "ss01", "ss02";
   }
 
   ::selection {
