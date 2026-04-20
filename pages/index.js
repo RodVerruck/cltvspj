@@ -506,25 +506,6 @@ export default function Home() {
               </section>
             )}
 
-        {/* Info Section */}
-        <section className="max-w-5xl mx-auto px-4 py-12 border-t border-rule">
-          <h3 className="font-display text-2xl text-ink mb-6 text-center">Pontos Importantes</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl p-6 border border-rule">
-              <h4 className="font-display text-lg text-ink mb-2">CLT tem estabilidade</h4>
-              <p className="text-sm text-ink-muted leading-relaxed">FGTS, férias remuneradas, 13º salário e direitos trabalhistas garantidos</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 border border-rule">
-              <h4 className="font-display text-lg text-ink mb-2">PJ tem mais lucro líquido</h4>
-              <p className="text-sm text-ink-muted leading-relaxed">Mas você precisa pagar seu próprio plano de saúde, aposentadoria e não tem férias pagas</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 border border-rule">
-              <h4 className="font-display text-lg text-ink mb-2">Considere sua situação</h4>
-              <p className="text-sm text-ink-muted leading-relaxed">Avalie segurança x ganhos, momento de vida e planejamento financeiro</p>
-            </div>
-          </div>
-        </section>
-
         <Footer />
       </div >
     </>
