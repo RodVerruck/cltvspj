@@ -35,19 +35,47 @@ export default function Home() {
     return inss;
   };
 
+  /**
+   * Aplica o redutor do IRPF criado pela Lei 15.270/2025.
+   * Vigência: janeiro/2026.
+   * Base legal: art. 11-A da Lei 9.250/95 (incluído pela Lei 15.270/2025).
+   *
+   * @param {number} baseCalculo - Base de cálculo do IR (salário bruto - INSS - outras deduções)
+   * @param {number} irTradicional - IR calculado pela tabela tradicional
+   * @returns {number} IR final após aplicação do redutor
+   */
+  function aplicarRedutorLei15270(baseCalculo, irTradicional) {
+    // Faixa 1: isenção total até R$ 5.000
+    if (baseCalculo <= 5000) {
+      return 0;
+    }
+
+    // Faixa 2: redutor linear entre R$ 5.000,01 e R$ 7.350
+    if (baseCalculo <= 7350) {
+      const reducao = irTradicional * ((7350 - baseCalculo) / 2350);
+      return Math.max(0, irTradicional - reducao);
+    }
+
+    // Faixa 3: acima de R$ 7.350 não há redutor
+    return irTradicional;
+  }
+
   const calculateCLT = () => {
     const sal = parseFloat(salary) || 0;
     const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
 
     const inss = calculateINSS(sal);
     const irpfBase = sal - inss;
-    let irpf = 0;
-    if (irpfBase > 4664.68) irpf = irpfBase * 0.275 - 896.00;
-    else if (irpfBase > 3751.05) irpf = irpfBase * 0.225 - 662.77;
-    else if (irpfBase > 2826.65) irpf = irpfBase * 0.15 - 381.44;
-    else if (irpfBase > 2259.20) irpf = irpfBase * 0.075 - 169.44;
+    let irpfTradicional = 0;
+    if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
+    else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
+    else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44;
+    else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44;
 
-    const netSalary = sal - inss - Math.max(irpf, 0);
+    // Aplicar redutor da Lei 15.270/2025
+    const irpf = aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
+
+    const netSalary = sal - inss - irpf;
     const fgts = sal * 0.08;
     const decimoTerceiro = sal / 12;
     const ferias = sal / 12;
