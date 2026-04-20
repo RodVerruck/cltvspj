@@ -6,31 +6,53 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
-        serif: ['Instrument Serif', 'Georgia', 'serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
-      },
       colors: {
+        paper: {
+          DEFAULT: '#f5f1e8',
+          dark: '#ebe5d6',
+          darker: '#ddd4c0',
+        },
+        ink: {
+          DEFAULT: '#1a1614',
+          muted: '#6b6357',
+          fade: '#a8a192',
+        },
+        rule: {
+          DEFAULT: '#d4cdbe',
+          strong: '#b8afa0',
+        },
+        money: {
+          DEFAULT: '#0c4a3e',
+          hover: '#0a3d33',
+          light: '#e6efe9',
+        },
+        hot: {
+          DEFAULT: '#c2410c',
+          light: '#fce8dc',
+        },
+        // Mantém brand e accent existentes como legado por enquanto (sem usar nas páginas novas)
         brand: {
           50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#3b82f6',
+          400: '#60a5fa',
           500: '#1e40af',
-          600: '#1e3a8a',
-          700: '#172554',
         },
-        accent: {
-          50: '#fff7ed',
-          100: '#fed7aa',
-          200: '#fdba74',
-          300: '#fb923c',
-          400: '#ea580c',
-          500: '#c2410c',
-          600: '#9a3412',
-        },
+      },
+      fontFamily: {
+        display: ['"Instrument Serif"', 'Georgia', 'serif'],
+        sans: ['"Instrument Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"SF Mono"', 'Consolas', 'monospace'],
+      },
+      fontSize: {
+        // Escala editorial para grandes números/títulos
+        'display-xl': ['clamp(80px, 14vw, 200px)', { lineHeight: '0.9', letterSpacing: '-0.03em' }],
+        'display-lg': ['clamp(48px, 7vw, 104px)', { lineHeight: '0.95', letterSpacing: '-0.02em' }],
+        'display-md': ['clamp(36px, 5vw, 64px)', { lineHeight: '1.0', letterSpacing: '-0.01em' }],
+        'display-sm': ['clamp(28px, 3.5vw, 44px)', { lineHeight: '1.1', letterSpacing: '-0.01em' }],
+      },
+      letterSpacing: {
+        'editorial': '-0.02em',
+        'mono-wide': '0.02em',
+        'label': '0.12em',
       },
     },
   },
