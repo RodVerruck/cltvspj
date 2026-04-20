@@ -20,7 +20,7 @@ function TLDRCard() {
           {[
             { num: 'I', desc: 'Comércio — loja, e-commerce', highlight: false },
             { num: 'II', desc: 'Indústria — fábrica, produção', highlight: false },
-            { num: 'III', desc: 'Serviços — Fator R ≥ 28%', highlight: 'green' },
+            { num: 'III', desc: 'Serviços — Fator R >= 28%', highlight: 'green' },
             { num: 'IV', desc: 'Construção civil', highlight: false },
             { num: 'V', desc: 'Serviços — Fator R < 28%', highlight: 'orange' },
           ].map(a => (
@@ -38,7 +38,7 @@ function TLDRCard() {
           </div>
           <p className="regra-text">
             <strong>Regra de ouro:</strong> Prestadores de serviço devem calcular o Fator R.
-            Se ≥ 28%, usam o Anexo III (alíquota inicial de 6%). Se &lt; 28%, caem no Anexo V
+            Se {'>='} 28%, usam o Anexo III (alíquota inicial de 6%). Se {'<'} 28%, caem no Anexo V
             (alíquota inicial de 15%) — <strong>até 40% mais caro.</strong>
           </p>
         </div>
@@ -89,7 +89,7 @@ function FatorRCard() {
           <div className={`p-4 rounded-lg border ${isGreen ? 'bg-money/10 border-money' : 'bg-paper border-rule'}`}>
             <div className="flex items-center gap-2 mb-2">
               <div className={`w-2 h-2 rounded-full ${isGreen ? 'bg-money' : 'bg-ink3'}`}></div>
-              <span className={`font-mono font-bold ${isGreen ? 'text-money' : 'text-ink'}`}>>= 28%</span>
+              <span className={`font-mono font-bold ${isGreen ? 'text-money' : 'text-ink'}`}>{'>= 28%'}</span>
             </div>
             <div className={`font-semibold ${isGreen ? 'text-money' : 'text-ink'}`}>Anexo III</div>
             <div className="text-sm text-ink3 mt-1">Dev · Designer · Consultoria</div>
@@ -98,7 +98,7 @@ function FatorRCard() {
           <div className={`p-4 rounded-lg border ${isOrange ? 'bg-hot-light border-hot' : 'bg-paper border-rule'}`}>
             <div className="flex items-center gap-2 mb-2">
               <div className={`w-2 h-2 rounded-full ${isOrange ? 'bg-hot' : 'bg-ink3'}`}></div>
-              <span className={`font-mono font-bold ${isOrange ? 'text-hot' : 'text-ink'}`}>< 28%</span>
+              <span className={`font-mono font-bold ${isOrange ? 'text-hot' : 'text-ink'}`}>{'< 28%'}</span>
             </div>
             <div className={`font-semibold ${isOrange ? 'text-hot' : 'text-ink'}`}>Anexo V</div>
             <div className="text-sm text-ink3 mt-1">Médico · Advogado · Arquiteto</div>
@@ -162,7 +162,7 @@ function FatorRCard() {
 
 function ComparativaTable() {
   const rows = [
-    { label: 'Quando usar', iii: 'Fator R ≥ 28%', v: 'Fator R < 28%' },
+    { label: 'Quando usar', iii: 'Fator R >= 28%', v: 'Fator R < 28%' },
     { label: 'Alíquota inicial', iii: '6%', v: '15%' },
     { label: 'Alíquota máxima', iii: '33%', v: '30%' },
     { label: 'Perfil típico', iii: 'Dev · Designer · Consultoria', v: 'Médico · Advogado · Arquiteto' },
@@ -329,7 +329,7 @@ export default function SimplesAnexoEscolherContent() {
               content: (
                 <div className="step-rule-row">
                   <div className="step-rule step-rule--green">
-                    <div className="step-rule-val">Fator R ≥ 28%</div>
+                    <div className="step-rule-val">{'Fator R >= 28%'}</div>
                     <div className="step-rule-name">Anexo III</div>
                     <div className="step-rule-note">Alíquotas de 6% a 33%</div>
                   </div>
