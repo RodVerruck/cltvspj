@@ -2,27 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './blog.css';
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* ========================================
-   Design Tokens Unificados — CLT ou PJ
-   Fonte de verdade para todo o site
-   ======================================== */
-:root {
-  /* Typography */
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+@layer base {
+  :root {
+    --paper: #f5f1e8;
+    --paper-dark: #ebe5d6;
+    --ink: #1a1614;
+    --ink-muted: #6b6357;
+    --ink-fade: #a8a192;
+    --rule: #d4cdbe;
+    --money: #0c4a3e;
+    --hot: #c2410c;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: "ss01", "ss02";
+  }
+
+  ::selection {
+    background: var(--money);
+    color: var(--paper);
+  }
+
+  /* Remove a cor azul padrão dos links — vamos estilizar caso a caso */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+@layer components {
+
+  /* Eyebrow — label editorial pequeno */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs uppercase tracking-[0.12em] text-ink-muted font-medium;
+  }
+
+  .eyebrow-dot {
+    @apply w-1.5 h-1.5 rounded-full bg-money;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* Section head editorial — numerada */
+  .section-head {
+    @apply flex items-baseline gap-5 mb-10 pb-5 border-b border-rule;
+  }
+
+  .section-num {
+    @apply font-mono text-sm text-ink-muted;
+  }
+
+  .section-title {
+    @apply font-display text-3xl md:text-4xl tracking-editorial text-ink;
+  }
+
+  .section-desc {
+    @apply text-sm text-ink-muted ml-auto max-w-xs text-right hidden md:block;
+  }
+
+  /* Input editorial — com underline ao invés de border full */
+  .field-label {
+    @apply block text-sm text-ink-muted mb-1.5 tracking-wide;
+  }
+
+  .input-row {
+    @apply flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money;
+  }
+
+  .input-prefix {
+    @apply font-mono text-sm text-ink-fade;
+  }
+
+  .input-suffix {
+    @apply text-xs text-ink-fade;
+  }
+
+  .editorial-input {
+    @apply flex-1 bg-transparent font-mono text-lg text-ink outline-none py-1 border-0;
+  }
+
+  /* Botão primário verde money */
+  .btn-money {
+    @apply inline-flex items-center gap-2.5 bg-money hover:bg-money-hover text-paper px-9 py-4 rounded font-medium tracking-wide transition-all hover:-translate-y-px;
+  }
+
+  /* Link editorial sublinhado */
+  .link-editorial {
+    @apply inline-flex items-center gap-2 font-mono text-sm text-ink-muted underline underline-offset-4 decoration-1 hover:text-ink transition-colors;
+  }
 }
 
-body {
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
 }
