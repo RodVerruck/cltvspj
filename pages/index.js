@@ -197,10 +197,10 @@ export default function Home() {
         {/* Calculator Section */}
         <section id="calc" className="border-b border-rule py-16 md:py-24">
           <div className="max-w-6xl mx-auto px-6 md:px-8">
-            <div className="section-head">
-              <span className="section-num">§ 01</span>
-              <h2 className="section-title">Insira seus números</h2>
-              <p className="section-desc">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
+            <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6 mb-10 pb-5 border-b border-rule">
+              <span className="font-mono text-sm text-ink-muted tracking-wide">§ 01</span>
+              <h2 className="font-display text-3xl md:text-4xl text-ink tracking-tight">Insira seus números</h2>
+              <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -208,28 +208,27 @@ export default function Home() {
               <div className="bg-white border border-rule rounded-md p-8 relative">
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
-                <div className="flex items-baseline justify-between mb-6">
-                  <h3 className="font-display text-2xl text-ink">Proposta CLT</h3>
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-ink-muted">Regime atual</span>
+                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink">
+                  Proposta CLT <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Regime Atual</span>
                 </div>
 
-                <div className="mb-5">
-                  <label className="field-label">Salário bruto mensal</label>
-                  <div className="input-row">
-                    <span className="input-prefix">R$</span>
+                <div className="mb-6">
+                  <label className="text-sm text-ink-muted mb-2 block">Salário bruto mensal</label>
+                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                    <span className="font-mono text-lg text-ink-fade">R$</span>
                     <input
                       type="text"
                       value={salary}
                       onChange={(e) => setSalary(e.target.value)}
-                      className="editorial-input"
+                      className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
                     />
-                    <span className="input-suffix">/mês</span>
+                    <span className="text-xs text-ink-fade">/mês</span>
                   </div>
                 </div>
 
                 <div className="bg-paper-dark rounded p-5 mb-5">
-                  <h4 className="font-semibold text-ink mb-4">Benefícios Mensais</h4>
-                  <div className="space-y-3">
+                  <h4 className="font-display text-lg text-ink mb-4">Benefícios Mensais</h4>
+                  <div className="space-y-4">
                     {[
                       { key: 'vr', label: 'Vale Refeição' },
                       { key: 'vt', label: 'Vale Transporte' },
@@ -237,14 +236,14 @@ export default function Home() {
                       { key: 'seguroVida', label: 'Seguro de Vida' }
                     ].map(({ key, label }) => (
                       <div key={key}>
-                        <label className="field-label">{label}</label>
-                        <div className="input-row">
-                          <span className="input-prefix">R$</span>
+                        <label className="text-xs text-ink-muted mb-1 block">{label}</label>
+                        <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                          <span className="font-mono text-ink-fade">R$</span>
                           <input
                             type="text"
                             value={benefits[key]}
                             onChange={(e) => setBenefits({ ...benefits, [key]: e.target.value })}
-                            className="editorial-input"
+                            className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
                           />
                         </div>
                       </div>
@@ -257,35 +256,43 @@ export default function Home() {
               <div className="bg-white border border-rule rounded-md p-8 relative">
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
-                <div className="flex items-baseline justify-between mb-6">
-                  <h3 className="font-display text-2xl text-ink">Proposta PJ</h3>
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-ink-muted">Alternativa</span>
+                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink">
+                  Proposta PJ <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Alternativa</span>
                 </div>
 
-                <div className="mb-5">
-                  <label className="text-sm text-ink-muted mb-1 block">Valor da hora (PJ)</label>
-                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-1 transition-colors focus-within:border-money">
-                    <span className="font-mono text-ink-fade">R$</span>
+                <div className="mb-6">
+                  <label className="text-sm text-ink-muted mb-2 block">Regime tributário</label>
+                  <div className="flex border border-rule rounded overflow-hidden">
+                    <button type="button" className="flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 bg-ink text-paper">Simples</button>
+                    <button type="button" className="flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 text-ink-muted hover:bg-rule/30">Presumido</button>
+                    <button type="button" className="flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 text-ink-muted hover:bg-rule/30">MEI</button>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <label className="text-sm text-ink-muted mb-2 block">Valor da hora (PJ)</label>
+                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                    <span className="font-mono text-lg text-ink-fade">R$</span>
                     <input
                       type="text"
                       value={pjRate}
                       onChange={(e) => setPjRate(e.target.value)}
-                      className="bg-transparent font-mono text-lg text-ink outline-none flex-1 py-1"
+                      className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
                     />
                     <span className="text-xs text-ink-fade">/hora</span>
                   </div>
                 </div>
 
-                <div className="mb-5">
-                  <label className="text-sm text-ink-muted mb-1 block">Horas trabalhadas/mês</label>
-                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-1 transition-colors focus-within:border-money">
+                <div className="mb-6">
+                  <label className="text-sm text-ink-muted mb-2 block">Horas trabalhadas/mês</label>
+                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                     <input
                       type="text"
                       value={hoursPerMonth}
                       onChange={(e) => setHoursPerMonth(e.target.value)}
-                      className="editorial-input"
+                      className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
                     />
-                    <span className="input-suffix">horas</span>
+                    <span className="text-xs text-ink-fade">horas</span>
                   </div>
                 </div>
 
@@ -322,18 +329,20 @@ export default function Home() {
           <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
 
           <div className="max-w-6xl mx-auto px-6 md:px-8 relative">
-            <div className="section-head">
-              <span className="section-num">§ 02</span>
-              <h2 className="section-title">Resultado</h2>
-              <p className="section-desc">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
+            <div className="absolute inset-0 opacity-[0.15] pointer-events-none" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
+
+            <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6 mb-10 pb-5 border-b border-rule">
+              <span className="font-mono text-sm text-ink-muted tracking-wide">§ 02</span>
+              <h2 className="font-display text-3xl md:text-4xl text-ink tracking-tight">Resultado</h2>
+              <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
             </div>
 
             {/* HERO NUMBER */}
-            <div className="mb-12">
+            <div className="mb-12 relative">
               <span className="font-display italic text-2xl md:text-3xl text-ink-muted block mb-2">
                 {pj.net > clt.net ? 'PJ paga, no seu caso,' : 'CLT paga, no seu caso,'}
               </span>
-              <span className={`font-display text-[clamp(80px,14vw,200px)] leading-[0.9] tracking-tight ${pj.net > clt.net ? 'text-money' : 'text-hot'
+              <span className={`font-display text-[clamp(80px,14vw,200px)] leading-[0.9] tracking-[-0.03em] ${pj.net > clt.net ? 'text-money' : 'text-hot'
                 } block my-3`}>
                 R$ {Math.abs(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
               </span>
@@ -355,7 +364,7 @@ export default function Home() {
             </div>
 
             {/* COMPARE */}
-            <div className="result-compare grid md:grid-cols-[1fr_auto_1fr] gap-8 pt-12 border-t border-rule items-start">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 mt-16 pt-12 border-t border-rule items-start relative">
               <div className={pj.net <= clt.net ? 'md:order-1' : ''}>
                 <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como CLT</div>
                 <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${clt.net >= pj.net ? 'text-money' : 'text-ink'
@@ -365,7 +374,7 @@ export default function Home() {
                 <div className="text-sm text-ink-muted">líquido + benefícios, já com Lei 15.270</div>
               </div>
 
-              <div className="w-px bg-rule hidden md:block"></div>
+              <div className="hidden md:block w-full h-full min-h-[120px] bg-rule"></div>
 
               <div className={pj.net <= clt.net ? 'md:order-0' : ''}>
                 <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como PJ</div>
@@ -462,7 +471,7 @@ export default function Home() {
                       <a
                         href="/go/contabilizei"
                         rel="sponsored nofollow"
-                        className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-7 py-4 rounded font-medium transition-all hover:-translate-y-px"
+                        className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-6 py-3 rounded font-medium transition-all"
                       >
                         Conhecer Contabilizei
                         <span>×</span>
@@ -472,18 +481,18 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className="md:pl-12 md:border-l border-paper/20">
-                      <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
+                    <div className="flex flex-col gap-4 pl-0 md:pl-12 md:border-l border-paper/20">
+                      <div className="flex justify-between items-baseline border-b border-paper/10 pb-3">
                         <span className="font-display text-lg italic text-paper">Contabilizei</span>
-                        <span className="text-paper/60">a partir de R$ 89/mês</span>
+                        <span className="font-mono text-sm text-paper/60">a partir de R$ 89/mês</span>
                       </div>
-                      <div className="flex justify-between items-baseline py-3 border-b border-paper/10 font-mono text-sm text-paper/75">
+                      <div className="flex justify-between items-baseline border-b border-paper/10 pb-3">
                         <span className="font-display text-lg italic text-paper">Agilize</span>
-                        <span className="text-paper/60">a partir de R$ 99/mês</span>
+                        <span className="font-mono text-sm text-paper/60">a partir de R$ 99/mês</span>
                       </div>
-                      <div className="flex justify-between items-baseline py-3 font-mono text-sm text-paper/75">
+                      <div className="flex justify-between items-baseline">
                         <span className="font-display text-lg italic text-paper">Conube</span>
-                        <span className="text-paper/60">a partir de R$ 79/mês</span>
+                        <span className="font-mono text-sm text-paper/60">a partir de R$ 79/mês</span>
                       </div>
                     </div>
                   </div>
@@ -512,20 +521,20 @@ export default function Home() {
         </section>
 
         {/* Info Section */}
-        <section className="max-w-5xl mx-auto px-4 py-12 border-t border-gray-200">
-          <h3 className="font-serif text-2xl font-normal text-gray-900 mb-6 text-center">Pontos Importantes</h3>
+        <section className="max-w-5xl mx-auto px-4 py-12 border-t border-rule">
+          <h3 className="font-display text-2xl text-ink mb-6 text-center">Pontos Importantes</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl p-6 border border-gray-200">
-              <h4 className="font-semibold text-gray-900 mb-2">CLT tem estabilidade</h4>
-              <p className="text-sm text-gray-500 leading-relaxed">FGTS, férias remuneradas, 13º salário e direitos trabalhistas garantidos</p>
+            <div className="bg-white rounded-xl p-6 border border-rule">
+              <h4 className="font-display text-lg text-ink mb-2">CLT tem estabilidade</h4>
+              <p className="text-sm text-ink-muted leading-relaxed">FGTS, férias remuneradas, 13º salário e direitos trabalhistas garantidos</p>
             </div>
-            <div className="bg-white rounded-xl p-6 border border-gray-200">
-              <h4 className="font-semibold text-gray-900 mb-2">PJ tem mais lucro líquido</h4>
-              <p className="text-sm text-gray-500 leading-relaxed">Mas você precisa pagar seu próprio plano de saúde, aposentadoria e não tem férias pagas</p>
+            <div className="bg-white rounded-xl p-6 border border-rule">
+              <h4 className="font-display text-lg text-ink mb-2">PJ tem mais lucro líquido</h4>
+              <p className="text-sm text-ink-muted leading-relaxed">Mas você precisa pagar seu próprio plano de saúde, aposentadoria e não tem férias pagas</p>
             </div>
-            <div className="bg-white rounded-xl p-6 border border-gray-200">
-              <h4 className="font-semibold text-gray-900 mb-2">Considere sua situação</h4>
-              <p className="text-sm text-gray-500 leading-relaxed">Avalie segurança x ganhos, momento de vida e planejamento financeiro</p>
+            <div className="bg-white rounded-xl p-6 border border-rule">
+              <h4 className="font-display text-lg text-ink mb-2">Considere sua situação</h4>
+              <p className="text-sm text-ink-muted leading-relaxed">Avalie segurança x ganhos, momento de vida e planejamento financeiro</p>
             </div>
           </div>
         </section>
