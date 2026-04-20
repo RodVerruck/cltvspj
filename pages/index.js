@@ -164,7 +164,7 @@ export default function Home() {
               <span>Atualizado · Lei 15.270/2025 vigente em 2026</span>
             </div>
 
-            <h1 className="font-display text-display-lg tracking-editorial text-ink mb-8 max-w-4xl">
+            <h1 className="font-display text-[clamp(48px,7vw,104px)] leading-[0.95] tracking-tight text-ink mb-8 max-w-4xl">
               CLT <em className="italic text-money">ou</em> PJ.<br />
               Descubra em 60 segundos.
             </h1>
@@ -176,19 +176,19 @@ export default function Home() {
             <div className="flex flex-wrap gap-8 md:gap-10 pt-7 border-t border-rule">
               <div>
                 <div className="font-display text-3xl text-ink leading-none mb-1">2026</div>
-                <div className="text-xs uppercase tracking-wider text-ink-muted">Tabela atualizada</div>
+                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Tabela atualizada</div>
               </div>
               <div>
                 <div className="font-display text-3xl text-ink leading-none mb-1">R$ 5k</div>
-                <div className="text-xs uppercase tracking-wider text-ink-muted">Isenção total IR</div>
+                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Isenção total IR</div>
               </div>
               <div>
                 <div className="font-display text-3xl text-ink leading-none mb-1">3 min</div>
-                <div className="text-xs uppercase tracking-wider text-ink-muted">Para concluir</div>
+                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Para concluir</div>
               </div>
               <div>
                 <div className="font-display text-3xl text-ink leading-none mb-1">0</div>
-                <div className="text-xs uppercase tracking-wider text-ink-muted">Cadastros pedidos</div>
+                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Cadastros pedidos</div>
               </div>
             </div>
           </div>
