@@ -455,6 +455,43 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Conditional CTA for PJ > CLT */}
+            {pj.net > clt.net && (
+              <div className="mt-8 p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border-2 border-green-200">
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="text-2xl">💡</span>
+                  <div>
+                    <h3 className="text-lg font-bold text-green-900">
+                      PJ compensa no seu caso
+                    </h3>
+                    <p className="text-sm text-green-800 mt-1">
+                      Pelo cálculo, você ganharia aproximadamente{' '}
+                      <strong>R$ {(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>{' '}
+                      a mais por mês como PJ.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-green-100">
+                  <p className="text-sm text-gray-700 mb-3">
+                    Pra virar PJ você vai precisar abrir um CNPJ, escolher o regime tributário certo e fazer a contabilidade mensal.
+                    A <strong>Contabilizei</strong> cuida de tudo online — abertura grátis do CNPJ e planos mensais a partir de R$ 89.
+                  </p>
+                  <a
+                    href="/go/contabilizei"
+                    rel="sponsored nofollow"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold text-sm transition-colors"
+                  >
+                    Conhecer a Contabilizei
+                    <span>→</span>
+                  </a>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Conteúdo com link de parceria. Usar este link não muda o preço pra você e ajuda a manter a calculadora gratuita.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* CTA Section */}
             <div className="mt-12 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8 text-center">
               <h3 className="text-2xl font-bold text-gray-900 mb-4"> Quer abrir sua PJ com desconto?</h3>
