@@ -17,6 +17,7 @@ export default function Home() {
   const [pjRate, setPjRate] = useState('100');
   const [hoursPerMonth, setHoursPerMonth] = useState('160');
   const [showResults, setShowResults] = useState(false);
+  const [regime, setRegime] = useState('simples');
 
   const calculateINSS = (sal) => {
     const bands = [
@@ -157,8 +158,9 @@ export default function Home() {
         <Header />
 
         {/* Hero Section */}
-        <section className="border-b border-rule py-16 md:py-24">
-          <div className="max-w-6xl mx-auto px-6 md:px-8">
+        <section className="border-b border-rule py-16 md:py-24 relative">
+          <div className="absolute inset-0 opacity-[0.10] pointer-events-none z-0" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
+          <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
             <div className="eyebrow mb-7">
               <span className="eyebrow-dot"></span>
               <span>Atualizado · Lei 15.270/2025 vigente em 2026</span>
@@ -195,7 +197,7 @@ export default function Home() {
         </section>
 
         {/* Calculator Section */}
-        <section id="calc" className="border-b border-rule py-16 md:py-24">
+        <section id="calc" className="border-b border-rule py-16 md:py-24 bg-paper">
           <div className="max-w-6xl mx-auto px-6 md:px-8">
             <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6 mb-10 pb-5 border-b border-rule">
               <span className="font-mono text-sm text-ink-muted tracking-wide">§ 01</span>
@@ -226,7 +228,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="bg-paper-dark rounded p-5 mb-5">
+                <div className="mb-6">
                   <h4 className="font-display text-lg text-ink mb-4">Benefícios Mensais</h4>
                   <div className="space-y-4">
                     {[
@@ -263,9 +265,9 @@ export default function Home() {
                 <div className="mb-6">
                   <label className="text-sm text-ink-muted mb-2 block">Regime tributário</label>
                   <div className="flex border border-rule rounded overflow-hidden">
-                    <button type="button" className="flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 bg-ink text-paper">Simples</button>
-                    <button type="button" className="flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 text-ink-muted hover:bg-rule/30">Presumido</button>
-                    <button type="button" className="flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 text-ink-muted hover:bg-rule/30">MEI</button>
+                    <button type="button" onClick={() => setRegime('simples')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'simples' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Simples</button>
+                    <button type="button" onClick={() => setRegime('presumido')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'presumido' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Presumido</button>
+                    <button type="button" onClick={() => setRegime('mei')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'mei' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>MEI</button>
                   </div>
                 </div>
 
@@ -297,7 +299,7 @@ export default function Home() {
                 </div>
 
                 <div className="bg-money-light rounded p-5 mb-5">
-                  <h4 className="font-semibold text-ink mb-2">Faturamento Mensal</h4>
+                  <h4 className="font-display text-lg text-ink mb-2">Faturamento Mensal</h4>
                   <p className="font-display text-3xl text-money">
                     R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </p>
@@ -307,29 +309,34 @@ export default function Home() {
                   <div className="flex gap-2">
                     <AlertCircle className="text-hot flex-shrink-0 mt-0.5" size={20} />
                     <div>
-                      <p className="text-sm text-hot font-medium">Simples Nacional</p>
-                      <p className="text-xs text-hot/80 mt-1">Cálculo baseado no Anexo III (Alíquota 6%)</p>
+                      <p className="text-sm text-hot font-medium">
+                        {regime === 'simples' ? 'Simples Nacional' : regime === 'presumido' ? 'Lucro Presumido' : 'MEI'}
+                      </p>
+                      <p className="text-xs text-hot/80 mt-1">
+                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Alíquotas: 1.6% a 32% selon atividade' : 'Teto mensal: R$ 8.500'}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="mt-12 pt-8 border-t border-rule flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="font-display italic text-xl text-ink-muted">
-              "Não é sobre qual paga mais, é sobre qual faz sentido pra tua vida."
-            </p>
-            <button
-              onClick={handleCalculate}
-              className="bg-money hover:bg-money-hover text-white px-8 py-4 rounded font-medium transition-all"
-            >
-              Calcular comparativo
-            </button>
-          </div>
-          <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+            <div className="mt-12 pt-8 border-t border-rule flex flex-col md:flex-row items-center justify-between gap-6">
+                <p className="font-display italic text-xl text-ink-muted">
+                  "Não é sobre qual paga mais, é sobre qual faz sentido pra tua vida."
+                </p>
+                <button
+                  onClick={handleCalculate}
+                  className="bg-money hover:bg-money-hover text-white px-8 py-4 rounded font-medium transition-all"
+                >
+                  Calcular comparativo
+                </button>
+              </div>
+            </div>
+          </section>
 
-          <div className="max-w-6xl mx-auto px-6 md:px-8 relative">
-            <div className="absolute inset-0 opacity-[0.15] pointer-events-none" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
+          <section className="py-16 md:py-24 relative bg-paper-dark">
+            <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
+              <div className="absolute inset-0 opacity-[0.10] pointer-events-none z-0" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
 
             <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6 mb-10 pb-5 border-b border-rule">
               <span className="font-mono text-sm text-ink-muted tracking-wide">§ 02</span>
@@ -388,75 +395,77 @@ export default function Home() {
 
             {/* Detailed Breakdown */}
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-paper-dark border border-rule rounded-lg p-6">
+              <div className="bg-transparent border border-rule rounded-md p-6">
                 <h4 className="font-display text-xl text-ink mb-4">Detalhamento CLT</h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between py-2 border-b border-rule">
+                <div className="space-y-0 text-sm">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">Salário Bruto</span>
-                    <span className="font-semibold">R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-ink">R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">(-) INSS</span>
                     <span className="font-semibold text-hot">-R$ {clt.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">(-) IRPF</span>
                     <span className="font-semibold text-hot">-R$ {clt.irpf.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">(+) Benefícios</span>
                     <span className="font-semibold text-money">+R$ {clt.benefits.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">FGTS (8%)</span>
                     <span className="font-semibold text-money">R$ {clt.fgts.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">13º Salário (mensal)</span>
                     <span className="font-semibold text-money">R$ {clt.decimoTerceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">Férias (mensal)</span>
                     <span className="font-semibold text-money">R$ {clt.ferias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-3 bg-white rounded-lg px-3 mt-2">
+                  <div className="flex justify-between py-3 mt-2">
                     <span className="font-bold text-ink">Valor Líquido Total</span>
                     <span className="font-bold text-money text-lg">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-paper-dark border border-rule rounded-lg p-6">
+              <div className="bg-transparent border border-rule rounded-md p-6">
                 <h4 className="font-display text-xl text-ink mb-4">Detalhamento PJ</h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between py-2 border-b border-rule">
+                <div className="space-y-0 text-sm">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">Faturamento Bruto</span>
-                    <span className="font-semibold">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="font-semibold text-ink">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">(-) DAS Simples Nacional (6%)</span>
                     <span className="font-semibold text-hot">-R$ {pj.simplesDAS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
+                  <div className="flex justify-between py-2 border-b border-rule/50">
                     <span className="text-ink-muted">(-) INSS Pró-labore (11%)</span>
                     <span className="font-semibold text-hot">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-3 bg-white rounded-lg px-3 mt-2">
+                  <div className="flex justify-between py-3 mt-2">
                     <span className="font-bold text-ink">Total de Impostos</span>
                     <span className="font-bold text-hot">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-3 bg-white rounded-lg px-3">
+                  <div className="flex justify-between py-3">
                     <span className="font-bold text-ink">Valor Líquido Mensal</span>
                     <span className="font-bold text-money text-lg">R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Conditional CTA for PJ > CLT */}
-            {pj.net > clt.net && (
-              <section className="py-16 md:py-20 bg-money text-paper">
-                <div className="max-w-6xl mx-auto px-6 md:px-8">
+        {/* Conditional CTA for PJ > CLT */}
+        {pj.net > clt.net && (
+        <section className="py-16 md:py-20 bg-money text-paper">
+              <div className="max-w-6xl mx-auto px-6 md:px-8">
                   <div className="grid md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-center">
                     <div>
                       <div className="font-mono text-xs uppercase tracking-[0.15em] text-paper/60 mb-4">
@@ -499,26 +508,6 @@ export default function Home() {
                 </div>
               </section>
             )}
-
-            {/* CTA Section */}
-            <div className="mt-12">
-              <div className="bg-paper border border-rule rounded-lg p-8 text-center">
-                <h3 className="font-display text-3xl text-ink mb-4">Quer abrir sua PJ com desconto?</h3>
-                <p className="text-ink-muted mb-6 max-w-2xl mx-auto">
-                  Parceiros exclusivos com condições especiais para quem usa nossa calculadora
-                </p>
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <a href="#" className="bg-money text-white px-8 py-3 rounded font-medium hover:opacity-90 transition">
-                    Abrir Conta PJ com Cashback
-                  </a>
-                  <a href="#" className="border border-rule text-ink px-8 py-3 rounded font-medium hover:bg-white transition">
-                    Falar com Contador
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Info Section */}
         <section className="max-w-5xl mx-auto px-4 py-12 border-t border-rule">
