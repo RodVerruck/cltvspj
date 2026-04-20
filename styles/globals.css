@@ -40,6 +40,18 @@
 
 @layer components {
 
+  /* Drop Cap - Letra capitular do primeiro parágrafo */
+  .post-content > p:first-of-type::first-letter,
+  article > p:first-of-type::first-letter {
+    font-family: var(--f-display);
+    font-size: 5.5rem;
+    float: left;
+    line-height: 0.8;
+    margin: 0.1em 0.15em 0 0;
+    color: var(--money);
+    -webkit-text-stroke: 1px currentColor;
+  }
+
   /* Eyebrow — label editorial pequeno */
   .eyebrow {
     @apply inline-flex items-center gap-2 text-xs uppercase tracking-[0.12em] text-ink-muted font-medium;
