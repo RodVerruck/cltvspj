@@ -18,65 +18,117 @@ Evite erro no imposto e economize milhares de reais por ano escolhendo o anexo c
 
 ## TL;DR: Resumo Rápido
 
-**Se você tem pressa, aqui está o essencial:**
+<div className="tldr-card">
+  <strong>Se você tem pressa, aqui está o essencial:</strong>
+  
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <div>
+      <strong>Anexo I</strong>
+      <p>Comércio em geral (loja, e-commerce, distribuidora)</p>
+    </div>
+    <div>
+      <strong>Anexo II</strong>
+      <p>Indústria (fábrica, produção em série)</p>
+    </div>
+    <div>
+      <strong>Anexo III</strong>
+      <p>Serviços com Fator R >= 28% (dev, designer, consultoria)</p>
+    </div>
+    <div>
+      <strong>Anexo IV</strong>
+      <p>Serviços de construção civil</p>
+    </div>
+    <div>
+      <strong>Anexo V</strong>
+      <p>Serviços com Fator R < 28% (médico, advogado, arquiteto)</p>
+    </div>
+  </div>
 
-- **Anexo I**: Comércio em geral (loja, e-commerce, distribuidora)
-- **Anexo II**: Indústria (fábrica, produção em série)
-- **Anexo III**: Serviços com Fator R ≥ 28% (dev, designer, consultoria)
-- **Anexo IV**: Serviços de construção civil
-- **Anexo V**: Serviços com Fator R < 28% (médico, advogado, arquiteto)
+  <div className="mt-6 p-4 bg-paper border border-money rounded-lg">
+    <strong className="text-money font-mono text-sm">Regra de Ouro:</strong>
+    <div className="formula-display mt-2">
+      <span className="formula-text">Fator R = (Folha de Pagamento ÷ Faturamento) × 100</span>
+      <span className="formula-label">>= 28% = Anexo III (alíquotas menores)</span>
+      <span className="formula-label">< 28% = Anexo V (alíquotas maiores)</span>
+    </div>
+  </div>
 
-**Regra do Fator R:**
-```
-Fator R = (Folha de Pagamento ÷ Faturamento) × 100
-≥ 28% = Anexo III (alíquotas menores)
-< 28% = Anexo V (alíquotas maiores)
-```
-
-👉 **[Descubra seu anexo exato agora](/)**
+  <div className="mt-6 text-center">
+    <a href="/" className="btn-money">
+      Calcular meu Fator R
+    </a>
+  </div>
+</div>
 
 ---
 
 ## Passo a Passo: Descubra Seu Anexo em 3 Questões
 
-### 1️⃣ Sua atividade é comércio, indústria ou serviço?
+<div className="step-item mb-8 flex gap-4">
+  <div className="step-number bg-ink text-paper w-8 h-8 flex items-center justify-center rounded-full flex-shrink-0 font-mono text-sm">1</div>
+  <div className="step-content">
+    <h3 className="text-lg font-semibold mb-3">Sua atividade é comércio, indústria ou serviço?</h3>
+    
+    <p><strong>Comércio (Anexo I):</strong></p>
+    <ul className="ml-4 mb-3">
+      <li>Vende produtos prontos</li>
+      <li>Loja física ou online</li>
+      <li>Distribuidora, atacadista</li>
+    </ul>
+    
+    <p><strong>Indústria (Anexo II):</strong></p>
+    <ul className="ml-4 mb-3">
+      <li>Fabrica produtos</li>
+      <li>Transforma matéria-prima</li>
+      <li>Produção em série</li>
+    </ul>
+    
+    <p><strong>Serviço (Anexo III, IV ou V):</strong></p>
+    <ul className="ml-4">
+      <li>Presta serviços intelectuais</li>
+      <li>Trabalho com conhecimento</li>
+      <li>Consultoria, tecnologia, saúde</li>
+    </ul>
+  </div>
+</div>
 
-**Comércio (Anexo I):**
-- Vende produtos prontos
-- Loja física ou online
-- Distribuidora, atacadista
+<div className="step-item mb-8 flex gap-4">
+  <div className="step-number bg-ink text-paper w-8 h-8 flex items-center justify-center rounded-full flex-shrink-0 font-mono text-sm">2</div>
+  <div className="step-content">
+    <h3 className="text-lg font-semibold mb-3">Se é serviço, calcule seu Fator R</h3>
+    
+    <p><strong>Fórmula simples:</strong></p>
+    <div className="formula-display mb-4">
+      <span className="formula-text">Fator R = (Folha de Pagamento ÷ Faturamento) × 100</span>
+    </div>
+    
+    <p><strong>Exemplo prático:</strong></p>
+    <ul className="ml-4">
+      <li>Faturamento: R$ 10.000</li>
+      <li>Folha (seu pró-labore): R$ 3.000</li>
+      <li>Fator R = (3000 ÷ 10000) × 100 = <strong>30%</strong></li>
+    </ul>
+  </div>
+</div>
 
-**Indústria (Anexo II):**
-- Fabrica produtos
-- Transforma matéria-prima
-- Produção em série
-
-**Serviço (Anexo III, IV ou V):**
-- Presta serviços intelectuais
-- Trabalho com conhecimento
-- Consultoria, tecnologia, saúde
-
-### 2️⃣ Se é serviço, calcule seu Fator R
-
-**Fórmula simples:**
-```
-Fator R = (Folha de Pagamento ÷ Faturamento) × 100
-```
-
-**Exemplo prático:**
-- Faturamento: R$ 10.000
-- Folha (seu pró-labore): R$ 3.000
-- Fator R = (3000 ÷ 10000) × 100 = **30%**
-
-### 3️⃣ Aplique a regra
-
-**Fator R ≥ 28%?**
-- ✅ Use **Anexo III** (alíquotas de 6% a 33%)
-- Ex: Desenvolvedor que fatura R$ 10k e paga R$ 3k de pró-labore
-
-**Fator R < 28%?**
-- ✅ Use **Anexo V** (alíquotas de 15% a 30%)
-- Ex: Médico que fatura R$ 20k e paga R$ 3k de pró-labore
+<div className="step-item mb-8 flex gap-4">
+  <div className="step-number bg-ink text-paper w-8 h-8 flex items-center justify-center rounded-full flex-shrink-0 font-mono text-sm">3</div>
+  <div className="step-content">
+    <h3 className="text-lg font-semibold mb-3">Aplique a regra</h3>
+    
+    <p><strong>Fator R >= 28%?</strong></p>
+    <ul className="ml-4 mb-3">
+      <li>Use <strong>Anexo III</strong> (alíquotas de 6% a 33%)</li>
+      <li>Ex: Desenvolvedor que fatura R$ 10k e paga R$ 3k de pró-labore</li>
+    </ul>
+    
+    <p><strong>Fator R < 28%?</strong></p>
+    <ul className="ml-4">
+      <li>Use <strong>Anexo V</strong> (alíquotas de 15% a 30%)</li>
+      <li>Ex: Médico que fatura R$ 20k e paga R$ 3k de pró-labore</li>
+    </ul>
+  </div>
+</div>
 
 👉 **[Simular impostos em 30 segundos](/)**
 
@@ -106,69 +158,107 @@ Fator R = (Folha de Pagamento ÷ Faturamento) × 100
 
 ## Exemplos Práticos por Profissão
 
-### 💻 Desenvolvedor de Software
-- **Faturamento:** R$ 15.000
-- **Pró-labore:** R$ 5.000 (33%)
-- **Fator R:** 33% ≥ 28%
-- **Anexo correto:** **III**
-- **Economia:** R$ 1.350/mês vs Anexo V
+<div className="profession-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div className="profession-card flex flex-col p-4 border border-rule rounded-md bg-white mb-4">
+    <div className="prof-name font-bold text-ink mb-2">Desenvolvedor de Software</div>
+    <div className="text-sm text-ink-muted mb-1">Faturamento: <strong>R$ 15.000</strong></div>
+    <div className="text-sm text-ink-muted mb-1">Pró-labore: <strong>R$ 5.000</strong></div>
+    <div className="text-sm font-mono bg-paper-dark p-1 rounded w-fit my-2">Fator R: 33% (Anexo III)</div>
+    <div className="prof-result text-money font-medium mt-auto pt-2 border-t border-rule">Economia: R$ 1.350/mês vs Anexo V</div>
+  </div>
 
-### 🏥 Médico
-- **Faturamento:** R$ 25.000
-- **Pró-labore:** R$ 5.000 (20%)
-- **Fator R:** 20% < 28%
-- **Anexo correto:** **V**
-- **Motivo:** Baixo percentual de folha
+  <div className="profession-card flex flex-col p-4 border border-rule rounded-md bg-white mb-4">
+    <div className="prof-name font-bold text-ink mb-2">Médico</div>
+    <div className="text-sm text-ink-muted mb-1">Faturamento: <strong>R$ 25.000</strong></div>
+    <div className="text-sm text-ink-muted mb-1">Pró-labore: <strong>R$ 5.000</strong></div>
+    <div className="text-sm font-mono bg-paper-dark p-1 rounded w-fit my-2">Fator R: 20% (Anexo V)</div>
+    <div className="prof-result text-hot font-medium mt-auto pt-2 border-t border-rule">Motivo: Baixo percentual de folha</div>
+  </div>
 
-### 🎨 Designer Gráfico
-- **Faturamento:** R$ 8.000
-- **Pró-labore:** R$ 3.000 (37.5%)
-- **Fator R:** 37.5% ≥ 28%
-- **Anexo correto:** **III**
-- **Economia:** R$ 720/mês vs Anexo V
+  <div className="profession-card flex flex-col p-4 border border-rule rounded-md bg-white mb-4">
+    <div className="prof-name font-bold text-ink mb-2">Designer Gráfico</div>
+    <div className="text-sm text-ink-muted mb-1">Faturamento: <strong>R$ 8.000</strong></div>
+    <div className="text-sm text-ink-muted mb-1">Pró-labore: <strong>R$ 3.000</strong></div>
+    <div className="text-sm font-mono bg-paper-dark p-1 rounded w-fit my-2">Fator R: 37.5% (Anexo III)</div>
+    <div className="prof-result text-money font-medium mt-auto pt-2 border-t border-rule">Economia: R$ 720/mês vs Anexo V</div>
+  </div>
 
-### ⚖️ Advogado
-- **Faturamento:** R$ 20.000
-- **Pró-labore:** R$ 4.000 (20%)
-- **Fator R:** 20% < 28%
-- **Anexo correto:** **III**
-- **Motivo:** Estrutura enxuta
+  <div className="profession-card flex flex-col p-4 border border-rule rounded-md bg-white mb-4">
+    <div className="prof-name font-bold text-ink mb-2">Advogado</div>
+    <div className="text-sm text-ink-muted mb-1">Faturamento: <strong>R$ 20.000</strong></div>
+    <div className="text-sm text-ink-muted mb-1">Pró-labore: <strong>R$ 4.000</strong></div>
+    <div className="text-sm font-mono bg-paper-dark p-1 rounded w-fit my-2">Fator R: 20% (Anexo V)</div>
+    <div className="prof-result text-hot font-medium mt-auto pt-2 border-t border-rule">Motivo: Estrutura enxuta</div>
+  </div>
+</div>
 
 ---
 
 ## Erros Comuns que Custam Caro
 
-### ❌ Usar Anexo V sendo Anexo III
-**Custo:** Até 40% a mais de imposto
-**Ex:** Dev pagando 15% quando poderia pagar 6%
+<div className="mb-6 p-4 bg-hot-light border-l-4 border-hot rounded-r-md">
+  <p className="font-bold text-lg mb-2">Usar Anexo V sendo Anexo III</p>
+  <p className="mb-2"><strong>Custo:</strong> Até 40% a mais de imposto</p>
+  <p><strong>Exemplo:</strong> Dev pagando 15% quando poderia pagar 6%</p>
+</div>
 
-### ❌ Não declarar pró-labore
-**Problema:** Fator R fica 0%, caindo no Anexo V
-**Solução:** Definir pró-labore adequado
+<div className="mb-6 p-4 bg-hot-light border-l-4 border-hot rounded-r-md">
+  <p className="font-bold text-lg mb-2">Não declarar pró-labore</p>
+  <p className="mb-2"><strong>Problema:</strong> Fator R fica 0%, caindo no Anexo V</p>
+  <p><strong>Solução:</strong> Definir pró-labore adequado</p>
+</div>
 
-### ❌ Misturar atividades
-**Erro:** Comércio e serviço no mesmo CNPJ
-**Impacto:** Anexo mais caro para tudo
+<div className="mb-6 p-4 bg-hot-light border-l-4 border-hot rounded-r-md">
+  <p className="font-bold text-lg mb-2">Misturar atividades</p>
+  <p className="mb-2"><strong>Erro:</strong> Comércio e serviço no mesmo CNPJ</p>
+  <p><strong>Impacto:</strong> Anexo mais caro para tudo</p>
+</div>
 
-### ❌ Não recalcular anualmente
-**Risco:** Fator R muda, anexo pode mudar
-**Recomendação:** Revisar todo ano
+<div className="mb-6 p-4 bg-hot-light border-l-4 border-hot rounded-r-md">
+  <p className="font-bold text-lg mb-2">Não recalcular anualmente</p>
+  <p className="mb-2"><strong>Risco:</strong> Fator R muda, anexo pode mudar</p>
+  <p><strong>Recomendação:</strong> Revisar todo ano</p>
+</div>
 
 ---
 
 ## Perguntas Frequentes
 
-### "Posso mudar de anexo no ano seguinte?"
-Sim. Você pode alterar o anexo em janeiro de cada ano.
+<details className="mb-6">
+  <summary className="font-display text-xl mb-2 cursor-pointer text-ink hover:text-money transition-colors">
+    "Posso mudar de anexo no ano seguinte?"
+  </summary>
+  <p className="text-ink-muted mt-2">
+    Sim. Você pode alterar o anexo em janeiro de cada ano.
+  </p>
+</details>
 
-### "E se meu Fator R variar durante o ano?"
-Use a média do ano anterior para definir o anexo atual.
+<details className="mb-6">
+  <summary className="font-display text-xl mb-2 cursor-pointer text-ink hover:text-money transition-colors">
+    "E se meu Fator R variar durante o ano?"
+  </summary>
+  <p className="text-ink-muted mt-2">
+    Use a média do ano anterior para definir o anexo atual.
+  </p>
+</details>
 
-### "Tenho que comprovar o Fator R?"
-Sim. Mantenha os registros de folha e faturamento.
+<details className="mb-6">
+  <summary className="font-display text-xl mb-2 cursor-pointer text-ink hover:text-money transition-colors">
+    "Tenho que comprovar o Fator R?"
+  </summary>
+  <p className="text-ink-muted mt-2">
+    Sim. Mantenha os registros de folha e faturamento.
+  </p>
+</details>
 
-### "E se eu errar o anexo?"
-Você pode retificar, mas pode pagar multas e juros.
+<details className="mb-6">
+  <summary className="font-display text-xl mb-2 cursor-pointer text-ink hover:text-money transition-colors">
+    "E se eu errar o anexo?"
+  </summary>
+  <p className="text-ink-muted mt-2">
+    Você pode retificar, mas pode pagar multas e juros.
+  </p>
+</details>
 
 ---
 

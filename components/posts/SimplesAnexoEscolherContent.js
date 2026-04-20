@@ -65,66 +65,93 @@ function FatorRCard() {
   const isOrange = fr !== null && fr < 28;
 
   return (
-    <div className="bg-blue-50 border-2 border-blue-300 rounded-2xl p-8 my-12 shadow-lg">
-      <div className="fatorr-header">
-        <span className="fatorr-label">Fórmula do Fator R</span>
-        <span className="fatorr-badge">Conceito central</span>
+    <div className="bg-money-light border border-money rounded-2xl p-8 my-12 shadow-lg">
+      <div className="flex justify-between items-center mb-6">
+        <span className="font-mono text-sm text-money font-semibold">Fórmula do Fator R</span>
+        <span className="bg-money text-paper px-3 py-1 rounded-full text-xs font-medium">Conceito central</span>
       </div>
-      <div className="fatorr-formula-area">
-        <div className="formula-display">
-          <div className="formula-eq">
-            <span>Fator R =</span>
-            <span className="frac">
-              <span className="frac-num">Folha de Pagamento</span>
-              <span className="frac-bar" />
-              <span className="frac-den">Faturamento</span>
-            </span>
-            <span className="formula-times">×</span>
-            <span>100</span>
+
+      <div className="mb-8">
+        <div className="bg-paper border border-rule rounded-lg p-6 text-center">
+          <div className="flex items-center justify-center gap-4 text-lg font-mono">
+            <span className="text-ink">Fator R =</span>
+            <div className="flex flex-col items-center">
+              <span className="text-ink font-semibold">Folha de Pagamento</span>
+              <div className="w-full h-0.5 bg-rule my-1"></div>
+              <span className="text-ink font-semibold">Faturamento</span>
+            </div>
+            <span className="text-ink">×</span>
+            <span className="text-ink font-semibold">100</span>
           </div>
         </div>
-        <div className="threshold-row">
-          <div className="threshold-card threshold-card--green">
-            <div className="threshold-val">≥ 28%</div>
-            <div className="threshold-name">Anexo III</div>
-            <div className="threshold-who">Dev · Designer · Consultoria</div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <div className={`p-4 rounded-lg border ${isGreen ? 'bg-money/10 border-money' : 'bg-paper border-rule'}`}>
+            <div className="flex items-center gap-2 mb-2">
+              <div className={`w-2 h-2 rounded-full ${isGreen ? 'bg-money' : 'bg-ink3'}`}></div>
+              <span className={`font-mono font-bold ${isGreen ? 'text-money' : 'text-ink'}`}>>= 28%</span>
+            </div>
+            <div className={`font-semibold ${isGreen ? 'text-money' : 'text-ink'}`}>Anexo III</div>
+            <div className="text-sm text-ink3 mt-1">Dev · Designer · Consultoria</div>
           </div>
-          <div className="threshold-card threshold-card--orange">
-            <div className="threshold-val">{'< 28%'}</div>
-            <div className="threshold-name">Anexo V</div>
-            <div className="threshold-who">Médico · Advogado · Arquiteto</div>
+
+          <div className={`p-4 rounded-lg border ${isOrange ? 'bg-hot-light border-hot' : 'bg-paper border-rule'}`}>
+            <div className="flex items-center gap-2 mb-2">
+              <div className={`w-2 h-2 rounded-full ${isOrange ? 'bg-hot' : 'bg-ink3'}`}></div>
+              <span className={`font-mono font-bold ${isOrange ? 'text-hot' : 'text-ink'}`}>< 28%</span>
+            </div>
+            <div className={`font-semibold ${isOrange ? 'text-hot' : 'text-ink'}`}>Anexo V</div>
+            <div className="text-sm text-ink3 mt-1">Médico · Advogado · Arquiteto</div>
           </div>
         </div>
       </div>
-      <div className="fatorr-calc">
-        <h3 className="text-xl font-semibold mb-4 text-primary">Calcule o seu agora</h3>
-        <div className="calc-inputs">
-          <div className="input-group">
-            <label>Faturamento mensal (R$)</label>
-            <input type="number" placeholder="ex: 10000" value={fat} onChange={e => setFat(e.target.value)} />
+
+      <div>
+        <h3 className="text-xl font-semibold mb-4 text-ink">Calcule o seu agora</h3>
+
+        <div className="space-y-3 mb-6">
+          <div className="flex justify-between items-center border-b border-rule py-2">
+            <label className="text-ink font-medium">Faturamento mensal</label>
+            <input
+              type="number"
+              placeholder="ex: 10000"
+              value={fat}
+              onChange={e => setFat(e.target.value)}
+              className="text-right w-32 px-3 py-1 border border-rule rounded bg-paper text-ink font-mono"
+            />
           </div>
-          <div className="input-group">
-            <label>Pró-labore mensal (R$)</label>
-            <input type="number" placeholder="ex: 3000" value={pro} onChange={e => setPro(e.target.value)} />
+
+          <div className="flex justify-between items-center border-b border-rule py-2">
+            <label className="text-ink font-medium">Pró-labore mensal</label>
+            <input
+              type="number"
+              placeholder="ex: 3000"
+              value={pro}
+              onChange={e => setPro(e.target.value)}
+              className="text-right w-32 px-3 py-1 border border-rule rounded bg-paper text-ink font-mono"
+            />
           </div>
         </div>
-        <div className={`calc-result ${isGreen ? 'calc-result--green' : isOrange ? 'calc-result--orange' : ''}`}>
-          <div>
-            <div className="result-label">Seu Fator R</div>
-            <div className={`result-val ${isGreen ? 'result-val--green' : isOrange ? 'result-val--orange' : ''}`}>
-              {fr !== null ? `${fr.toFixed(1)}%` : '—'}
+
+        <div className={`p-4 rounded-lg ${isGreen ? 'bg-money/10 border border-money' : isOrange ? 'bg-hot-light border border-hot' : 'bg-paper border border-rule'}`}>
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="text-sm text-ink3 mb-1">Seu Fator R</div>
+              <div className={`text-2xl font-bold font-mono ${isGreen ? 'text-money' : isOrange ? 'text-hot' : 'text-ink'}`}>
+                {fr !== null ? `${fr.toFixed(1)}%` : '—'}
+              </div>
             </div>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <div className={`result-anexo ${isGreen ? 'result-anexo--green' : isOrange ? 'result-anexo--orange' : 'result-anexo--neutral'}`}>
-              {fr === null ? 'preencha acima' : isGreen ? 'Anexo III' : 'Anexo V'}
-            </div>
-            <div className="result-note">
-              {fr === null
-                ? 'insira faturamento e pró-labore'
-                : isGreen
-                  ? 'Alíquota inicial de 6% — bem posicionado'
-                  : 'Alíquota inicial de 15% — ajuste o pró-labore'}
+            <div className="text-right">
+              <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${isGreen ? 'bg-money text-paper' : isOrange ? 'bg-hot text-paper' : 'bg-ink3 text-paper'}`}>
+                {fr === null ? 'preencha acima' : isGreen ? 'Anexo III' : 'Anexo V'}
+              </div>
+              <div className="text-sm text-ink3 mt-2 max-w-xs">
+                {fr === null
+                  ? 'insira faturamento e pró-labore'
+                  : isGreen
+                    ? 'Alíquota inicial de 6% — bem posicionado'
+                    : 'Alíquota inicial de 15% — ajuste o pró-labore'}
+              </div>
             </div>
           </div>
         </div>
