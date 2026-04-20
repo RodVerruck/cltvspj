@@ -323,18 +323,8 @@ export default function Home() {
       {/* Results Section */ }
   {
     showResults && (
-      <section className="py-20 md:py-28 bg-paper-dark border-b border-rule-strong relative overflow-hidden">
-        {/* Grid pattern background */}
-        <div
-          className="absolute inset-0 opacity-30 pointer-events-none"
-          style={{
-            backgroundImage: `
-                linear-gradient(#d4cdbe 1px, transparent 1px),
-                linear-gradient(90deg, #d4cdbe 1px, transparent 1px)
-              `,
-            backgroundSize: '48px 48px',
-          }}
-        ></div>
+      <section className="bg-paper-dark border-b border-rule-strong relative overflow-hidden py-24">
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
 
         <div className="max-w-6xl mx-auto px-6 md:px-8 relative">
           <div className="section-head">
@@ -348,8 +338,8 @@ export default function Home() {
             <span className="font-display italic text-2xl md:text-3xl text-ink-muted block mb-2">
               {pj.net > clt.net ? 'PJ paga, no seu caso,' : 'CLT paga, no seu caso,'}
             </span>
-            <span className={`font-display tracking-editorial block mb-3 text-display-xl ${pj.net > clt.net ? 'text-money' : 'text-hot'
-              }`}>
+            <span className={`font-display text-[clamp(80px,14vw,200px)] leading-[0.9] tracking-tight ${pj.net > clt.net ? 'text-money' : 'text-hot'
+              } block my-3`}>
               R$ {Math.abs(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
             </span>
             <span className="font-display italic text-2xl md:text-3xl text-ink-muted block">
@@ -370,7 +360,7 @@ export default function Home() {
           </div>
 
           {/* COMPARE */}
-          <div className="grid md:grid-cols-[1fr_auto_1fr] gap-8 pt-12 border-t border-rule items-start">
+          <div className="result-compare grid md:grid-cols-[1fr_auto_1fr] gap-8 pt-12 border-t border-rule items-start">
             <div className={pj.net <= clt.net ? 'md:order-1' : ''}>
               <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como CLT</div>
               <div className={`font-display text-5xl md:text-6xl leading-none mb-2 tracking-editorial ${clt.net >= pj.net ? 'text-money' : 'text-ink'
@@ -380,7 +370,7 @@ export default function Home() {
               <div className="text-sm text-ink-muted">líquido + benefícios, já com Lei 15.270</div>
             </div>
 
-            <div className="hidden md:block w-px bg-rule min-h-[120px]"></div>
+            <div className="w-px bg-rule hidden md:block"></div>
 
             <div className={pj.net <= clt.net ? 'md:order-0' : ''}>
               <div className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted mb-3">Como PJ</div>
