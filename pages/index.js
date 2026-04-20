@@ -20,10 +20,10 @@ export default function Home() {
 
   const calculateINSS = (sal) => {
     const bands = [
-      { limit: 1518.00, rate: 0.075 },
-      { limit: 2793.88, rate: 0.09 },
-      { limit: 4190.83, rate: 0.12 },
-      { limit: 8157.41, rate: 0.14 },
+      { limit: 1518.00, rate: 0.075 }, // TODO: validar valor oficial 2026
+      { limit: 2793.88, rate: 0.09 }, // TODO: validar valor oficial 2026
+      { limit: 4190.83, rate: 0.12 }, // TODO: validar valor oficial 2026
+      { limit: 8157.41, rate: 0.14 }, // TODO: validar teto 2026
     ];
     let inss = 0;
     let prev = 0;
@@ -67,10 +67,10 @@ export default function Home() {
     const inss = calculateINSS(sal);
     const irpfBase = sal - inss;
     let irpfTradicional = 0;
-    if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
-    else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
-    else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44;
-    else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44;
+    if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00; // TODO: validar valor oficial 2026
+    else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77; // TODO: validar valor oficial 2026
+    else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44; // TODO: validar valor oficial 2026
+    else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44; // TODO: validar valor oficial 2026
 
     // Aplicar redutor da Lei 15.270/2025
     const irpf = aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
@@ -101,7 +101,7 @@ export default function Home() {
     // DAS Simples Nacional Anexo III (6%) — cobre IRPJ, CSLL, PIS, COFINS, CPP e ISS
     const simplesDAS = monthlyGross * 0.06;
     // INSS sobre pró-labore mínimo (salário mínimo × 11% — parcela do segurado)
-    const inssProLabore = Math.min(monthlyGross, 1518.00) * 0.11;
+    const inssProLabore = Math.min(monthlyGross, 1518.00) * 0.11; // TODO: validar salário mínimo 2026
 
     const totalTaxes = simplesDAS + inssProLabore;
     const netMonthly = monthlyGross - totalTaxes;
