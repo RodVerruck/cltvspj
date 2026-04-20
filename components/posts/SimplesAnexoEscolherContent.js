@@ -43,7 +43,7 @@ function TLDRCard() {
           </p>
         </div>
         <div className="tldr-cta-row">
-          <Link href="/" className="btn-primary">
+          <Link href="#fator-r" className="btn-primary">
             Calcular meu Fator R
             <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 8h10M9 4l4 4-4 4" />
@@ -65,7 +65,7 @@ function FatorRCard() {
   const isOrange = fr !== null && fr < 28;
 
   return (
-    <div className="fatorr-wrap">
+    <div className="bg-blue-50 border-2 border-blue-300 rounded-2xl p-8 my-12 shadow-lg">
       <div className="fatorr-header">
         <span className="fatorr-label">Fórmula do Fator R</span>
         <span className="fatorr-badge">Conceito central</span>
@@ -97,7 +97,7 @@ function FatorRCard() {
         </div>
       </div>
       <div className="fatorr-calc">
-        <p className="calc-label">Calcule o seu agora</p>
+        <h3 className="text-xl font-semibold mb-4 text-primary">Calcule o seu agora</h3>
         <div className="calc-inputs">
           <div className="input-group">
             <label>Faturamento mensal (R$)</label>
@@ -256,6 +256,16 @@ export default function SimplesAnexoEscolherContent() {
 
       <div className="section-divider" />
 
+      <section id="introducao" className="content-section">
+        <p className="text-lg text-muted-foreground mb-6">
+          Sabemos que a sopa de letrinhas da Receita Federal pode assustar, mas vamos
+          resolver isso juntos de forma simples. O Fator R é o conceito central que
+          define o seu anexo, e entender ele pode economizar milhares de reais por ano.
+        </p>
+      </section>
+
+      <div className="section-divider" />
+
       <section id="passo-a-passo" className="content-section">
         <h2 className="section-h2">Passo a passo: descubra seu anexo em 3 perguntas</h2>
         <div className="steps-list">
@@ -322,6 +332,22 @@ export default function SimplesAnexoEscolherContent() {
         <h2 className="section-h2">O que é o Fator R?</h2>
         <p className="section-lead">O conceito central que define o seu anexo — e consequentemente sua carga tributária.</p>
         <FatorRCard />
+        <div className="context-box" style={{
+          background: 'var(--blue-light)',
+          border: '0.5px solid var(--blue-border)',
+          borderLeft: '3px solid var(--blue)',
+          borderRadius: '0 10px 10px 0',
+          padding: '16px 20px',
+          margin: '20px 0',
+          fontSize: 14,
+          lineHeight: 1.6,
+          color: 'var(--blue-text)'
+        }}>
+          <strong>Por que isso existe?</strong> O governo criou o Fator R para incentivar
+          empresas de serviços de alto valor intelectual a pagarem salários (pró-labore)
+          e gerarem empregos. Se você 'valoriza' sua equipe (ou a si mesmo) pagando um
+          pró-labore de pelo menos 28%, você é 'premiado' com a alíquota menor do Anexo III.
+        </div>
       </section>
 
       <div className="section-divider" />
