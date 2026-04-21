@@ -624,8 +624,8 @@ export default function Post({ post, relatedPosts }) {
           <div className="max-w-3xl mx-auto px-6 md:px-8">
             <div className="flex items-center gap-2 font-mono text-xs text-ink-muted uppercase tracking-widest mb-6">
               <a href="/blog" className="hover:text-money transition-colors">Blog</a>
-              <span className="text-ink-fade">·</span>
-              <span>{post.readingTime || '5 min'}</span>
+              <span className="text-ink-fade">→</span>
+              <span>{post.readingTime || '5 min'} de leitura</span>
             </div>
 
             <h1 className="font-display text-[clamp(40px,5vw,72px)] leading-[0.95] tracking-[-0.03em] text-ink [-webkit-text-stroke:0.5px_currentColor] [text-shadow:0_0_1px_currentColor] mb-6">
@@ -636,21 +636,21 @@ export default function Post({ post, relatedPosts }) {
               {post.description}
             </p>
 
-            <div className="font-mono text-xs uppercase tracking-widest text-ink-muted border-y border-rule py-4 mb-12 flex flex-wrap items-center gap-4">
-              <div className="font-mono text-xs text-ink-muted tracking-wide">
+            <div className="flex items-center gap-3 pt-6 border-t border-rule">
+              <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                 Atualizado {post.date}
-              </div>
-              <span className="text-ink-fade text-xs">·</span>
-              <div className="font-mono text-xs text-ink-muted tracking-wide">
+              </span>
+              <span className="text-rule">—</span>
+              <span className="font-mono text-xs uppercase tracking-widest text-ink-fade">
                 Calculadora CLT vs PJ
-              </div>
+              </span>
             </div>
           </div>
         </div>
 
         {/* POST BODY */}
-        <div className="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-16">
-          <div className="post-content max-w-[680px] mx-auto first-letter:font-display first-letter:text-[6rem] first-letter:text-money first-letter:float-left first-letter:leading-[0.65] first-letter:mr-3 first-letter:mt-1 first-letter:mb-[-10px] first-letter:[-webkit-text-stroke:1px_currentColor]">
+        <div className="max-w-3xl mx-auto px-6 md:px-8 pt-16 pb-20 md:pt-20 md:pb-28">
+          <div className="post-content max-w-2xl mx-auto first-letter:font-display first-letter:text-[6rem] first-letter:text-money first-letter:float-left first-letter:leading-[0.65] first-letter:mr-3 first-letter:mt-1 first-letter:mb-[-10px] first-letter:[-webkit-text-stroke:1px_currentColor]">
             {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
               <SimplesAnexoEscolherContent />
             ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
@@ -673,21 +673,36 @@ export default function Post({ post, relatedPosts }) {
 
         {/* POSTS RELACIONADOS */}
         {relatedPosts && relatedPosts.length > 0 && (
-          <div className="border-t border-rule py-12 md:py-16 bg-paper-dark">
+          <div className="border-t border-rule py-16 bg-paper-dark">
             <div className="max-w-3xl mx-auto px-6 md:px-8">
-              <div className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-8">
-                Continue lendo
+              <div className="section-head mb-10">
+                <span className="section-num">→</span>
+                <h3 className="font-display text-2xl tracking-editorial text-ink">Continue lendo</h3>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {relatedPosts.map(p => (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {relatedPosts.slice(0, 2).map((p, i) => (
                   <a key={p.slug} href={`/blog/${p.slug}`} className="group block">
-                    <div className="font-mono text-xs text-ink-muted mb-2 tracking-wide">
+                    <div
+                      className="w-full h-32 rounded mb-4 overflow-hidden relative"
+                      style={{
+                        background: i === 0
+                          ? 'linear-gradient(135deg, #0c4a3e 0%, #1a1614 100%)'
+                          : 'linear-gradient(135deg, #c2410c 0%, #1a1614 100%)',
+                      }}
+                    >
+                      <span className="absolute inset-0 flex items-center justify-center font-display italic text-7xl text-paper/20">
+                        {['§', '%'][i]}
+                      </span>
+                    </div>
+                    <div className="font-mono text-xs text-ink-muted tracking-wide mb-2 uppercase">
                       {p.date}
                     </div>
-                    <h3 className="font-display text-xl tracking-editorial text-ink group-hover:text-money transition-colors leading-tight mb-1">
+                    <h4 className="font-display text-xl tracking-editorial text-ink group-hover:text-money transition-colors leading-snug mb-2">
                       {p.title}
-                    </h3>
-                    <p className="text-sm text-ink-muted line-clamp-2">{p.description}</p>
+                    </h4>
+                    <p className="text-sm text-ink-muted line-clamp-2 leading-relaxed">
+                      {p.description}
+                    </p>
                   </a>
                 ))}
               </div>

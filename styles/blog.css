@@ -156,27 +156,44 @@
   color: var(--money);
 }
 
+.post-content p > strong:only-child,
+.post-content p > strong:last-child {
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink2);
+  display: block;
+  margin-bottom: 0.5rem;
+  margin-top: 1.5rem;
+}
+
 .post-content ol li::marker {
   font-family: var(--f-mono);
   font-size: 0.85em;
   color: var(--ink3);
 }
 
-/* BLOCKQUOTE */
 .post-content blockquote {
-  border-left: 2px solid var(--money);
-  padding: 1.5rem 2rem;
+  border-left: 3px solid var(--money);
+  padding: 1.25rem 1.5rem;
   margin: 2.5rem 0;
-  background: rgba(12, 74, 62, 0.15);
-  border-radius: 0 8px 8px 0;
+  background: var(--money-light);
+  border-radius: 0 4px 4px 0;
 }
 
 .post-content blockquote p {
   font-family: var(--f-display);
-  font-size: 1.35rem;
-  color: var(--ink);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--money);
   margin-bottom: 0;
-  line-height: 1.45;
+  line-height: 1.6;
+}
+
+.post-content blockquote strong {
+  color: var(--money);
 }
 
 /* TABLES */
