@@ -619,63 +619,33 @@ export default function Post({ post, relatedPosts }) {
       <Header />
 
       <main>
-        {/* POST HEADER — Every-style */}
-        <div className="pt-16 md:pt-24 pb-12 md:pb-16">
-          <div className="max-w-3xl mx-auto px-6 md:px-8">
-            {/* Kicker */}
-            <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest mb-8" style={{color: '#6b6357'}}>
-              <a href="/blog" className="hover:text-money transition-colors">Blog</a>
-              <span style={{color: '#d4cdbe'}}>/</span>
-              <span>{post.readingTime || '5 min'} de leitura</span>
-            </div>
+        {/* POST HEADER */}
+        <div className="max-w-[1120px] mx-auto px-6 pt-16 pb-12 border-b border-rule">
+          <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-8 flex items-center gap-2">
+            <a href="/blog" className="hover:text-money transition-colors">Blog</a>
+            <span className="text-ink-fade">·</span>
+            <span>{post.readingTime || '5 min'} de leitura</span>
+          </div>
 
-            {/* Título monumental */}
-            <h1
-              className="leading-[1.02] mb-8"
-              style={{
-                fontFamily: "'Instrument Serif', Georgia, serif",
-                fontSize: 'clamp(40px, 7vw, 80px)',
-                textWrap: 'balance',
-                letterSpacing: '-0.025em',
-                fontWeight: 400,
-                color: '#1a1614',
-              }}
-            >
-              {post.title}
-            </h1>
+          <h1 className="font-display text-[clamp(36px,5.5vw,64px)] leading-[1.05] tracking-[-0.02em] text-ink max-w-[22ch] text-balance mb-5">
+            {post.title}
+          </h1>
 
-            {/* Descrição grande em serif italic */}
-            <p
-              className="leading-snug mb-10"
-              style={{
-                fontFamily: "'Newsreader', Georgia, serif",
-                fontSize: 'clamp(20px, 2.5vw, 26px)',
-                fontStyle: 'italic',
-                maxWidth: '42ch',
-                textWrap: 'balance',
-                color: '#4a423c',
-              }}
-            >
-              {post.description}
-            </p>
+          <p className="text-lg text-ink-muted leading-relaxed mb-8 max-w-2xl">
+            {post.description}
+          </p>
 
-            {/* Byline */}
-            <div className="flex items-center gap-4 pt-6 border-t" style={{borderColor: '#d4cdbe'}}>
-              <div className="font-mono text-xs uppercase tracking-widest" style={{color: '#6b6357'}}>
-                Atualizado {post.date}
-              </div>
-              <span style={{color: '#d4cdbe'}}>—</span>
-              <div className="font-mono text-xs uppercase tracking-widest" style={{color: '#8a827a'}}>
-                Calculadora CLT vs PJ
-              </div>
-            </div>
+          <div className="flex items-center gap-4 pt-6 mt-8 border-t border-rule font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted">
+            <span>Atualizado {post.date}</span>
+            <span>—</span>
+            <span>Calculadora CLT vs PJ</span>
           </div>
         </div>
 
         {/* BODY */}
         <div className="pb-20 md:pb-28">
-          <div className="max-w-3xl mx-auto px-6 md:px-8">
-            <div className="post-content mx-auto">
+          <div className="max-w-[1120px] mx-auto px-6">
+            <div className="post-content">
               {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
                 <SimplesAnexoEscolherContent />
               ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
@@ -685,15 +655,13 @@ export default function Post({ post, relatedPosts }) {
               )}
             </div>
 
-            {/* CTA afiliado logo após o artigo */}
-            <div className="max-w-xl mx-auto mt-16">
-              <AffiliateCTA
-                partner="contabilizei"
-                title="Decidiu virar PJ? Precisa de contador."
-                description="A Contabilizei abre seu CNPJ, cuida do DAS mensal, pró-labore e obrigações fiscais. Plano a partir de R$ 89/mês."
-                buttonText="Conhecer Contabilizei"
-              />
-            </div>
+            {/* CTA afiliado */}
+            <AffiliateCTA
+              partner="contabilizei"
+              title="Decidiu virar PJ? Precisa de contador."
+              description="A Contabilizei abre seu CNPJ, cuida do DAS mensal, pró-labore e obrigações fiscais. Plano a partir de R$ 89/mês."
+              buttonText="Conhecer Contabilizei"
+            />
           </div>
         </div>
 
