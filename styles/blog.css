@@ -32,14 +32,13 @@
   width: 100%;
   font-family: var(--f-sans);
   font-size: 1.0625rem;
-  /* 17px */
   line-height: 1.75;
   color: var(--ink);
   font-feature-settings: "kern", "liga", "onum";
 }
 
 /* Tudo dentro do post fica restrito a 680px, centralizado */
-.post-content>* {
+.post-content > * {
   max-width: 680px;
   margin-left: auto;
   margin-right: auto;
@@ -47,31 +46,25 @@
   padding-right: 24px;
 }
 
-/* Classes para quebrar a restrição e ir de ponta a ponta */
-.post-content>.align-wide {
-  max-width: 960px;
-}
-
-.post-content>.align-full {
-  max-width: 100%;
+/* A MÁGICA: Essa regra ganha em especificidade (0,2,0) e liberta as bandas */
+.post-content > .band-breakout {
+  max-width: 100vw;
+  width: 100vw;
   padding-left: 0;
   padding-right: 0;
-}
-
-/* ═══ UTILITÁRIO FULL-WIDTH PARA MDX ═══ */
-.band-breakout {
-  width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
 }
+
 .band-inner {
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 40px;
 }
+
 @media (max-width: 900px) {
   .band-inner { padding: 0 24px; }
 }
@@ -328,12 +321,12 @@
 
 /* ═══ COMPONENTES V3 (CALLOUT, STAT, QUOTE) ════════════════ */
 
-/* Callout Inline */
+/* Callout Inline (Fica na coluna de 680px) */
 .callout {
   background: var(--money-light);
   border-left: 3px solid var(--money);
   padding: 20px 24px;
-  margin: 2rem auto;
+  margin: 2.5rem auto;
   border-radius: 0 4px 4px 0;
   max-width: 680px;
 }
@@ -356,7 +349,7 @@
   margin: 0;
 }
 
-/* Stat Band (Full Width) */
+/* Stat Band (Quebra a coluna, 100vw) */
 .band-stat {
   background: var(--paper-dark);
   border-top: 1px solid var(--rule-strong, #b8afa0);
@@ -371,7 +364,11 @@
   background-size: 48px 48px; opacity: 0.25; pointer-events: none;
 }
 .band-stat-inner {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
 }
 .stat-section-num {
   font-family: var(--f-mono); font-size: 13px; color: var(--ink-muted); margin-bottom: 8px;
@@ -389,11 +386,18 @@
   .band-stat-inner { grid-template-columns: 1fr; gap: 32px; }
 }
 
-/* Quote Band (Full Width Dark) */
+/* Quote Band (Quebra a coluna, 100vw, Dark) */
 .band-quote {
-  background: var(--ink); color: var(--paper); padding: 80px 0; margin: 4rem auto;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 80px 0;
+  margin: 4rem auto;
+  position: relative;
 }
-.band-quote-inner { text-align: center; }
+.band-quote-inner {
+  text-align: center;
+  position: relative;
+}
 .band-quote .quote-mark {
   font-family: var(--f-display); font-size: 64px; color: var(--hot-light); line-height: 0.5; opacity: 0.7; display: block; margin-bottom: 20px;
 }
