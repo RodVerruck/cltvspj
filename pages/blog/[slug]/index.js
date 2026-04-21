@@ -628,7 +628,14 @@ export default function Post({ post, relatedPosts }) {
               <span>{post.readingTime || '5 min'} de leitura</span>
             </div>
 
-            <h1 className="font-display text-[clamp(40px,5vw,72px)] leading-[0.95] tracking-[-0.03em] text-ink [-webkit-text-stroke:0.5px_currentColor] [text-shadow:0_0_1px_currentColor] mb-6">
+            <h1
+              className="font-display tracking-editorial text-ink leading-[1.05] mb-6"
+              style={{
+                fontSize: 'clamp(32px, 5vw, 56px)',
+                textWrap: 'balance',
+                maxWidth: '22ch',
+              }}
+            >
               {post.title}
             </h1>
 
