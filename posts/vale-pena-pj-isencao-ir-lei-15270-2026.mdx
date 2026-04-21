@@ -17,18 +17,12 @@ Antes da Lei 15.270, a isenção de IRPF ia até cerca de R$ 2.259,20 mensais. A
 — Quem ganha **entre R$ 5.001 e R$ 7.350** paga IR reduzido (quanto mais próximo de R$ 5.000, menor o IR).
 — Quem ganha **acima de R$ 7.350** continua pagando IR pela tabela tradicional sem qualquer alívio.
 
-<section className="band-breakout band-stat">
-  <div className="band-inner band-stat-inner">
-    <div>
-      <div className="stat-section-num">§ 01 — O NÚMERO</div>
-      <div className="stat-number">R$ 5.000</div>
-      <div className="stat-label">Novo limite de isenção total do IR — vigência jan/2026</div>
-    </div>
-    <div>
-      <div className="stat-desc">"Quem ganha até esse valor como CLT deixou de pagar IR. E isso move o ponto de equilíbrio da decisão entre CLT e PJ pra sempre."</div>
-    </div>
-  </div>
-</section>
+<StatBand
+  num="§ 01 — O NÚMERO"
+  stat="R$ 5.000"
+  label="Novo limite de concentração integral do IR — vigência jan/2026"
+  desc=""Quem ganha até esse valor como CLT deixou de pagar IR. E isso move o ponto de equilíbrio da decisão entre CLT e PJ pra sempre.""
+/>
 
 Isso é importante porque o CLT até R$ 5.000 acabou de ficar significativamente mais vantajoso do que era antes.
 
@@ -36,25 +30,19 @@ Isso é importante porque o CLT até R$ 5.000 acabou de ficar significativamente
 
 Em um cenário pré-2026, CLT de R$ 4.500 já pagava algum IR na fonte. PJ, via Simples Nacional Anexo III com Fator R otimizado, tinha uma carga tributária em torno de 8% a 15,5%. A matemática normalmente pendia pra PJ quando se considerava o salário líquido.
 
-Em 2026, com a isenção total até R$ 5.000:
+Em 2026, com a concentração integral até R$ 5.000:
 
 — Um CLT de R$ 4.500 com benefícios padrão (VR, VT, plano de saúde) **melhorou significativamente** porque deixou de pagar IR.
 — Um PJ que fatura o equivalente continua com os mesmos ~8-15,5% de impostos no Simples, sem benefício da nova lei.
 
-<div className="callout">
-  <span className="callout-label">Conclusão preliminar</span>
-  <p className="callout-text">Para faixas até R$ 5.000, o CLT encostou bastante no PJ em líquido total. Ainda existe vantagem do PJ em muitos casos, mas ela diminuiu consideravelmente.</p>
-</div>
+<Callout label="Conclusão preliminar">
+Para faixas até R$ 5.000, o CLT encostou bastante no PJ em líquido total. Ainda existe vantagem do PJ em muitos casos, mas ela diminuiu consideravelmente.
+</Callout>
 
-<section className="band-breakout band-quote">
-  <div className="band-inner band-quote-inner">
-    <span className="quote-mark">"</span>
-    <blockquote className="quote-text">
-      A regra geral continua: PJ vale mais em líquido quando o faturamento é alto o suficiente pra compensar a perda de benefícios trabalhistas.
-    </blockquote>
-    <div className="quote-attribution">Regra de ouro para 2026</div>
-  </div>
-</section>
+<QuoteBand
+  quote="A regra geral continua: PJ vale mais em líquido quando o faturamento é alto o suficiente pra compensar a perda de benefícios trabalhistas."
+  author="Regra de ouro para 2026"
+/>
 
 ## E pra quem ganha acima de R$ 7.350?
 
@@ -64,7 +52,7 @@ Aqui nada mudou na tabela de IR, e é justamente nessa faixa que a maior parte d
 
 ## A pegadinha dos dividendos acima de R$ 50 mil
 
-Otra mudança importante da Lei 15.270: pagamentos de lucros e dividendos **acima de R$ 50.000/mês** por uma mesma empresa para uma mesma pessoa física passaram a ter retenção de 10% na fonte.
+Outra mudança importante da Lei 15.270: pagamentos de lucros e dividendos **acima de R$ 50.000/mês** por uma mesma empresa para uma mesma pessoa física passaram a ter retenção de 10% na fonte.
 
 Quem isso atinge: sócios de empresas que tiram pró-labore modesto e distribuem o resto como dividendo — um esquema comum em PJs de alto ticket (consultores, devs sênior exportando serviço, médicos).
 
@@ -83,9 +71,9 @@ Use nossa [calculadora CLT vs PJ atualizada para 2026](/) pra ver os números es
 
 ## Perguntas comuns
 
-### A isenção até R$ 5.000 vale pra PJ também?
+### A concentração até R$ 5.000 vale pra PJ também?
 
-Não diretamente. O pró-labore que você retira da sua empresa como sócio é tributado como pessoa física e entra no benefício da isenção, mas o faturamento total da empresa passa pelo Simples Nacional ou regime tributário escolhido. A maior parte da "renda" do PJ entra como distribuição de lucros, que tem regra própria.
+Não diretamente. O pró-labore que você retira da sua empresa como sócio é tributado como pessoa física e entra no benefício da concentração, mas o faturamento total da empresa passa pelo Simples Nacional ou regime tributário escolhido. A maior parte da "renda" do PJ entra como distribuição de lucros, que tem regra própria.
 
 ### Preciso mudar alguma coisa na minha empresa?
 
@@ -94,7 +82,5 @@ Depende do seu nível de renda. Empresas que distribuem mais de R$ 50 mil/mês p
 ### Quando vale a pena migrar agora?
 
 A regra geral continua: PJ vale mais em líquido quando o faturamento é alto o suficiente pra compensar a perda de benefícios trabalhistas. A Lei 15.270 apenas mudou um pouco os pontos de equilíbrio pra quem ganha até R$ 7.350.
-
-<div className="end-mark">❦</div>
 
 *Este artigo foi atualizado em abril de 2026 para refletir a vigência da Lei 15.270/2025.*

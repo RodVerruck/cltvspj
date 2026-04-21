@@ -3,6 +3,7 @@ module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './posts/**/*.{md,mdx}',
   ],
   theme: {
     extend: {
@@ -20,7 +21,7 @@ module.exports = {
         rule: {
           DEFAULT: '#d4cdbe',
           strong: '#b8afa0',
-          'stronger': '#a8a192',
+          stronger: '#a8a192',
         },
         surface: {
           DEFAULT: '#ffffff',
@@ -34,12 +35,6 @@ module.exports = {
           DEFAULT: '#c2410c',
           light: '#fce8dc',
         },
-        // Mantém brand e accent existentes como legado por enquanto (sem usar nas páginas novas)
-        brand: {
-          50: '#eff6ff',
-          400: '#60a5fa',
-          500: '#1e40af',
-        },
       },
       fontFamily: {
         display: ['"Instrument Serif"', 'Georgia', 'serif'],
@@ -47,7 +42,6 @@ module.exports = {
         mono: ['"JetBrains Mono"', '"SF Mono"', 'Consolas', 'monospace'],
       },
       fontSize: {
-        // Escala editorial para grandes números/títulos
         'display-xl': ['clamp(80px, 14vw, 200px)', { lineHeight: '0.9', letterSpacing: '-0.03em' }],
         'display-lg': ['clamp(48px, 7vw, 104px)', { lineHeight: '0.95', letterSpacing: '-0.02em' }],
         'display-md': ['clamp(36px, 5vw, 64px)', { lineHeight: '1.0', letterSpacing: '-0.01em' }],
@@ -58,7 +52,150 @@ module.exports = {
         'mono-wide': '0.02em',
         'label': '0.12em',
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.ink.DEFAULT'),
+            '--tw-prose-headings': theme('colors.ink.DEFAULT'),
+            '--tw-prose-links': theme('colors.money.DEFAULT'),
+            '--tw-prose-bold': theme('colors.ink.DEFAULT'),
+            '--tw-prose-counters': theme('colors.money.DEFAULT'),
+            '--tw-prose-bullets': theme('colors.money.DEFAULT'),
+            '--tw-prose-hr': theme('colors.rule.DEFAULT'),
+            '--tw-prose-quotes': theme('colors.ink.DEFAULT'),
+            '--tw-prose-quote-borders': theme('colors.money.DEFAULT'),
+            '--tw-prose-caption': theme('colors.ink.muted'),
+            '--tw-prose-code': theme('colors.money.DEFAULT'),
+            '--tw-prose-pre-code': theme('colors.ink.DEFAULT'),
+            '--tw-prose-pre-bg': theme('colors.ink.DEFAULT'),
+            maxWidth: '680px',
+            fontFamily: theme('fontFamily.sans').join(', '),
+            fontSize: '1.0625rem',
+            lineHeight: '1.75',
+            p: {
+              marginBottom: '1.5rem',
+            },
+            'h2': {
+              fontFamily: theme('fontFamily.display').join(', '),
+              fontSize: 'clamp(2rem, 4.5vw, 2.5rem)',
+              letterSpacing: '-0.015em',
+              marginTop: '4rem',
+              marginBottom: '1.25rem',
+              lineHeight: '1.1',
+              fontWeight: '400',
+            },
+            'h3': {
+              fontFamily: theme('fontFamily.display').join(', '),
+              fontSize: 'clamp(1.4rem, 3vw, 1.75rem)',
+              marginTop: '3rem',
+              marginBottom: '0.75rem',
+              lineHeight: '1.25',
+              fontWeight: '400',
+            },
+            a: {
+              color: theme('colors.money.DEFAULT'),
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+              '&:hover': {
+                opacity: '0.8',
+              },
+            },
+            strong: {
+              fontWeight: '600',
+              color: theme('colors.ink.DEFAULT'),
+            },
+            ul: {
+              listStyleType: 'none',
+              paddingLeft: '0',
+              li: {
+                position: 'relative',
+                paddingLeft: '1.75rem',
+                marginBottom: '0.875rem',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  left: '0.25rem',
+                  top: '0.65em',
+                  width: '6px',
+                  height: '6px',
+                  backgroundColor: theme('colors.money.DEFAULT'),
+                  borderRadius: '50%',
+                },
+              },
+            },
+            ol: {
+              listStyleType: 'none',
+              paddingLeft: '0',
+              counterReset: 'item',
+              li: {
+                counterIncrement: 'item',
+                position: 'relative',
+                paddingLeft: '2.25rem',
+                marginBottom: '0.75rem',
+                '&::before': {
+                  content: 'counter(item)',
+                  position: 'absolute',
+                  left: '0',
+                  top: '0.1em',
+                  fontFamily: theme('fontFamily.mono').join(', '),
+                  fontSize: '0.85em',
+                  color: theme('colors.money.DEFAULT'),
+                  fontWeight: '500',
+                },
+              },
+            },
+            blockquote: {
+              fontStyle: 'italic',
+              borderLeftWidth: '3px',
+              borderLeftColor: theme('colors.money.DEFAULT'),
+              paddingLeft: '1.5rem',
+              marginLeft: '0',
+              marginRight: '0',
+            },
+            code: {
+              fontFamily: theme('fontFamily.mono').join(', '),
+              fontSize: '0.88em',
+              backgroundColor: theme('colors.paper.dark'),
+              color: theme('colors.money.DEFAULT'),
+              padding: '2px 6px',
+              borderRadius: '4px',
+            },
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
+            pre: {
+              backgroundColor: theme('colors.ink.DEFAULT'),
+              color: theme('colors.paper.DEFAULT'),
+              padding: '1.5rem',
+              borderRadius: '4px',
+              overflowX: 'auto',
+              fontFamily: theme('fontFamily.mono').join(', '),
+              fontSize: '0.88rem',
+              lineHeight: '1.6',
+            },
+            hr: {
+              border: 'none',
+              marginTop: '4rem',
+              marginBottom: '4rem',
+              textAlign: 'center',
+              '&::before': {
+                content: '"* * *"',
+                letterSpacing: '0.6em',
+                paddingLeft: '0.6em',
+                fontFamily: theme('fontFamily.display').join(', '),
+                fontSize: '1.5rem',
+                color: theme('colors.ink.fade'),
+              },
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }

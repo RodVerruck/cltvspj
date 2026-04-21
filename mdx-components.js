@@ -1,8 +1,8 @@
-import AffiliateCTA from './components/AffiliateCTA';
+import { StatBand, QuoteBand, Callout, AffiliateCTA } from './components/mdx';
 
-export function useMDXComponents(components) {
-  return {
-    ...components,
-    AffiliateCTA,
-  };
-}
+export const mdxComponents = {
+  StatBand,
+  QuoteBand,
+  Callout,
+  AffiliateCTA,
+};
