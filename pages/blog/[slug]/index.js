@@ -619,62 +619,81 @@ export default function Post({ post, relatedPosts }) {
       <Header />
 
       <main>
-        {/* POST HEADER */}
-        <div className="border-b border-rule py-12 md:py-16">
+        {/* POST HEADER — Every-style */}
+        <div className="pt-16 md:pt-24 pb-12 md:pb-16">
           <div className="max-w-3xl mx-auto px-6 md:px-8">
-            <div className="flex items-center gap-2 font-mono text-xs text-ink-muted uppercase tracking-widest mb-6">
+            {/* Kicker */}
+            <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest mb-8" style={{color: '#6b6357'}}>
               <a href="/blog" className="hover:text-money transition-colors">Blog</a>
-              <span className="text-ink-fade">→</span>
+              <span style={{color: '#d4cdbe'}}>/</span>
               <span>{post.readingTime || '5 min'} de leitura</span>
             </div>
 
+            {/* Título monumental */}
             <h1
-              className="font-display tracking-editorial text-ink leading-[1.05] mb-6"
+              className="leading-[1.02] mb-8"
               style={{
-                fontSize: 'clamp(32px, 5vw, 56px)',
+                fontFamily: "'Instrument Serif', Georgia, serif",
+                fontSize: 'clamp(40px, 7vw, 80px)',
                 textWrap: 'balance',
-                maxWidth: '22ch',
+                letterSpacing: '-0.025em',
+                fontWeight: 400,
+                color: '#1a1614',
               }}
             >
               {post.title}
             </h1>
 
-            <p className="text-lg text-ink-muted leading-relaxed mb-8 max-w-2xl">
+            {/* Descrição grande em serif italic */}
+            <p
+              className="leading-snug mb-10"
+              style={{
+                fontFamily: "'Newsreader', Georgia, serif",
+                fontSize: 'clamp(20px, 2.5vw, 26px)',
+                fontStyle: 'italic',
+                maxWidth: '42ch',
+                textWrap: 'balance',
+                color: '#4a423c',
+              }}
+            >
               {post.description}
             </p>
 
-            <div className="flex items-center gap-3 pt-6 border-t border-rule">
-              <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
+            {/* Byline */}
+            <div className="flex items-center gap-4 pt-6 border-t" style={{borderColor: '#d4cdbe'}}>
+              <div className="font-mono text-xs uppercase tracking-widest" style={{color: '#6b6357'}}>
                 Atualizado {post.date}
-              </span>
-              <span className="text-rule">—</span>
-              <span className="font-mono text-xs uppercase tracking-widest text-ink-fade">
+              </div>
+              <span style={{color: '#d4cdbe'}}>—</span>
+              <div className="font-mono text-xs uppercase tracking-widest" style={{color: '#8a827a'}}>
                 Calculadora CLT vs PJ
-              </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* POST BODY */}
-        <div className="max-w-3xl mx-auto px-6 md:px-8 pt-16 pb-20 md:pt-20 md:pb-28">
-          <div className="post-content max-w-2xl mx-auto first-letter:font-display first-letter:text-[6rem] first-letter:text-money first-letter:float-left first-letter:leading-[0.65] first-letter:mr-3 first-letter:mt-1 first-letter:mb-[-10px] first-letter:[-webkit-text-stroke:1px_currentColor]">
-            {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
-              <SimplesAnexoEscolherContent />
-            ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
-              <SimplesAnexoContent />
-            ) : (
-              <PostContent content={post.contentHtml} />
-            )}
-          </div>
+        {/* BODY */}
+        <div className="pb-20 md:pb-28">
+          <div className="max-w-3xl mx-auto px-6 md:px-8">
+            <div className="post-content mx-auto">
+              {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
+                <SimplesAnexoEscolherContent />
+              ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
+                <SimplesAnexoContent />
+              ) : (
+                <PostContent content={post.contentHtml} />
+              )}
+            </div>
 
-          {/* AFFILIATE CTA dentro do post */}
-          <div className="mt-12 pt-10 border-t border-rule">
-            <AffiliateCTA
-              partner="contabilizei"
-              title="Decidiu virar PJ? Precisa de contador."
-              description="A Contabilizei abre seu CNPJ, cuida do DAS mensal, pró-labore e obrigações fiscais. Plano a partir de R$ 89/mês."
-              buttonText="Conhecer Contabilizei"
-            />
+            {/* CTA afiliado logo após o artigo */}
+            <div className="max-w-xl mx-auto mt-16">
+              <AffiliateCTA
+                partner="contabilizei"
+                title="Decidiu virar PJ? Precisa de contador."
+                description="A Contabilizei abre seu CNPJ, cuida do DAS mensal, pró-labore e obrigações fiscais. Plano a partir de R$ 89/mês."
+                buttonText="Conhecer Contabilizei"
+              />
+            </div>
           </div>
         </div>
 
