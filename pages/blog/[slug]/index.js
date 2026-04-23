@@ -620,25 +620,38 @@ export default function Post({ post, relatedPosts }) {
 
       <main>
         {/* POST HEADER */}
-        <div className="max-w-[1120px] mx-auto px-6 pt-16 pb-12 border-b border-rule">
-          <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-8 flex items-center gap-2">
-            <a href="/blog" className="hover:text-money transition-colors">Blog</a>
-            <span className="text-ink-fade">·</span>
-            <span>{post.readingTime || '5 min'} de leitura</span>
-          </div>
+        <div className="border-b border-rule py-16 md:py-20 relative">
+          <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-grid-pattern" />
+          <div className="max-w-[1120px] mx-auto px-6 md:px-8 relative">
 
-          <h1 className="font-display text-[clamp(36px,5.5vw,64px)] leading-[1.05] tracking-[-0.02em] text-ink max-w-[22ch] text-balance mb-5">
-            {post.title}
-          </h1>
+            {/* Breadcrumb */}
+            <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-8 flex items-center gap-2">
+              <Link href="/blog" className="hover:text-money transition-colors">← Blog</Link>
+              <span className="text-ink-fade">·</span>
+              <span>{post.readingTime || '5 min'} de leitura</span>
+            </div>
 
-          <p className="text-lg text-ink-muted leading-relaxed mb-8 max-w-2xl">
-            {post.description}
-          </p>
+            {/* Título */}
+            <h1 className="font-display leading-[1.05] tracking-[-0.025em] text-ink max-w-[22ch] mb-6 font-normal text-balance"
+              style={{ fontSize: 'clamp(2.25rem, 5.5vw, 4rem)' }}>
+              {post.title}
+            </h1>
 
-          <div className="flex items-center gap-4 pt-6 mt-8 border-t border-rule font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted">
-            <span>Atualizado {post.date}</span>
-            <span>—</span>
-            <span>Calculadora CLT vs PJ</span>
+            {/* Descrição */}
+            <p className="text-lg text-ink-muted leading-relaxed max-w-[52ch] mb-8">
+              {post.description}
+            </p>
+
+            {/* Meta */}
+            <div className="flex items-center gap-4 pt-6 border-t border-rule
+                            font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted flex-wrap">
+              <span>Atualizado {post.date}</span>
+              <span>—</span>
+              <span>Calculadora CLT vs PJ</span>
+              <span className="ml-auto bg-money-light text-money px-2.5 py-1 rounded-sm text-[10px]">
+                2026
+              </span>
+            </div>
           </div>
         </div>
 
