@@ -619,50 +619,65 @@ export default function Post({ post, relatedPosts }) {
       <Header />
 
       <main>
-        {/* POST HEADER */}
-        <div className="border-b border-rule py-16 md:py-20 relative">
-          <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-grid-pattern" />
-          <div className="max-w-[1120px] mx-auto px-6 md:px-8 relative">
+        {/* POST HEADER - Hero Section Reformulada */}
+        <div className="border-b border-rule py-20 md:py-24 relative">
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-pattern" />
+          <div className="max-w-4xl mx-auto px-6 md:px-8 relative text-center">
 
             {/* Breadcrumb */}
-            <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-8 flex items-center gap-2">
+            <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-6 flex items-center justify-center gap-2">
               <Link href="/blog" className="hover:text-money transition-colors">← Blog</Link>
               <span className="text-ink-fade">·</span>
               <span>{post.readingTime || '5 min'} de leitura</span>
             </div>
 
-            {/* Título */}
-            <h1 className="font-display leading-[1.05] tracking-[-0.025em] text-ink max-w-[22ch] mb-6 font-normal text-balance"
-              style={{ fontSize: 'clamp(2.25rem, 5.5vw, 4rem)' }}>
+            {/* Tags centralizadas */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {post.tags.map(tag => (
+                  <span key={tag} className="bg-money-light text-money px-3 py-1 rounded-full text-xs font-medium">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Título centralizado e maior */}
+            <h1 className="font-serif leading-tight tracking-tight text-ink text-center mb-8 font-normal"
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}>
               {post.title}
             </h1>
 
             {/* Descrição */}
-            <p className="text-lg text-ink-muted leading-relaxed max-w-[52ch] mb-8">
+            <p className="text-xl text-ink-muted leading-relaxed max-w-3xl mx-auto mb-8">
               {post.description}
             </p>
 
-            {/* Meta */}
-            <div className="flex items-center gap-4 pt-6 border-t border-rule
+            {/* Meta informações centralizadas */}
+            <div className="flex items-center justify-center gap-4 pt-6 border-t border-rule
                             font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted flex-wrap">
               <span>Atualizado {post.date}</span>
               <span>—</span>
               <span>Calculadora CLT vs PJ</span>
-              <span className="ml-auto bg-money-light text-money px-2.5 py-1 rounded-sm text-[10px]">
-                2026
-              </span>
             </div>
           </div>
         </div>
 
-        {/* BODY */}
+        {/* BODY com tipografia otimizada */}
         <div className="pb-20 md:pb-28">
-          <div className="max-w-[1120px] mx-auto px-6">
+          <div className="max-w-4xl mx-auto px-6 md:px-8">
             <div className="post-content">
+              {/* Linha separadora elegante antes do conteúdo */}
+              <div className="w-24 h-1 bg-gradient-to-r from-money/20 to-money/60 mx-auto mb-12 rounded-full" />
+
               {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
-                <SimplesAnexoEscolherContent />
+                <div className="prose prose-lg md:prose-xl prose-stone max-w-none mx-auto">
+                  <SimplesAnexoEscolherContent />
+                </div>
               ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
-                <SimplesAnexoContent />
+                <div className="prose prose-lg md:prose-xl prose-stone max-w-none mx-auto">
+                  <SimplesAnexoContent />
+                </div>
               ) : (
                 <PostContent content={post.mdxSource} />
               )}
