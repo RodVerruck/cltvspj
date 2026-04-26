@@ -622,7 +622,7 @@ export default function Post({ post, relatedPosts }) {
         {/* POST HEADER - Hero Section Reformulada */}
         <div className="border-b border-rule py-20 md:py-24 relative">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-pattern" />
-          <div className="max-w-4xl mx-auto px-6 md:px-8 relative text-center">
+          <div className="max-w-3xl mx-auto px-6 md:px-8 relative text-center">
 
             {/* Breadcrumb */}
             <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-6 flex items-center justify-center gap-2">
@@ -635,7 +635,7 @@ export default function Post({ post, relatedPosts }) {
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap justify-center gap-2 mb-6">
                 {post.tags.map(tag => (
-                  <span key={tag} className="bg-money-light text-money px-3 py-1 rounded-full text-xs font-medium">
+                  <span key={tag} className="bg-money-light text-money px-3 py-1 rounded-full text-xs font-medium font-mono">
                     {tag}
                   </span>
                 ))}
@@ -643,13 +643,13 @@ export default function Post({ post, relatedPosts }) {
             )}
 
             {/* Título centralizado e maior */}
-            <h1 className="font-serif leading-tight tracking-tight text-ink text-center mb-8 font-normal"
+            <h1 className="font-display leading-tight tracking-tight text-ink text-center mb-8 font-normal"
               style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}>
               {post.title}
             </h1>
 
             {/* Descrição */}
-            <p className="text-xl text-ink-muted leading-relaxed max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-ink-muted leading-relaxed max-w-3xl mx-auto mb-8 font-sans">
               {post.description}
             </p>
 
