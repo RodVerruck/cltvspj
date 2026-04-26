@@ -6,6 +6,7 @@ import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
+import { serialize } from 'next-mdx-remote/serialize'
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
@@ -22,6 +23,7 @@ export interface PostMeta {
 export interface Post extends PostMeta {
   content: string
   contentHtml: string
+  mdxSource: any
 }
 
 export async function getAllPosts(): Promise<PostMeta[]> {
@@ -69,6 +71,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     const contentHtml = processedContent.toString()
       .replace(/^<h1[^>]*>.*?<\/h1>\s*/i, ''); // remove o primeiro h1 do markdown
 
+    const mdxSource = await serialize(content)
+
     return {
       slug,
       title: data.title || '',
@@ -79,6 +83,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       readingTime: data.readingTime || '5 min',
       content,
       contentHtml,
+      mdxSource,
     }
   } catch {
     return null

@@ -664,7 +664,7 @@ export default function Post({ post, relatedPosts }) {
               ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
                 <SimplesAnexoContent />
               ) : (
-                <PostContent content={post.contentHtml} />
+                <PostContent content={post.mdxSource} />
               )}
             </div>
 
