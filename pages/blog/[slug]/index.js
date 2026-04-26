@@ -664,18 +664,18 @@ export default function Post({ post, relatedPosts }) {
         </div>
 
         {/* BODY com tipografia otimizada */}
-        <div className="pb-20 md:pb-28">
-          <div className="max-w-4xl mx-auto px-6 md:px-8">
+        <div className="pb-20 md:pb-28 overflow-x-hidden">
+          <div className="max-w-2xl mx-auto px-6 md:px-8">
             <div className="post-content">
               {/* Linha separadora elegante antes do conteúdo */}
               <div className="w-24 h-1 bg-gradient-to-r from-money/20 to-money/60 mx-auto mb-12 rounded-full" />
 
               {post.slug === 'simples-nacional-pj-qual-anexo-escolher' ? (
-                <div className="prose prose-lg md:prose-xl prose-stone max-w-none mx-auto">
+                <div className="prose prose-lg md:prose-xl prose-stone max-w-none">
                   <SimplesAnexoEscolherContent />
                 </div>
               ) : post.slug === 'simples-nacional-pj-qual-anexo' ? (
-                <div className="prose prose-lg md:prose-xl prose-stone max-w-none mx-auto">
+                <div className="prose prose-lg md:prose-xl prose-stone max-w-none">
                   <SimplesAnexoContent />
                 </div>
               ) : (

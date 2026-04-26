@@ -17,7 +17,7 @@ const components = {
 
 export default function PostContent({ content }) {
   return (
-    <div className="prose prose-lg md:prose-xl prose-stone max-w-3xl mx-auto text-ink font-sans">
+    <div className="prose prose-lg md:prose-xl prose-stone max-w-none mx-auto text-ink font-sans" style={{ maxWidth: '680px' }}>
       <MDXRemote {...content} components={components} />
     </div>
   );
