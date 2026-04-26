@@ -3,7 +3,7 @@ export default function InfoCard({ title, type = 'default', children }) {
   return (
     <div className={`callout ${isHot ? 'callout-hot' : ''}`}>
       {title && <span className="callout-label">{title}</span>}
-      <p className="callout-text">{children}</p>
+      <div className="callout-text">{children}</div>
     </div>
   );
 }
