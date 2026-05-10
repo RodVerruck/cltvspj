@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AdSense from '../components/AdSense';
 import { SITE_URL } from '../lib/config';
+import { calculateCLT, calculatePJ } from '../lib/calculator';
 
 export default function Home() {
   const [salary, setSalary] = useState('8000');
@@ -20,109 +21,12 @@ export default function Home() {
   const [regime, setRegime] = useState('simples');
   const [showingResults, setShowingResults] = useState(false);
 
-  const calculateINSS = (sal) => {
-    const bands = [
-      { limit: 1518.00, rate: 0.075 }, // TODO: validar valor oficial 2026
-      { limit: 2793.88, rate: 0.09 }, // TODO: validar valor oficial 2026
-      { limit: 4190.83, rate: 0.12 }, // TODO: validar valor oficial 2026
-      { limit: 8157.41, rate: 0.14 }, // TODO: validar teto 2026
-    ];
-    let inss = 0;
-    let prev = 0;
-    for (const { limit, rate } of bands) {
-      if (sal <= prev) break;
-      inss += (Math.min(sal, limit) - prev) * rate;
-      prev = limit;
-    }
-    return inss;
-  };
-
-  /**
-   * Aplica o redutor do IRPF criado pela Lei 15.270/2025.
-   * Vigência: janeiro/2026.
-   * Base legal: art. 11-A da Lei 9.250/95 (incluído pela Lei 15.270/2025).
-   *
-   * @param {number} baseCalculo - Base de cálculo do IR (salário bruto - INSS - outras deduções)
-   * @param {number} irTradicional - IR calculado pela tabela tradicional
-   * @returns {number} IR final após aplicação do redutor
-   */
-  function aplicarRedutorLei15270(baseCalculo, irTradicional) {
-    // Faixa 1: isenção total até R$ 5.000
-    if (baseCalculo <= 5000) {
-      return 0;
-    }
-
-    // Faixa 2: redutor linear entre R$ 5.000,01 e R$ 7.350
-    if (baseCalculo <= 7350) {
-      const reducao = irTradicional * ((7350 - baseCalculo) / 2350);
-      return Math.max(0, irTradicional - reducao);
-    }
-
-    // Faixa 3: acima de R$ 7.350 não há redutor
-    return irTradicional;
-  }
-
-  const calculateCLT = () => {
-    const sal = parseFloat(salary) || 0;
-    const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
-
-    const inss = calculateINSS(sal);
-    const irpfBase = sal - inss;
-    let irpfTradicional = 0;
-    if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00; // TODO: validar valor oficial 2026
-    else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77; // TODO: validar valor oficial 2026
-    else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44; // TODO: validar valor oficial 2026
-    else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44; // TODO: validar valor oficial 2026
-
-    // Aplicar redutor da Lei 15.270/2025
-    const irpf = aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
-
-    const netSalary = sal - inss - irpf;
-    const fgts = sal * 0.08;
-    const decimoTerceiro = sal / 12;
-    const ferias = sal / 12;
-
-    return {
-      gross: sal,
-      net: netSalary + totalBenefits,
-      benefits: totalBenefits,
-      inss,
-      irpf: Math.max(irpf, 0),
-      fgts,
-      decimoTerceiro,
-      ferias,
-      totalPackage: netSalary + totalBenefits + fgts + decimoTerceiro + ferias
-    };
-  };
-
-  const calculatePJ = () => {
-    const rate = parseFloat(pjRate) || 0;
-    const hours = parseFloat(hoursPerMonth) || 0;
-    const monthlyGross = rate * hours;
-
-    // DAS Simples Nacional Anexo III (6%) — cobre IRPJ, CSLL, PIS, COFINS, CPP e ISS
-    const simplesDAS = monthlyGross * 0.06;
-    // INSS sobre pró-labore mínimo (salário mínimo × 11% — parcela do segurado)
-    const inssProLabore = Math.min(monthlyGross, 1518.00) * 0.11; // TODO: validar salário mínimo 2026
-
-    const totalTaxes = simplesDAS + inssProLabore;
-    const netMonthly = monthlyGross - totalTaxes;
-
-    return {
-      gross: monthlyGross,
-      net: netMonthly,
-      simplesDAS,
-      inssProLabore,
-      totalTaxes
-    };
-  };
-
   const handleCalculate = () => {
     setShowResults(true);
   };
 
-  const clt = calculateCLT();
-  const pj = calculatePJ();
+  const clt = calculateCLT(salary, benefits);
+  const pj = calculatePJ(pjRate, hoursPerMonth);
   const difference = pj.net - clt.net;
   const percentDiff = clt.net > 0 ? ((difference / clt.net) * 100).toFixed(1) : 0;
 
