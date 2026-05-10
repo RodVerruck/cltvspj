@@ -622,7 +622,7 @@ export default function Post({ post, relatedPosts }) {
         {/* POST HEADER - Hero Section Reformulada */}
         <div className="border-b border-rule py-20 md:py-24 relative">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-pattern" />
-          <div className="max-w-3xl mx-auto px-6 md:px-8 relative text-center">
+          <div className="max-w-4xl mx-auto px-6 md:px-8 relative text-center">
 
             {/* Breadcrumb */}
             <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-6 flex items-center justify-center gap-2">
@@ -649,7 +649,7 @@ export default function Post({ post, relatedPosts }) {
             </h1>
 
             {/* Descrição */}
-            <p className="text-xl text-ink-muted leading-relaxed max-w-3xl mx-auto mb-8 font-sans">
+            <p className="text-xl text-ink-muted leading-relaxed max-w-4xl mx-auto mb-8 font-sans">
               {post.description}
             </p>
 
@@ -665,7 +665,7 @@ export default function Post({ post, relatedPosts }) {
 
         {/* BODY com tipografia otimizada */}
         <div className="pb-20 md:pb-28 overflow-x-hidden">
-          <div className="max-w-2xl mx-auto px-6 md:px-8">
+          <div className="max-w-3xl mx-auto px-6 md:px-8">
             <div className="post-content">
               {/* Linha separadora elegante antes do conteúdo */}
               <div className="w-24 h-1 bg-gradient-to-r from-money/20 to-money/60 mx-auto mb-12 rounded-full" />
@@ -696,7 +696,7 @@ export default function Post({ post, relatedPosts }) {
         {/* POSTS RELACIONADOS */}
         {relatedPosts && relatedPosts.length > 0 && (
           <div className="border-t border-rule py-16 bg-paper-dark">
-            <div className="max-w-3xl mx-auto px-6 md:px-8">
+            <div className="max-w-4xl mx-auto px-6 md:px-8">
               <div className="section-head mb-10">
                 <span className="section-num">→</span>
                 <h3 className="font-display text-2xl tracking-editorial text-ink">Continue lendo</h3>
