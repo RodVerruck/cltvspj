@@ -2,6 +2,14 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-05-11] Ultra-Wide Editorial Standard (1400px)
+**Contexto**: O layout anterior (896px) com TOC fixo sofria de sobreposição visual quando componentes "full-width" eram usados dentro do grid.
+**Decisão**: 
+1. Expandimos o grid global para **1400px**.
+2. Definimos a coluna de texto em **850px** com um gap de **80px** para o TOC.
+3. Criamos a técnica de **"Editorial Breakout"** (calc(100% + 120px) com margin-left -60px) para permitir bandas de destaque sem sobrepor o sidebar.
+**Impacto**: Visual muito mais imponente e premium, sem bugs de layout em resoluções altas. Adotado como padrão para todas as páginas de conteúdo.
+
 ## [2026-05-10] Padronização e Modernização do Blog
 **Contexto**: O layout do blog estava estreito (680px) e o template `[slug]/index.js` continha conteúdo fixo para slugs específicos, gerando dívida técnica e erros de hidratação.
 **Decisão**:

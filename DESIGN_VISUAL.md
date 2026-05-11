@@ -12,9 +12,9 @@
   - Acentos: `#eff6ff` (brand-50), `#fff7ed` (accent-50)
 
 ### Tipografia
-- **Serif (Títulos)**: 'Instrument Serif', Georgia, serif
-- **Sans (Corpo)**: 'DM Sans', system-ui, sans-serif  
-- **Mono (Código)**: 'JetBrains Mono', 'Fira Code', monospace
+- **Serif (Títulos)**: 'Instrument Serif', Georgia, serif (Pesos 400-900)
+- **Sans (Corpo)**: 'DM Sans' ou 'Inter', system-ui, sans-serif  
+- **Mono (Labels)**: 'Space Mono' ou 'JetBrains Mono', monospace (Tracking 0.1em - 0.3em)
 
 ## 📱 Layout e Estrutura
 
@@ -74,22 +74,18 @@
   - Top border: 2.5px gradient (brand to brand-mid)
 
 #### Post Individual (/blog/[slug])
-- **Layout**: Grid 220px | 1fr (Sidebar | Conteúdo)
+- **Layout (Ultra-Wide)**: Grid 220px (TOC) | 850px (Conteúdo) | 1fr (Vazio)
+- **Container**: max-width 1400px, gap 80px (Desktop)
 - **TOC Sidebar**: 
-  - Sticky: top 68px
-  - Background white, border border-gray-200
-  - Border-radius: 14px
-  - Padding: 16px 14px
+  - Sticky: top 120px
+  - Tipografia: 13px, line-height 1.6, color ink-muted
+  - Active: verde da marca, font-weight 600
 
 - **Conteúdo Principal**:
-  - **Título**: Instrument Serif, clamp(26px, 3.5vw, 36px)
-  - **Meta**: Flex com data e tempo de leitura
-  - **Seções**: H2 em Instrument Serif 22px
-  - **Componentes customizados**:
-    - `.tldr-card`: Cards com stripe azul
-    - `.anexo-grid`: Grid 5 colunas para anexos
-    - `.step-item`: Steps numerados
-    - `.formula-display`: Fórmulas matemáticas
+  - **Largura**: 850px rigoroso
+  - **Título (H1)**: 7xl ou 8xl (italic, tracking-tighter)
+  - **Seções (H2)**: Margin-top 3.5rem, linha decorativa verde de 40px no topo
+  - **Editorial Breakout**: Bandas expandindo 60px para cada lado do conteúdo principal.
 
 ### Footer (Todas páginas)
 - **Background**: #0f172a (slate-900)
