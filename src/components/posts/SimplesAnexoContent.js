@@ -1,89 +1,7 @@
-function AnexoTable({ rows, headers }) {
-  return (
-    <div className="compare-wrap" style={{ marginBottom: 20 }}>
-      <table className="compare-table">
-        <thead>
-          <tr>
-            {headers.map((h, i) => (
-              <th key={i} className={`compare-th ${i === 1 ? 'compare-th--green' : ''}`}>
-                {h}
-                {i === 1 && <span className="compare-badge">Recomendado</span>}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, ri) => (
-            <tr key={ri}>
-              {row.map((cell, ci) => (
-                <td key={ci} className={`compare-td ${ci === 0 ? 'compare-td--label' : ci === 1 ? 'compare-td--green' : ''}`}>
-                  {cell}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function InfoCallout({ type = 'info', children }) {
-  const styles = {
-    info: { bg: 'var(--blue-light)', border: 'var(--blue-border)', color: 'var(--blue-text)', left: 'var(--blue)' },
-    warning: { bg: 'var(--orange-light)', border: 'var(--orange-border)', color: 'var(--orange)', left: 'var(--orange-mid)' },
-    success: { bg: 'var(--green-light)', border: 'var(--green-border)', color: 'var(--green)', left: 'var(--green)' },
-  };
-  const s = styles[type] || styles.info;
-  return (
-    <div style={{
-      background: s.bg, border: `0.5px solid ${s.border}`,
-      borderLeft: `3px solid ${s.left}`, borderRadius: '0 10px 10px 0',
-      padding: '12px 16px', margin: '16px 0', color: s.color,
-      fontSize: 13.5, lineHeight: 1.6, fontFamily: 'var(--sans)',
-    }}>
-      {children}
-    </div>
-  );
-}
-
-function ProfissaoExemplo({ icon, title, tag, faturamento, aliquota, extra, imposto, isGreen }) {
-  return (
-    <div style={{
-      background: 'var(--white)', border: '0.5px solid var(--rule)',
-      borderRadius: 10, padding: 16,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-        <span style={{ fontSize: 18 }}>{icon}</span>
-        <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--ink)', flex: 1 }}>{title}</span>
-        <span style={{
-          fontSize: 10.5, fontWeight: 500, padding: '2px 8px', borderRadius: 20,
-          background: isGreen ? 'var(--blue-light)' : 'var(--orange-light)',
-          color: isGreen ? 'var(--blue-text)' : 'var(--orange)',
-        }}>{tag}</span>
-      </div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-        {[
-          { label: 'Faturamento', val: faturamento },
-          { label: 'Alíquota', val: aliquota },
-          { label: extra.label, val: extra.val },
-        ].map(s => (
-          <div key={s.label} style={{ flex: 1 }}>
-            <span style={{ fontSize: 9.5, color: 'var(--ink4)', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{s.label}</span>
-            <span style={{ fontSize: 12.5, color: 'var(--ink)', fontWeight: 400 }}>{s.val}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{
-        paddingTop: 10, borderTop: isGreen ? '0.5px solid var(--blue-border)' : '0.5px solid var(--orange-border)',
-        fontSize: 12, color: isGreen ? 'var(--blue)' : 'var(--orange)',
-        fontFamily: 'var(--sans)',
-      }}>
-        Imposto mensal: <strong>{imposto}</strong>
-      </div>
-    </div>
-  );
-}
+import AnexoTable from './AnexoTable';
+import InfoCallout from './InfoCallout';
+import ProfissaoExemplo from './ProfissaoExemplo';
+import StatHighlight from './StatHighlight';
 
 export default function SimplesAnexoContent() {
   return (
@@ -91,6 +9,12 @@ export default function SimplesAnexoContent() {
       <p style={{ fontSize: '1rem', lineHeight: 1.8, color: 'var(--ink2)', marginBottom: '1.2rem' }}>
         Uma das maiores vantagens de trabalhar como PJ no Brasil é a carga tributária reduzida pelo <strong>Simples Nacional</strong>. Mas o quanto você vai pagar depende do <strong>Anexo</strong> em que sua atividade se encaixa — e muita gente paga imposto errado por não saber disso.
       </p>
+
+      <StatHighlight 
+        number="R$ 5.000" 
+        suffix="/mês" 
+        label="Economia média saindo da CLT para PJ (com Fator R)" 
+      />
 
       <div id="o-que-e-o-simples-nacional" className="section-divider" />
       <h2 className="section-h2">O que é o Simples Nacional?</h2>

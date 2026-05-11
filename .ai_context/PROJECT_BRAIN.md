@@ -25,8 +25,9 @@ Para aprofundar em tópicos específicos, consulte:
 1. **Nunca quebre o SEO**: Sempre mantenha as meta tags (`<Head>`) intactas no `_app.js` ou `index.js`.
 2. **Cálculos isolados**: A matemática complexa de impostos fica em `src/lib/calculator.js`, separada da UI.
 3. **Design Editorial**: Siga o Tailwind configurado (`text-ink`, `text-money`, fontes `Instrument Serif` / `Space Mono`). Nunca use classes Tailwind padrão que quebrem a paleta de cores.
-4. **Markdown Compatível**: O blog usa MDX processado via `remark`/`rehype`. Se adicionar features no blog, não quebre o parser do Gray Matter.
-5. **Atualização Proativa**: Se descobrir um novo imposto ou regra tributária que afeta a calculadora, documente no `.ai_context/CALCULATOR_RULES.md` e adicione a data no `.ai_context/LEARNING_LOG.md`.
+4. **Markdown e Componentes**: O blog é 100% MDX. Novos elementos visuais devem ser criados em `src/components/posts/` e registrados em `PostContent.js`. Evite JSX inline no `[slug]/index.js`.
+5. **Layout de Leitura**: O corpo do post deve manter `max-w-4xl` (896px) para garantir a legibilidade editorial premium.
+6. **Atualização Proativa**: Se descobrir um novo imposto ou regra tributária que afeta a calculadora, documente no `.ai_context/CALCULATOR_RULES.md` e adicione a data no `.ai_context/LEARNING_LOG.md`.
 
 ---
 *Ponto de Entrada: A IA sempre deve consultar este arquivo antes de implementar novas features maiores.*
