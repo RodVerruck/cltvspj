@@ -72,7 +72,11 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     const contentHtml = processedContent.toString()
       .replace(/^<h1[^>]*>.*?<\/h1>\s*/i, ''); // remove o primeiro h1 do markdown
 
-    const mdxSource = await serialize(content)
+    const mdxSource = await serialize(content, {
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+      },
+    })
 
     return {
       slug,

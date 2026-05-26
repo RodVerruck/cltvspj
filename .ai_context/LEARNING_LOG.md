@@ -2,6 +2,14 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-05-26] Ativação de Tabelas Markdown (GFM) e Consistência Visual de Listas e Cabeçalhos
+**Contexto**: O compilador de MDX não renderizava tabelas padrão do Markdown como tabelas HTML estruturadas no `mdxSource`, gerando blocos de texto cru quebrado nos posts. Adicionalmente, as listas (`li`) e outros elementos Markdown herdavam uma cor azulada inconsistente, e o título principal H1 aparecia repetido dentro da área de leitura do post (pois já estava no cabeçalho do Hero).
+**Decisão**:
+1. Ativamos o plugin `remarkGfm` dentro do método de serialização `serialize` em `src/lib/posts.ts` para converter tabelas Markdown em marcações HTML corretas.
+2. Adicionamos estilização explícita em `blog.css` para as tags `table`, `th`, `td`, `ul` e `li` localizadas no contêiner `.post-content`, forçando as fontes, tamanhos e a cor de texto padrão do design system (`var(--ink)`).
+3. Eliminamos as tags de cabeçalho H1 (`# ...`) do corpo dos posts em MDX ([clt-ou-pj-qual-vale-mais.mdx](file:///c:/cltvspj/posts/clt-ou-pj-qual-vale-mais.mdx), [como-abrir-cnpj-trabalhar-pj.mdx](file:///c:/cltvspj/posts/como-abrir-cnpj-trabalhar-pj.mdx), [como-calcular-salario-pj.mdx](file:///c:/cltvspj/posts/como-calcular-salario-pj.mdx) e [pj-para-desenvolvedores-vale-a-pena.mdx](file:///c:/cltvspj/posts/pj-para-desenvolvedores-vale-a-pena.mdx)), já que o título é exibido nativamente no bloco de Hero de cada post.
+**Impacto**: O layout do blog foi restaurado com excelência visual e legibilidade premium. As tabelas agora aparecem com design de estilo de folha de dados (cabeçalhos em JetBrains Mono e fundos sombreados), as cores azuis indesejadas das listas foram totalmente neutralizadas para a cor preta/cinza do site, e o H1 duplicado sumiu, limpando a leitura do topo da página.
+
 ## [2026-05-26] Unificação de Posts do Simples Nacional e Centralização Tipográfica
 **Contexto**: Havia dois posts no blog com URLs e conteúdos redundantes (`simples-nacional-pj-qual-anexo` e `simples-nacional-pj-qual-anexo-escolher`), o que gerava canibalização de SEO. Além disso, as variáveis globais de fontes do design system (`--f-display`, `--f-sans`, `--f-mono`) estavam restritas ao `blog.css`, criando risco de falhas tipográficas em páginas e componentes fora da rota do blog.
 **Decisão**:
