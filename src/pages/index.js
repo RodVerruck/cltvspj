@@ -71,7 +71,7 @@ export default function Home() {
               <span>Atualizado · Lei 15.270/2025 vigente em 2026</span>
             </div>
 
-            <h1 className="font-display text-[clamp(60px,8vw,110px)] leading-[0.9] tracking-[-0.04em] text-ink mb-8 max-w-4xl" style={{ WebkitTextStroke: '0.5px currentColor' }}>
+            <h1 className="font-display text-[clamp(60px,8vw,110px)] leading-[0.95] tracking-editorial text-ink mb-8 max-w-4xl">
               CLT <em className="italic text-money">ou</em> PJ.<br />
               Descubra em 60 segundos.
             </h1>
