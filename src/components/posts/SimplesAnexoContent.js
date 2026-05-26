@@ -6,7 +6,7 @@ import StatHighlight from './StatHighlight';
 export default function SimplesAnexoContent() {
   return (
     <>
-      <p style={{ fontSize: '1rem', lineHeight: 1.8, color: 'var(--ink2)', marginBottom: '1.2rem' }}>
+      <p style={{ fontSize: '1rem', lineHeight: 1.8, color: 'var(--ink-muted)', marginBottom: '1.2rem' }}>
         Uma das maiores vantagens de trabalhar como PJ no Brasil é a carga tributária reduzida pelo <strong>Simples Nacional</strong>. Mas o quanto você vai pagar depende do <strong>Anexo</strong> em que sua atividade se encaixa — e muita gente paga imposto errado por não saber disso.
       </p>
 
@@ -19,7 +19,7 @@ export default function SimplesAnexoContent() {
       <div id="o-que-e-o-simples-nacional" className="section-divider" />
       <h2 className="section-h2">O que é o Simples Nacional?</h2>
       <p className="section-lead">Regime simplificado que unifica todos os impostos numa única guia mensal — o DAS.</p>
-      <p style={{ fontSize: '1rem', lineHeight: 1.8, color: 'var(--ink2)', marginBottom: '1rem' }}>
+      <p style={{ fontSize: '1rem', lineHeight: 1.8, color: 'var(--ink-muted)', marginBottom: '1rem' }}>
         Em vez de recolher vários impostos separados (IRPJ, CSLL, PIS, COFINS, ISS, etc.), você paga tudo numa única guia mensal. Podem usar o regime empresas com faturamento anual até <strong>R$ 4,8 milhões</strong> e a maioria das atividades de prestação de serviço.
       </p>
 
@@ -48,7 +48,7 @@ export default function SimplesAnexoContent() {
       </InfoCallout>
 
       <h3 className="section-h2" style={{ fontSize: 17, marginBottom: 8, marginTop: 24, borderBottom: 'none', paddingBottom: 0 }}>Anexo V — O mais caro</h3>
-      <p style={{ fontSize: '0.97rem', lineHeight: 1.75, color: 'var(--ink2)', marginBottom: 8 }}>
+      <p style={{ fontSize: '0.97rem', lineHeight: 1.75, color: 'var(--ink-muted)', marginBottom: 8 }}>
         Alíquota inicial de <strong>15,5%</strong> — publicidade, auditoria, algumas consultorias. Se você cair aqui, vale considerar o <strong>Lucro Presumido</strong> como alternativa — ou usar o Fator R para migrar ao III.
       </p>
 
@@ -56,39 +56,39 @@ export default function SimplesAnexoContent() {
       <h2 className="section-h2">Como saber qual Anexo é o seu?</h2>
       <p className="section-lead">A regra principal é o CNAE — mas o Fator R pode mudar tudo.</p>
 
-      <div style={{ background: 'var(--white)', border: '0.5px solid var(--rule)', borderRadius: 14, overflow: 'hidden', marginBottom: 16 }}>
+      <div style={{ background: 'var(--surface)', border: '0.5px solid var(--rule)', borderRadius: 14, overflow: 'hidden', marginBottom: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 20px', background: 'var(--paper)', borderBottom: '0.5px solid var(--rule)' }}>
-          <span style={{ fontSize: 10.5, fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--ink4)' }}>Fórmula do Fator R</span>
-          <span style={{ fontSize: 9.5, fontWeight: 500, padding: '3px 8px', background: 'var(--orange-light)', color: 'var(--orange)', borderRadius: 20, border: '0.5px solid var(--orange-border)' }}>Conceito central</span>
+          <span style={{ fontSize: 10.5, fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--ink-fade)' }}>Fórmula do Fator R</span>
+          <span style={{ fontSize: 9.5, fontWeight: 500, padding: '3px 8px', background: 'var(--hot-light)', color: 'var(--hot)', borderRadius: 20, border: '0.5px solid var(--rule-strong)' }}>Conceito central</span>
         </div>
         <div style={{ padding: '20px 20px 16px', borderBottom: '0.5px solid var(--rule)' }}>
           <div style={{ textAlign: 'center', padding: '18px 14px', background: 'var(--paper)', borderRadius: 9, border: '0.5px solid var(--rule)', marginBottom: 12 }}>
             <div style={{ fontFamily: 'var(--serif)', fontSize: 19, fontStyle: 'italic', color: 'var(--ink)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, flexWrap: 'wrap' }}>
               <span>Fator R =</span>
               <span style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}>
-                <span style={{ fontSize: 13, paddingBottom: 3, borderBottom: '1.5px solid var(--ink3)', lineHeight: 1 }}>Folha de Pagamento (12 meses)</span>
+                <span style={{ fontSize: 13, paddingBottom: 3, borderBottom: '1.5px solid var(--ink-muted)', lineHeight: 1 }}>Folha de Pagamento (12 meses)</span>
                 <span style={{ fontSize: 13, paddingTop: 4, lineHeight: 1 }}>Receita Bruta (12 meses)</span>
               </span>
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
-            <div style={{ background: 'var(--blue-light)', border: '0.5px solid var(--blue-border)', borderRadius: 7, padding: '11px 13px' }}>
-              <div style={{ fontFamily: 'var(--serif)', fontSize: 21, color: 'var(--blue)', marginBottom: 2 }}>≥ 28%</div>
+            <div style={{ background: 'var(--money-light)', border: '0.5px solid var(--rule-strong)', borderRadius: 7, padding: '11px 13px' }}>
+              <div style={{ fontFamily: 'var(--serif)', fontSize: 21, color: 'var(--money)', marginBottom: 2 }}>≥ 28%</div>
               <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--ink)', marginBottom: 2 }}>Anexo III</div>
-              <div style={{ fontSize: 10.5, color: 'var(--ink4)' }}>Dev · Designer · Consultoria</div>
+              <div style={{ fontSize: 10.5, color: 'var(--ink-fade)' }}>Dev · Designer · Consultoria</div>
             </div>
-            <div style={{ background: 'var(--orange-light)', border: '0.5px solid var(--orange-border)', borderRadius: 7, padding: '11px 13px' }}>
-              <div style={{ fontFamily: 'var(--serif)', fontSize: 21, color: 'var(--orange-mid)', marginBottom: 2 }}>{'< 28%'}</div>
+            <div style={{ background: 'var(--hot-light)', border: '0.5px solid var(--rule-strong)', borderRadius: 7, padding: '11px 13px' }}>
+              <div style={{ fontFamily: 'var(--serif)', fontSize: 21, color: 'var(--hot)', marginBottom: 2 }}>{'< 28%'}</div>
               <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--ink)', marginBottom: 2 }}>Anexo V</div>
-              <div style={{ fontSize: 10.5, color: 'var(--ink4)' }}>Médico · Advogado · Arquiteto</div>
+              <div style={{ fontSize: 10.5, color: 'var(--ink-fade)' }}>Médico · Advogado · Arquiteto</div>
             </div>
           </div>
         </div>
 
-        <div style={{ padding: '16px 20px 0', background: 'var(--white)' }}>
+        <div style={{ padding: '16px 20px 0', background: 'var(--surface)' }}>
           <p style={{
             fontSize: 13,
-            color: 'var(--ink3)',
+            color: 'var(--ink-muted)',
             lineHeight: 1.6,
             margin: 0,
             fontStyle: 'italic'
@@ -100,8 +100,8 @@ export default function SimplesAnexoContent() {
           </p>
         </div>
 
-        <div style={{ padding: '14px 20px', background: 'var(--blue-light)', borderTop: '0.5px solid var(--blue-border)' }}>
-          <p style={{ fontSize: 13, color: 'var(--blue-text)', lineHeight: 1.6, margin: 0 }}>
+        <div style={{ padding: '14px 20px', background: 'var(--money-light)', borderTop: '0.5px solid var(--rule-strong)' }}>
+          <p style={{ fontSize: 13, color: 'var(--money)', lineHeight: 1.6, margin: 0 }}>
             <strong>Exemplo prático:</strong> faturamento R$ 15.000 · pró-labore R$ 4.500 (30%) → Fator R = 30% → <strong>Anexo III (6%)</strong>
           </p>
         </div>
@@ -119,13 +119,13 @@ export default function SimplesAnexoContent() {
 
       <div id="como-o-imposto-e-calculado-na-pratica" className="section-divider" />
       <h2 className="section-h2">Como o imposto é calculado na prática</h2>
-      <p style={{ fontSize: '0.97rem', lineHeight: 1.75, color: 'var(--ink2)', marginBottom: '1rem' }}>
+      <p style={{ fontSize: '0.97rem', lineHeight: 1.75, color: 'var(--ink-muted)', marginBottom: '1rem' }}>
         A alíquota efetiva não é simplesmente multiplicada pelo faturamento — existe uma fórmula com uma parcela a deduzir para suavizar a progressividade:
       </p>
-      <div style={{ background: 'var(--blue-light)', border: '0.5px solid var(--blue-border)', borderLeft: '3px solid var(--blue)', borderRadius: '0 10px 10px 0', padding: '14px 18px', marginBottom: 16, fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--blue-text)', lineHeight: 1.7 }}>
+      <div style={{ background: 'var(--money-light)', border: '0.5px solid var(--rule-strong)', borderLeft: '3px solid var(--money)', borderRadius: '0 10px 10px 0', padding: '14px 18px', marginBottom: 16, fontFamily: 'var(--mono)', fontSize: 14, color: 'var(--money)', lineHeight: 1.7 }}>
         Alíquota efetiva = (RBT12 × Alíquota nominal − PD) ÷ RBT12
       </div>
-      <p style={{ fontSize: '0.93rem', lineHeight: 1.75, color: 'var(--ink2)', marginBottom: '1rem' }}>
+      <p style={{ fontSize: '0.93rem', lineHeight: 1.75, color: 'var(--ink-muted)', marginBottom: '1rem' }}>
         Onde <strong>RBT12</strong> = receita bruta dos últimos 12 meses e <strong>PD</strong> = parcela a deduzir conforme tabela do Anexo. Na prática, seu contador faz esse cálculo automaticamente.
       </p>
 
@@ -146,7 +146,7 @@ export default function SimplesAnexoContent() {
 
       <div id="resumo-o-que-voce-precisa-saber" className="section-divider" />
       <h2 className="section-h2">Resumo: o que você precisa saber</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 0, border: '0.5px solid var(--rule)', borderRadius: 14, overflow: 'hidden', background: 'var(--white)', marginBottom: 8 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 0, border: '0.5px solid var(--rule)', borderRadius: 14, overflow: 'hidden', background: 'var(--surface)', marginBottom: 8 }}>
         {[
           { icon: '✓', text: 'Simples Nacional é quase sempre o melhor regime para PJs que estão começando' },
           { icon: '✓', text: 'O Anexo III (6%) é o mais vantajoso — aplica-se para TI, design e consultoria' },
@@ -155,10 +155,10 @@ export default function SimplesAnexoContent() {
         ].map((item, i, arr) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'flex-start', gap: 12, padding: '14px 18px',
-            borderBottom: i < arr.length - 1 ? '0.5px solid var(--rule2)' : 'none',
+            borderBottom: i < arr.length - 1 ? '0.5px solid var(--rule)' : 'none',
           }}>
-            <span style={{ width: 20, height: 20, background: 'var(--blue)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'white', flexShrink: 0, marginTop: 1 }}>{item.icon}</span>
-            <span style={{ fontSize: 13.5, color: 'var(--ink2)', lineHeight: 1.6 }}>{item.text}</span>
+            <span style={{ width: 20, height: 20, background: 'var(--money)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'white', flexShrink: 0, marginTop: 1 }}>{item.icon}</span>
+            <span style={{ fontSize: 13.5, color: 'var(--ink-muted)', lineHeight: 1.6 }}>{item.text}</span>
           </div>
         ))}
       </div>

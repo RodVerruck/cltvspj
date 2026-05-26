@@ -26,7 +26,7 @@ export default function SimplesAnexoEscolherContent() {
       <div className="section-divider" />
 
       <section id="introducao" className="content-section">
-        <p className="text-lg text-muted-foreground mb-6">
+        <p className="text-lg text-ink-muted mb-6">
           Sabemos que a sopa de letrinhas da Receita Federal pode assustar, mas vamos
           resolver isso juntos de forma simples. O Fator R é o conceito central que
           define o seu anexo, e entender ele pode economizar milhares de reais por ano.
@@ -102,15 +102,15 @@ export default function SimplesAnexoEscolherContent() {
         <p className="section-lead">O conceito central que define o seu anexo — e consequentemente sua carga tributária.</p>
         <FatorRCard />
         <div className="context-box" style={{
-          background: 'var(--blue-light)',
-          border: '0.5px solid var(--blue-border)',
-          borderLeft: '3px solid var(--blue)',
+          background: 'var(--money-light)',
+          border: '0.5px solid var(--rule-strong)',
+          borderLeft: '3px solid var(--money)',
           borderRadius: '0 10px 10px 0',
           padding: '16px 20px',
           margin: '20px 0',
           fontSize: 14,
           lineHeight: 1.6,
-          color: 'var(--blue-text)'
+          color: 'var(--money)'
         }}>
           <strong>Por que isso existe?</strong> O governo criou o Fator R para incentivar
           empresas de serviços de alto valor intelectual a pagarem salários (pró-labore)
