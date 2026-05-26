@@ -749,7 +749,8 @@
   box-shadow: 0 4px 12px rgba(12, 74, 62, 0.15);
 }
 .btn-primary:hover {
-  background: var(--money-hover);
+  background: #0a3d33 !important;
+  color: var(--paper) !important;
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(12, 74, 62, 0.25);
 }
