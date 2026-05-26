@@ -2,6 +2,14 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-05-26] Remoção de Parcerias Afiliadas Inativas (Contabilizei)
+**Contexto**: A parceria com a empresa de contabilidade online Contabilizei não foi concretizada pelo usuário, exigindo a remoção de todas as menções textuais e links de afiliados para evitar frustrações do usuário e cliques em links quebrados/não monetizados.
+**Decisão**:
+1. Substituímos a Contabilizei no CTA condicional da Home page ([index.js](file:///c:/cltvspj/src/pages/index.js)) pela parceira Agilize (com preço ajustado para R$ 99/mês) e alteramos a tabela comparativa lateral inserindo a Contasign no lugar.
+2. Atualizamos o template principal de posts do blog ([index.js](file:///c:/cltvspj/src/pages/blog/%5Bslug%5D/index.js)) para apontar o AffiliateCTA padrão para a Agilize.
+3. Removemos as menções textuais embutidas nos posts Markdown ([vale-pena-pj-isencao-ir-lei-15270-2026.mdx](file:///c:/cltvspj/posts/vale-pena-pj-isencao-ir-lei-15270-2026.mdx) e [como-abrir-cnpj-trabalhar-pj.mdx](file:///c:/cltvspj/posts/como-abrir-cnpj-trabalhar-pj.mdx)), trocando-as por parceiros ativos (Agilize e Conube).
+**Impacto**: O site agora reflete apenas parcerias operacionais e ativas na calculadora e nos posts, mantendo a integridade comercial de links patrocinados.
+
 ## [2026-05-26] Ativação de Tabelas Markdown (GFM) e Consistência Visual de Listas e Cabeçalhos
 **Contexto**: O compilador de MDX não renderizava tabelas padrão do Markdown como tabelas HTML estruturadas no `mdxSource`, gerando blocos de texto cru quebrado nos posts. Adicionalmente, as listas (`li`) e outros elementos Markdown herdavam uma cor azulada inconsistente, e o título principal H1 aparecia repetido dentro da área de leitura do post (pois já estava no cabeçalho do Hero).
 **Decisão**:

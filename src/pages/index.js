@@ -376,14 +376,14 @@ export default function Home() {
                         Pra virar PJ,<br />você vai precisar<br />de contador.
                       </h3>
                       <p className="text-base leading-relaxed text-paper/80 mb-8 max-w-lg">
-                        Abertura de CNPJ, DAS mensal, pró-labore, DEFIS, DIRF. A Contabilizei cuida de tudo online com plano a partir de R$ 89/mês - primeiros dois meses grátis pra quem vem daqui.
+                        Abertura de CNPJ, DAS mensal, pró-labore, DEFIS, DIRF. A Agilize cuida de tudo online com plano a partir de R$ 99/mês - contabilidade inteligente de forma simples e rápida.
                       </p>
                       <a
-                        href="/go/contabilizei"
+                        href="/go/agilize"
                         rel="sponsored nofollow"
                         className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-6 py-3 rounded font-medium transition-all"
                       >
-                        Conhecer Contabilizei
+                        Conhecer Agilize
                         <span>×</span>
                       </a>
                       <p className="text-xs text-paper/50 mt-5 italic">
@@ -393,12 +393,12 @@ export default function Home() {
 
                     <div className="flex flex-col gap-4 pl-0 md:pl-12 md:border-l border-paper/20">
                       <div className="flex justify-between items-baseline border-b border-paper/10 pb-3">
-                        <span className="font-display text-lg italic text-paper">Contabilizei</span>
-                        <span className="font-mono text-sm text-paper/60">a partir de R$ 89/mês</span>
-                      </div>
-                      <div className="flex justify-between items-baseline border-b border-paper/10 pb-3">
                         <span className="font-display text-lg italic text-paper">Agilize</span>
                         <span className="font-mono text-sm text-paper/60">a partir de R$ 99/mês</span>
+                      </div>
+                      <div className="flex justify-between items-baseline border-b border-paper/10 pb-3">
+                        <span className="font-display text-lg italic text-paper">Contasign</span>
+                        <span className="font-mono text-sm text-paper/60">a partir de R$ 120/mês</span>
                       </div>
                       <div className="flex justify-between items-baseline">
                         <span className="font-display text-lg italic text-paper">Conube</span>
