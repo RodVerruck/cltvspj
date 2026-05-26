@@ -140,7 +140,7 @@ export default function Post({ post, relatedPosts }) {
             </aside>
 
             {/* Coluna Central: Conteúdo (max-width rigoroso) */}
-            <article className="post-content w-full max-w-[680px] mx-auto blog-content-column">
+            <article className="post-content w-full mx-auto blog-content-column">
               <PostContent content={post.mdxSource} />
 
               <div className="mt-24">
