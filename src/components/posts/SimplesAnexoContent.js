@@ -44,7 +44,7 @@ export default function SimplesAnexoContent() {
 
       <h3 className="section-h2" style={{ fontSize: 17, marginBottom: 8, marginTop: 24, borderBottom: 'none', paddingBottom: 0 }}>Anexo IV — Médio</h3>
       <InfoCallout type="warning">
-        <strong>Atenção:</strong> o Anexo IV (advocacia, medicina, engenharia) tem alíquota inicial de 4,5%, mas <strong>não inclui o INSS</strong> — você paga o INSS patronal separadamente (~20%), o que pode torná-lo mais caro que parece.
+        <strong>Atenção:</strong> o Anexo IV (como advocacia) tem alíquota inicial de 4,5%, mas <strong>não inclui o INSS</strong> — você paga o INSS patronal separadamente (~20%), o que pode torná-lo mais caro que parece.
       </InfoCallout>
 
       <h3 className="section-h2" style={{ fontSize: 17, marginBottom: 8, marginTop: 24, borderBottom: 'none', paddingBottom: 0 }}>Anexo V — O mais caro</h3>
@@ -114,7 +114,7 @@ export default function SimplesAnexoContent() {
         <ProfissaoExemplo icon="💻" title="Desenvolvedor de Software" tag="Anexo III" faturamento="R$ 12.000" aliquota="6%" extra={{ label: 'Regime', val: 'Simples III' }} imposto="R$ 720" isGreen />
         <ProfissaoExemplo icon="⚖️" title="Advogado" tag="Anexo IV" faturamento="R$ 15.000" aliquota="4,5% + INSS" extra={{ label: 'Pró-labore', val: 'R$ 3.000' }} imposto="~R$ 1.275" isGreen={false} />
         <ProfissaoExemplo icon="📣" title="Consultor de Marketing" tag="Anexo V → III" faturamento="R$ 20.000" aliquota="6% c/ Fator R" extra={{ label: 'Economia', val: 'R$ 1.900/mês' }} imposto="R$ 1.200 vs R$ 3.100" isGreen />
-        <ProfissaoExemplo icon="🏥" title="Médico" tag="Anexo IV" faturamento="R$ 25.000" aliquota="4,5% + INSS" extra={{ label: 'Pró-labore', val: 'R$ 5.000' }} imposto="~R$ 2.125" isGreen={false} />
+        <ProfissaoExemplo icon="🏥" title="Médico" tag="Anexo V → III" faturamento="R$ 25.000" aliquota="6% c/ Fator R" extra={{ label: 'Economia', val: 'R$ 2.375/mês' }} imposto="R$ 1.500 vs R$ 3.875" isGreen />
       </div>
 
       <div id="como-o-imposto-e-calculado-na-pratica" className="section-divider" />

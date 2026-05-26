@@ -29,7 +29,7 @@ export default function SimplesAnexoEscolherContent() {
         <p className="text-lg text-ink-muted mb-6">
           Sabemos que a sopa de letrinhas da Receita Federal pode assustar, mas vamos
           resolver isso juntos de forma simples. O Fator R é o conceito central que
-          define o seu anexo, e entender ele pode economizar milhares de reais por ano.
+          define o seu anexo, e entendê-lo pode economizar milhares de reais por ano.
         </p>
       </section>
 
@@ -151,7 +151,7 @@ export default function SimplesAnexoEscolherContent() {
           <ProfissaoCard icon="💻" title="Desenvolvedor de Software" fat="R$ 15.000" pro="R$ 5.000" frPct="33%" anexo="III" economia="R$ 1.350" />
           <ProfissaoCard icon="🎨" title="Designer Gráfico" fat="R$ 8.000" pro="R$ 3.000" frPct="37,5%" anexo="III" economia="R$ 720" />
           <ProfissaoCard icon="🏥" title="Médico" fat="R$ 25.000" pro="R$ 5.000" frPct="20%" anexo="V" economia={null} />
-          <ProfissaoCard icon="⚖️" title="Advogado" fat="R$ 20.000" pro="R$ 4.000" frPct="20%" anexo="V" economia={null} />
+          <ProfissaoCard icon="📐" title="Engenheiro" fat="R$ 20.000" pro="R$ 4.000" frPct="20%" anexo="V" economia={null} />
         </div>
       </section>
 

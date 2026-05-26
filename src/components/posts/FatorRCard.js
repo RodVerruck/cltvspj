@@ -41,7 +41,7 @@ export default function FatorRCard() {
           <div className="threshold-card threshold-card--orange">
             <div className="threshold-val">{'< 28%'}</div>
             <div className="threshold-name">Anexo V</div>
-            <div className="threshold-who">Médico · Advogado · Arquiteto</div>
+            <div className="threshold-who">Médico · Engenheiro · Arquiteto</div>
           </div>
         </div>
       </div>
