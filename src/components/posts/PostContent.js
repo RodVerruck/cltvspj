@@ -17,7 +17,6 @@ import AnexoTable from './AnexoTable';
 import InfoCallout from './InfoCallout';
 import ProfissaoExemplo from './ProfissaoExemplo';
 import StatHighlight from './StatHighlight';
-import SimplesAnexoEscolherContent from './SimplesAnexoEscolherContent';
 import SimplesAnexoContent from './SimplesAnexoContent';
 
 const components = {
@@ -37,7 +36,6 @@ const components = {
   InfoCallout,
   ProfissaoExemplo,
   StatHighlight,
-  SimplesAnexoEscolherContent,
   SimplesAnexoContent,
 };
 

@@ -16,6 +16,9 @@
     --money: #0c4a3e;
     --hot: #c2410c;
     --surface: #ffffff;
+    --f-display: 'Instrument Serif', Georgia, serif;
+    --f-sans: 'Instrument Sans', system-ui, sans-serif;
+    --f-mono: 'JetBrains Mono', Consolas, monospace;
   }
 
   html {

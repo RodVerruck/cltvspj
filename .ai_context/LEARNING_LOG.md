@@ -2,6 +2,15 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-05-26] Unificação de Posts do Simples Nacional e Centralização Tipográfica
+**Contexto**: Havia dois posts no blog com URLs e conteúdos redundantes (`simples-nacional-pj-qual-anexo` e `simples-nacional-pj-qual-anexo-escolher`), o que gerava canibalização de SEO. Além disso, as variáveis globais de fontes do design system (`--f-display`, `--f-sans`, `--f-mono`) estavam restritas ao `blog.css`, criando risco de falhas tipográficas em páginas e componentes fora da rota do blog.
+**Decisão**:
+1. Unificamos todo o conteúdo conceitual e prático (passo a passo interativo, card da calculadora de Fator R, cartões de erro, FAQ e tabela comparativa) no componente `SimplesAnexoContent.js` sob a rota principal `/blog/simples-nacional-pj-qual-anexo`.
+2. Deletamos o componente duplicado `SimplesAnexoEscolherContent.js` e o post redundante `simples-nacional-pj-qual-anexo-escolher.mdx`.
+3. Configuramos redirecionamentos permanentes (status 301) no `next.config.js` para garantir que acessos à antiga URL `/blog/simples-nacional-pj-qual-anexo-escolher` sejam encaminhados para a página unificada.
+4. Adicionamos as definições de variáveis CSS de fontes no `:root` de `globals.css` para centralizar a consistência da tipografia em todo o site.
+**Impacto**: O blog agora possui um único artigo super completo, com alta densidade de conteúdo técnico e interativo, otimizando o posicionamento no Google e simplificando a navegação. A tipografia baseada nas fontes `Instrument Serif`, `Instrument Sans` e `JetBrains Mono` foi blindada de quebras em nível global do site, mantendo a harmonia visual em todas as páginas.
+
 ## [2026-05-26] Correção de Conflitos e Travas Inline no Layout de Posts
 **Contexto**: O grid editorial de 1400px com coluna de texto de 850px em telas ultra-wide (definido em 11 de maio de 2026) não estava se aplicando na prática devido a duas travas rígidas de largura que limitavam a leitura, e o componente de CTA de afiliados sofria de perda de contraste de cores.
 **Decisão**:

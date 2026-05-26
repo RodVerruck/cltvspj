@@ -14,6 +14,15 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/blog/simples-nacional-pj-qual-anexo-escolher',
+        destination: '/blog/simples-nacional-pj-qual-anexo',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig
