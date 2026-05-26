@@ -89,9 +89,9 @@ export default function Post({ post, relatedPosts }) {
               </div>
             </div>
 
-            {/* Título de Impacto - Limit width to 750px and center */}
-            <h1 className="font-display leading-[1.05] tracking-tighter text-ink text-center mb-10 font-black italic mx-auto max-w-[750px]"
-              style={{ fontSize: 'clamp(2.5rem, 7vw, 4.2rem)' }}>
+            {/* Título de Impacto - Limit width and center with clear typography */}
+            <h1 className="font-display leading-[1.15] tracking-editorial text-ink text-center mb-10 font-bold mx-auto max-w-[850px]"
+              style={{ fontSize: 'clamp(2.3rem, 6.5vw, 3.8rem)' }}>
               {post.title}
             </h1>
 
