@@ -9,7 +9,8 @@ Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do te
 2. Removemos a propriedade inline `style={{ maxWidth: '896px' }}` do contêiner do renderizador MDX (`src/components/posts/PostContent.js`).
 3. Deixamos a responsividade da largura de leitura totalmente a cargo das classes customizadas controladas centralizadamente por `.blog-content-column` em `blog.css`.
 4. Adicionamos o modificador de importante (`!`) nas classes de cores de fonte em `src/components/AffiliateCTA.js` para impedir que seletores gerais de tag do CSS do blog (`.post-content h3` e `.post-content p`) forcem a cor de texto preta/cinza sobre o fundo verde do banner.
-**Impacto**: O layout ultra-wide editorial de 850px agora funciona perfeitamente em telas altas e a legibilidade visual da recomendação editorial foi plenamente restabelecida (texto creme legível sobre o fundo verde original).
+5. Identificamos que diversos componentes MDX de post (como TLDRCard, FatorRCard/Calculadora Fator R, ProfissaoCard, ErroCard, steps-list, e blocos de comparação) possuíam classes sem qualquer definição no CSS. Implementamos e adicionamos toda a estilização CSS desses componentes em `blog.css` para integrá-los à identidade visual premium.
+**Impacto**: O layout ultra-wide editorial de 850px agora funciona perfeitamente em telas altas, a legibilidade visual da recomendação editorial foi plenamente restabelecida e todos os cartões, calculadoras inline e blocos de conteúdo são exibidos de forma rica, responsiva e com excelente acabamento tipográfico.
 
 ## [2026-05-11] Ultra-Wide Editorial Standard (1400px)
 **Contexto**: O layout anterior (896px) com TOC fixo sofria de sobreposição visual quando componentes "full-width" eram usados dentro do grid.
