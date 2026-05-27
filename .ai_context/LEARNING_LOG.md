@@ -2,6 +2,24 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-05-26] Resolução de Erro 404 no Servidor Dev e Descoberta de Diretórios Duplicados
+**Contexto**: O usuário enfrentou erro 404 ao tentar acessar `http://localhost:3000/apresentacao_parceiro_agilize.html`.
+**Decisão**:
+1. Identificamos que o usuário possui duas pastas do mesmo projeto: a ativa e atualizada em `c:\cltvspj` (com estrutura `src/` de maio/2026) e uma antiga em `c:\Projetos\cltvspj` (com estrutura sem `src/` de março/2026).
+2. O arquivo de apresentação comercial estava presente em `c:\Projetos\cltvspj\public\apresentacao_parceiro_agilize.html`, mas o servidor do Next.js estava rodando na pasta ativa `c:\cltvspj`, onde o arquivo não existia.
+3. Copiamos o arquivo de apresentação para `c:\cltvspj\public\apresentacao_parceiro_agilize.html`.
+**Impacto**: O localhost agora serve corretamente o arquivo na porta 3000. O usuário foi orientado a focar o desenvolvimento e abrir arquivos na pasta `c:\cltvspj` para evitar inconsistências.
+
+## [2026-05-26] Desenvolvimento e Mapeamento de Deck de Apresentação Comercial (Agilize)
+**Contexto**: O usuário possuía um arquivo HTML inicial de apresentação comercial para a empresa de contabilidade parceira Agilize e desejava melhorias estéticas e funcionais no documento para torná-lo um deck profissional. O arquivo original residia na pasta física de projetos mas fora do roteamento público, impossibilitando acesso prático pelo servidor Next.js.
+**Decisão**:
+1. Desenvolvemos uma aplicação interativa de slides em `apresentacao_parceiro_agilize.html` contendo transições controladas por teclado (setas, espaço) e botões visuais no rodapé da página.
+2. Integramos um "Modo Impressão" (PDF) acionado via botão que desativa as transições de slides e empilha as páginas de forma limpa na proporção A4 Landscape, ideal para exportação em PDF (`Ctrl + P`).
+3. Alinhamos a tipografia com o design system do site utilizando `Instrument Serif` (Display), `Instrument Sans` (Corpo) e a paleta oficial verde `money` e laranja `hot`.
+4. Criamos um mockup de alta fidelidade simulando a interface da calculadora real CLT vs PJ e expandimos o conteúdo com dois slides comerciais ("Audiência e Tráfego Qualificado" e "Modelo de Parceria Ganha-Ganha").
+5. Movemos o arquivo HTML para a pasta `public/` do Next.js para expô-lo de forma estática no roteamento do localhost.
+**Impacto**: O deck comercial tornou-se uma ferramenta profissional altamente persuasiva e interativa para negociações de afiliados com a Agilize, disponível para visualização instantânea no servidor local e pronta para impressão.
+
 ## [2026-05-26] Remoção de Parcerias Afiliadas Inativas (Contabilizei)
 **Contexto**: A parceria com a empresa de contabilidade online Contabilizei não foi concretizada pelo usuário, exigindo a remoção de todas as menções textuais e links de afiliados para evitar frustrações do usuário e cliques em links quebrados/não monetizados.
 **Decisão**:
