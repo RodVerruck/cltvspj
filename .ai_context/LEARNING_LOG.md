@@ -2,12 +2,12 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-05-26] Configuração do Google Analytics 4 (GA4)
+## [2026-05-26] Configuração de Ferramentas de Analytics (GA4 e Clarity)
 **Contexto**: O usuário desejava começar a identificar e monitorar o fluxo e o tráfego do site, mas não tinha ferramentas de análise ativas. Identificamos que ele já possuía uma conta e propriedade configuradas no Google Analytics.
 **Decisão**:
-1. Obtivemos o ID de métricas real (`G-EYNHF1X75P`) a partir do screenshot enviado pelo usuário.
-2. Atualizamos a variável de ambiente `NEXT_PUBLIC_GA_ID` no arquivo `.env.local` com o ID correto.
-**Impacto**: O projeto local agora está pronto para enviar eventos e dados de tráfego para a conta do usuário. Orientamos o usuário a cadastrar a mesma variável de ambiente no painel da Vercel para monitorar as visitas em produção.
+1. Obtivemos o ID de métricas real do Google Analytics (`G-EYNHF1X75P`) a partir de screenshot e atualizamos a variável de ambiente `NEXT_PUBLIC_GA_ID` no arquivo `.env.local`.
+2. Adicionamos suporte nativo e flexível ao **Microsoft Clarity** no arquivo `src/pages/_app.js` e inicializamos a variável `NEXT_PUBLIC_CLARITY_ID` no arquivo `.env.local` para ativação simples sem necessidade de novas alterações no código-fonte.
+**Impacto**: O projeto local agora está preparado para enviar dados para o GA4 e pré-configurado para gravação de comportamento do usuário via Microsoft Clarity. Ambos estão prontos para produção bastando replicar as chaves no painel da Vercel.
 
 ## [2026-05-26] Refatoração do Deck de Slides para Apresentação Institucional e Media Kit
 **Contexto**: O usuário identificou que o formulário de afiliação da Agilize exige o envio de um link do Google Drive contendo uma "Apresentação institucional da sua empresa". A apresentação original estava formatada como uma proposta ativa de parceria exclusiva e integração especial, o que desviava do objetivo do cadastro de afiliação padrão.
