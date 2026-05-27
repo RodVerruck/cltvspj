@@ -2,6 +2,16 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-05-26] Refatoração do Deck de Slides para Apresentação Institucional e Media Kit
+**Contexto**: O usuário identificou que o formulário de afiliação da Agilize exige o envio de um link do Google Drive contendo uma "Apresentação institucional da sua empresa". A apresentação original estava formatada como uma proposta ativa de parceria exclusiva e integração especial, o que desviava do objetivo do cadastro de afiliação padrão.
+**Decisão**:
+1. Adaptamos o conteúdo e o copy do arquivo `public/apresentacao_parceiro_agilize.html` para transformá-lo em uma **Apresentação Institucional & Media Kit** do projeto CLT vs PJ.
+2. Atualizamos o Slide 1 (Capa) para focar no CLT vs PJ como um simulador independente de pejotização e planejamento tributário assertivo.
+3. Modificamos o Slide 3, substituindo o payload JSON (que parecia "defeito" visual para analistas não técnicos) por um painel de "Ficha de Lead Qualificado no CRM", apresentando de forma limpa as informações de nome, faturamento estimado e segmento obtidos na simulação.
+4. Ajustamos a legibilidade tipográfica: aumentamos o contraste do texto de cor mutada (de `#6b6357` para `#4a4135`) e apagada (de `#a8a192` para `#7a7162`) e aumentamos o tamanho mínimo de fonte das descrições do Slide 2 de `10px/11px` para `12px` (`text-xs`), melhorando muito a leitura.
+5. Reestruturamos o Slide 5 (Promoção Editorial) para focar puramente em "Como Promovemos a Agilize" (Calculadora e Artigos do Blog/SEO) através de um grid de duas colunas, removendo a seção de otimização de comissões/CPA a pedido do usuário.
+**Impacto**: O documento institucional tornou-se ideal para submissão no formulário de afiliação da Agilize, com legibilidade aprimorada, visual polido sem códigos confusos e foco editorial na atração de leads, mantendo a consistência do design system do site.
+
 ## [2026-05-26] Resolução de Erro 404 no Servidor Dev e Descoberta de Diretórios Duplicados
 **Contexto**: O usuário enfrentou erro 404 ao tentar acessar `http://localhost:3000/apresentacao_parceiro_agilize.html`.
 **Decisão**:
