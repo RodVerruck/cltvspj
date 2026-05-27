@@ -2,13 +2,13 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-05-26] Configuração de Ferramentas de Analytics (GA4 e Clarity)
-**Contexto**: O usuário desejava começar a identificar e monitorar o fluxo e o tráfego do site, mas não tinha ferramentas de análise ativas. Identificamos que ele já possuía uma conta configurada no Google Analytics, mas a propriedade pertencia a um projeto desativado (Vant App).
+## [2026-05-26] Configuração de Ferramentas de Analytics e SEO (GA4, Clarity e Search Console)
+**Contexto**: O usuário desejava começar a identificar e monitorar o fluxo e o tráfego do site, mas não tinha ferramentas de análise e indexação ativas. A propriedade de Analytics anterior estava desativada (Vant App) e o site não estava indexado no Google.
 **Decisão**:
-1. Orientamos o usuário a criar uma propriedade dedicada chamada "CLT vs PJ" no Google Analytics para manter os dados de tráfego isolados.
-2. Obtivemos o novo ID de métricas gerado (`G-Z58J44F2DW`) e atualizamos a variável de ambiente `NEXT_PUBLIC_GA_ID` no arquivo `.env.local`.
-3. Adicionamos suporte nativo e flexível ao **Microsoft Clarity** no arquivo `src/pages/_app.js` e inicializamos a variável `NEXT_PUBLIC_CLARITY_ID` no arquivo `.env.local` para ativação simples sem necessidade de novas alterações no código-fonte.
-**Impacto**: O site agora possui tags de monitoramento perfeitamente isoladas e limpas para o domínio correto. O projeto local já envia os dados para o GA4 oficial, restando apenas cadastrar a variável `NEXT_PUBLIC_GA_ID` com o valor `G-Z58J44F2DW` nas configurações de ambiente da Vercel.
+1. Orientamos o usuário a criar uma propriedade dedicada chamada "CLT vs PJ" no Google Analytics e atualizamos a variável `NEXT_PUBLIC_GA_ID` no arquivo `.env.local` com o novo ID `G-Z58J44F2DW`.
+2. Adicionamos suporte ao **Microsoft Clarity** no arquivo `src/pages/_app.js` e `.env.local` para gravação de comportamento.
+3. Criamos o arquivo de verificação de propriedade do Google Search Console (`google85e2919dd7b51ba0.html`) no diretório `public/` para verificação direta via arquivo estático.
+**Impacto**: O site agora possui tags de monitoramento isoladas e está preparado para ser indexado pelo Google Search Console. Após o deploy do arquivo HTML, o usuário poderá enviar o sitemap e iniciar a indexação oficial no Google.
 
 ## [2026-05-26] Refatoração do Deck de Slides para Apresentação Institucional e Media Kit
 **Contexto**: O usuário identificou que o formulário de afiliação da Agilize exige o envio de um link do Google Drive contendo uma "Apresentação institucional da sua empresa". A apresentação original estava formatada como uma proposta ativa de parceria exclusiva e integração especial, o que desviava do objetivo do cadastro de afiliação padrão.
