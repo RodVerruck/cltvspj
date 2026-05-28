@@ -5,9 +5,9 @@ Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do te
 ## [2026-05-28] Prospecção de Nova Parceria de Afiliação (Manassés Contabilidade)
 **Contexto**: O usuário recebeu contato de retorno da Manassés Contabilidade (Anderson Moreira) demonstrando interesse no programa de afiliação do site CLT vs PJ.
 **Decisão**:
-1. Elaboramos opções de resposta simplificadas e informais, sem jargões de marketing, explicando o site como uma calculadora de comparação CLT vs PJ que indica contabilidade para quem decide abrir empresa.
-2. Focamos em entender o funcionamento do programa de afiliados deles e propor uma conversa simples.
-**Impacto**: Abordagem comercial simplificada alinhada ao momento do projeto e nível de conhecimento do usuário.
+1. Esclarecemos que o foco principal do site é em prestadores de serviço de tecnologia e Simples Nacional (Fator R), o que Anderson confirmou ser exatamente o foco da Manassés Contabilidade.
+2. Propusemos opções de resposta para dar o próximo passo: entender como funciona o programa de afiliados deles (comissão, modelo de indicação) ou fechar o horário do papo rápido para o dia seguinte (amanhã).
+**Impacto**: Parceria muito bem alinhada no quesito público-alvo (fit perfeito com a calculadora), avançando para os termos comerciais.
 
 
 ## [2026-05-26] Configuração de Ferramentas de Analytics e SEO (GA4, Clarity e Search Console)
