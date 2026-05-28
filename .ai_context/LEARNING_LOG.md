@@ -2,6 +2,14 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-05-28] Prospecção de Nova Parceria de Afiliação (Manassés Contabilidade)
+**Contexto**: O usuário recebeu contato de retorno da Manassés Contabilidade (Anderson Moreira) demonstrando interesse no programa de afiliação do site CLT vs PJ.
+**Decisão**:
+1. Elaboramos opções de resposta simplificadas e informais, sem jargões de marketing, explicando o site como uma calculadora de comparação CLT vs PJ que indica contabilidade para quem decide abrir empresa.
+2. Focamos em entender o funcionamento do programa de afiliados deles e propor uma conversa simples.
+**Impacto**: Abordagem comercial simplificada alinhada ao momento do projeto e nível de conhecimento do usuário.
+
+
 ## [2026-05-26] Configuração de Ferramentas de Analytics e SEO (GA4, Clarity e Search Console)
 **Contexto**: O usuário desejava começar a identificar e monitorar o fluxo e o tráfego do site, mas não tinha ferramentas de análise e indexação ativas. A propriedade de Analytics anterior estava desativada (Vant App) e o site não estava indexado no Google.
 **Decisão**:
