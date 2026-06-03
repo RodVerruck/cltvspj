@@ -9,6 +9,7 @@ const AFFILIATE_LINKS = {
   agilize: 'https://www.agilize.com.br/?parceiro=SUBSTITUIR_CODIGO',
   contasign: 'https://contasign.com.br/?ref=SUBSTITUIR_CODIGO',
   conube: 'https://conube.com.br/?ref=SUBSTITUIR_CODIGO',
+  manasses: 'https://wa.me/5511942150872?text=Ol%C3%A1%20Anderson!%20Vim%20atrav%C3%A9s%20da%20calculadora%20CLT%20vs%20PJ%20e%20gostaria%20de%20tirar%20algumas%20d%C3%BAvidas%20sobre%20a%20abertura%20de%20CNPJ%20e%20contabilidade%20com%20o%20desconto%20de%20parceiro%20de%2050%25%20no%20primeiro%20m%C3%AAs.',
 };
 
 export default function Redirect() {

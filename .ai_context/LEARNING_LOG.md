@@ -2,6 +2,15 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-03] Substituição de CTAs de Afiliados (Agilize por Manassés Contabilidade)
+**Contexto**: A pedido do usuário, preparamos toda a estrutura do site para a nova parceria com a Manassés Contabilidade, removendo as referências e CTAs da parceira anterior (Agilize).
+**Decisão**:
+1. Criamos a rota de redirecionamento dinâmico `/go/manasses` em `src/pages/go/[slug].js`, apontando provisoriamente para o WhatsApp do Anderson Moreira (+55 11 94215-0872) com mensagem parametrizada identificando a origem da calculadora.
+2. Atualizamos o banner contextual de recomendação PJ na Home (`src/pages/index.js`) e no template geral de posts (`src/pages/blog/[slug]/index.js`), alterando os links para `manasses` e adicionando os valores de honorários dela (a partir de R$ 349) e o desconto exclusivo de 50% na primeira mensalidade.
+3. Removemos a tabela de comparação de preços laterais com concorrentes de baixo custo (Agilize, Contasign, Conube) e a substituímos por um painel de diferenciais da Manassés (Especialistas em TI/Fator R, Abertura Grátis de CNPJ e Suporte 100% Humano), agregando mais valor ao parceiro.
+4. Ajustamos as referências textuais e tags `<AffiliateCTA>` nos posts MDX (`vale-pena-pj-isencao-ir-lei-15270-2026.mdx` e `como-abrir-cnpj-trabalhar-pj.mdx`).
+**Impacto**: O site está 100% preparado visual e tecnicamente para a parceria com a Manassés. Rodrigo poderá mostrar essa integração pronta durante a chamada das 10h como um sinal claro de interesse e agilidade comercial.
+
 ## [2026-06-03] Preparação para Call de Alinhamento Comercial (Manassés Contabilidade)
 **Contexto**: A chamada comercial com o Anderson Moreira da Manassés Contabilidade está agendada para hoje às 10:00. O objetivo é estruturar a abordagem comercial do Rodrigo para demonstrar o valor do tráfego high-intent (mesmo o site sendo novo) e definir os termos operacionais da parceria de afiliados (link de afiliado `/go/manasses`, cupons, rastreamento de leads e modelo de comissão de 50%).
 **Decisão**: Mapeamos os pontos fortes do Rodrigo para a call (leads ultra-qualificados de TI na fase de decisão de pejotização, fit exato com Fator R) e formulamos um roteiro completo de perguntas e estratégias de negociação para garantir uma parceria sólida.

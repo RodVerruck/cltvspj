@@ -376,14 +376,14 @@ export default function Home() {
                         Pra virar PJ,<br />você vai precisar<br />de contador.
                       </h3>
                       <p className="text-base leading-relaxed text-paper/80 mb-8 max-w-lg">
-                        Abertura de CNPJ, DAS mensal, pró-labore, DEFIS, DIRF. A Agilize cuida de tudo online com plano a partir de R$ 99/mês - contabilidade inteligente de forma simples e rápida.
+                        Abertura de CNPJ grátis, pró-labore, Fator R e assessoria mensal. A Manassés Contabilidade é especialista em TI com planos a partir de R$ 349/mês — e você ganha 50% de desconto na primeira mensalidade!
                       </p>
                       <a
-                        href="/go/agilize"
+                        href="/go/manasses"
                         rel="sponsored nofollow"
                         className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-6 py-3 rounded font-medium transition-all"
                       >
-                        Conhecer Agilize
+                        Conhecer Manassés
                         <span>×</span>
                       </a>
                       <p className="text-xs text-paper/50 mt-5 italic">
@@ -391,18 +391,18 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className="flex flex-col gap-4 pl-0 md:pl-12 md:border-l border-paper/20">
-                      <div className="flex justify-between items-baseline border-b border-paper/10 pb-3">
-                        <span className="font-display text-lg italic text-paper">Agilize</span>
-                        <span className="font-mono text-sm text-paper/60">a partir de R$ 99/mês</span>
+                    <div className="flex flex-col gap-5 pl-0 md:pl-12 md:border-l border-paper/20">
+                      <div className="border-b border-paper/10 pb-3">
+                        <div className="font-display text-lg font-bold text-paper mb-1">Especialistas em TI</div>
+                        <div className="text-xs text-paper/70 font-mono">Planejamento tributário estratégico e Fator R (redução legal de imposto no Simples Nacional).</div>
                       </div>
-                      <div className="flex justify-between items-baseline border-b border-paper/10 pb-3">
-                        <span className="font-display text-lg italic text-paper">Contasign</span>
-                        <span className="font-mono text-sm text-paper/60">a partir de R$ 120/mês</span>
+                      <div className="border-b border-paper/10 pb-3">
+                        <div className="font-display text-lg font-bold text-paper mb-1">Abertura de CNPJ Grátis</div>
+                        <div className="text-xs text-paper/70 font-mono">Processo ágil de abertura de empresa sem cobrança de taxas de serviços adicionais.</div>
                       </div>
-                      <div className="flex justify-between items-baseline">
-                        <span className="font-display text-lg italic text-paper">Conube</span>
-                        <span className="font-mono text-sm text-paper/60">a partir de R$ 79/mês</span>
+                      <div>
+                        <div className="font-display text-lg font-bold text-paper mb-1">Suporte 100% Humano</div>
+                        <div className="text-xs text-paper/70 font-mono">Fale direto com contadores por WhatsApp, sem chamados em fila ou chats burocráticos.</div>
                       </div>
                     </div>
                   </div>

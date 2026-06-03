@@ -145,10 +145,10 @@ export default function Post({ post, relatedPosts }) {
 
               <div className="mt-24">
                 <AffiliateCTA
-                  partner="agilize"
-                  title="Abra seu CNPJ com quem entende de verdade."
-                  description="A Agilize cuida de tudo para você virar PJ com segurança e economia. Planos que cabem no seu bolso."
-                  buttonText="Falar com Especialista"
+                  partner="manasses"
+                  title="Abra seu CNPJ com quem entende de TI."
+                  description="A Manassés Contabilidade cuida da abertura do seu CNPJ grátis e da contabilidade mensal com 50% de desconto na primeira mensalidade."
+                  buttonText="Conhecer a Manassés"
                 />
               </div>
             </article>
