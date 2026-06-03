@@ -237,10 +237,10 @@ export default function Home() {
                 </button>
               </div>
             </div>
-</section>
+          </section>
 
           {showingResults && (
-          <section id="resultado" className="py-16 md:py-24 relative bg-paper-dark">
+            <section id="resultado" className="py-16 md:py-24 relative bg-paper-dark">
             <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
               <div className="absolute inset-0 opacity-[0.10] pointer-events-none z-0" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
 
@@ -250,31 +250,49 @@ export default function Home() {
                 <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
               </div>
 
-            {/* HERO NUMBER */}
-            <div className="mb-12 relative">
-              <span className="font-display italic text-2xl md:text-3xl text-ink-muted block mb-2">
-                {pj.net > clt.net ? 'PJ paga, no seu caso,' : 'CLT paga, no seu caso,'}
-              </span>
-              <span className={`font-display text-money tracking-editorial block mb-3 leading-none ${pj.net > clt.net ? 'text-money' : 'text-hot'
-                }`} style={{ fontSize: 'clamp(72px, 12vw, 160px)' }}>
-                R$ {Math.abs(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-              </span>
-              <span className="font-display italic text-2xl md:text-3xl text-ink-muted block">
-                a mais por mês - R$ {Math.abs((pj.net - clt.net) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} por ano.
-              </span>
+              {/* HERO RESULT CARD */}
+              <div className={`border rounded-xl p-8 md:p-10 mb-12 relative overflow-hidden transition-colors duration-500 shadow-sm ${
+                pj.net > clt.net 
+                  ? 'bg-money-light border-money/20' 
+                  : 'bg-hot-light border-hot/20'
+              }`}>
+                <div className={`absolute top-0 left-0 w-2 h-full ${pj.net > clt.net ? 'bg-money' : 'bg-hot'}`}></div>
+                
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                  <div>
+                    <span className="font-mono text-xs uppercase tracking-widest text-ink-muted block mb-2">Recomendação</span>
+                    <h3 className="font-display text-3xl md:text-4xl text-ink font-bold leading-tight mb-3">
+                      {pj.net > clt.net ? (
+                        <>A opção <span className="text-money italic font-bold">PJ</span> é mais vantajosa para você.</>
+                      ) : (
+                        <>A opção <span className="text-hot italic font-bold">CLT</span> é mais vantajosa para você.</>
+                      )}
+                    </h3>
+                    <p className="text-base text-ink-muted max-w-xl font-sans">
+                      Cálculo completo considerando salários brutos, descontos de impostos vigentes em 2026, nova faixa de isenção de IR até R$ 5.000, benefícios CLT (13º, férias, FGTS) e o Fator R otimizado para o PJ.
+                    </p>
+                  </div>
 
-              <div className="mt-6">
-                <span className={`inline-flex items-center gap-2 font-mono text-sm px-3 py-1.5 rounded-full ${pj.net > clt.net
-                  ? 'text-money bg-money-light'
-                  : 'text-hot bg-hot-light'
+                  <div className={`border rounded-lg p-6 min-w-[280px] lg:text-right flex flex-col justify-center bg-white/70 backdrop-blur-sm ${
+                    pj.net > clt.net ? 'border-money/15' : 'border-hot/15'
                   }`}>
-                  <span>{pj.net > clt.net ? '×' : '×'}</span>
-                  <span>
-                    {Math.abs(((pj.net - clt.net) / clt.net) * 100).toFixed(1)}% em relação ao {pj.net > clt.net ? 'CLT' : 'PJ'} líquido
-                  </span>
-                </span>
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted block mb-1">
+                      {pj.net > clt.net ? 'Rendimento Extra Mensal (PJ)' : 'Rendimento Extra Mensal (CLT)'}
+                    </span>
+                    <span className={`font-display text-4xl md:text-5xl font-black block leading-none mb-2 ${pj.net > clt.net ? 'text-money' : 'text-hot'}`}>
+                      + R$ {Math.abs(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                    </span>
+                    <span className="text-xs text-ink-muted font-sans block mb-3">
+                      Equivale a <strong className="text-ink">{Math.abs(((pj.net - clt.net) / (pj.net > clt.net ? clt.net : pj.net)) * 100).toFixed(1)}%</strong> a mais de rendimento.
+                    </span>
+                    <span className={`font-mono text-[10px] uppercase tracking-wider text-ink-muted block border-t pt-3 ${
+                      pj.net > clt.net ? 'border-money/15' : 'border-hot/15'
+                    }`}>
+                      Diferença anual: + R$ {Math.abs((pj.net - clt.net) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
 
             {/* COMPARE */}
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 mt-16 mb-16 pt-12 border-t border-rule items-start">
