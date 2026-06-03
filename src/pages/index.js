@@ -387,7 +387,7 @@ export default function Home() {
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </a>
                       <p className="text-[10px] text-paper/50 mt-5 italic font-mono uppercase tracking-wider">
-                        Link de parceria · Sem custo extra para você · Apoia o projeto
+                        Link de parceria · Sem custo extra para você
                       </p>
                     </div>
 
