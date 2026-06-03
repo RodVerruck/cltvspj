@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, ArrowRight, Briefcase, Info } from 'lucide-react';
+import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, ArrowRight, Briefcase, Info, Users } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AdSense from '../components/AdSense';
@@ -365,44 +365,53 @@ export default function Home() {
 
         {/* Conditional CTA for PJ > CLT */}
         {pj.net > clt.net && (
-        <section className="py-16 md:py-20 bg-money text-paper">
+        <section className="py-16 md:py-20 bg-money text-paper animate-fade-in">
               <div className="max-w-6xl mx-auto px-6 md:px-8">
                   <div className="grid md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-center">
                     <div>
-                      <div className="font-mono text-xs uppercase tracking-[0.15em] text-paper/60 mb-4">
-                        Recomendação contextual
+                      <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-paper/60 mb-5 font-bold">
+                        Recomendação de Parceiro
                       </div>
-                      <h3 className="font-display text-4xl md:text-[44px] leading-[1.05] tracking-editorial mb-4">
+                      <h3 className="font-display text-4xl md:text-[44px] leading-[1.05] tracking-editorial mb-5">
                         Pra virar PJ,<br />você vai precisar<br />de contador.
                       </h3>
-                      <p className="text-base leading-relaxed text-paper/80 mb-8 max-w-lg">
+                      <p className="text-base leading-relaxed text-paper/85 mb-8 max-w-lg font-sans">
                         Abertura de CNPJ grátis, pró-labore, Fator R e assessoria mensal. A Manassés Contabilidade é especialista em TI com planos a partir de R$ 349/mês — e você ganha 50% de desconto na primeira mensalidade!
                       </p>
                       <a
                         href="/go/manasses"
                         rel="sponsored nofollow"
-                        className="inline-flex items-center gap-2.5 bg-paper text-money hover:bg-hot hover:text-paper px-6 py-3 rounded font-medium transition-all"
+                        className="group inline-flex items-center gap-2 bg-[#f5f1e8] text-[#0c4a3e] hover:bg-white px-7 py-3.5 rounded font-medium transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)]"
                       >
                         Conhecer Manassés
-                        <span>×</span>
+                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </a>
-                      <p className="text-xs text-paper/50 mt-5 italic">
-                        Link de parceria. Não muda o preço pra você e ajuda a manter a calculadora gratuita.
+                      <p className="text-[10px] text-paper/50 mt-5 italic font-mono uppercase tracking-wider">
+                        Link de parceria · Sem custo extra para você · Apoia o projeto
                       </p>
                     </div>
 
-                    <div className="flex flex-col gap-5 pl-0 md:pl-12 md:border-l border-paper/20">
-                      <div className="border-b border-paper/10 pb-3">
-                        <div className="font-display text-lg font-bold text-paper mb-1">Especialistas em TI</div>
-                        <div className="text-xs text-paper/70 font-mono">Planejamento tributário estratégico e Fator R (redução legal de imposto no Simples Nacional).</div>
+                    <div className="flex flex-col gap-6 pl-0 md:pl-12 md:border-l border-paper/20">
+                      <div className="border-b border-paper/10 pb-4">
+                        <div className="font-display text-xl font-bold text-paper mb-2 flex items-center gap-2">
+                          <Briefcase className="w-5 h-5 text-paper/80" />
+                          <span>Especialistas em TI</span>
+                        </div>
+                        <p className="text-sm text-paper/90 leading-relaxed font-sans">Planejamento tributário estratégico e Fator R (redução legal de imposto no Simples Nacional).</p>
                       </div>
-                      <div className="border-b border-paper/10 pb-3">
-                        <div className="font-display text-lg font-bold text-paper mb-1">Abertura de CNPJ Grátis</div>
-                        <div className="text-xs text-paper/70 font-mono">Processo ágil de abertura de empresa sem cobrança de taxas de serviços adicionais.</div>
+                      <div className="border-b border-paper/10 pb-4">
+                        <div className="font-display text-xl font-bold text-paper mb-2 flex items-center gap-2">
+                          <CheckCircle className="w-5 h-5 text-paper/80" />
+                          <span>Abertura de CNPJ Grátis</span>
+                        </div>
+                        <p className="text-sm text-paper/90 leading-relaxed font-sans">Processo ágil de abertura de empresa sem cobrança de taxas de serviços adicionais.</p>
                       </div>
                       <div>
-                        <div className="font-display text-lg font-bold text-paper mb-1">Suporte 100% Humano</div>
-                        <div className="text-xs text-paper/70 font-mono">Fale direto com contadores por WhatsApp, sem chamados em fila ou chats burocráticos.</div>
+                        <div className="font-display text-xl font-bold text-paper mb-2 flex items-center gap-2">
+                          <Users className="w-5 h-5 text-paper/80" />
+                          <span>Suporte 100% Humano</span>
+                        </div>
+                        <p className="text-sm text-paper/90 leading-relaxed font-sans">Fale direto com contadores por WhatsApp, sem chamados em fila ou chats burocráticos.</p>
                       </div>
                     </div>
                   </div>
