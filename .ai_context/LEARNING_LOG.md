@@ -2,6 +2,11 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-03] Preparação para Call de Alinhamento Comercial (Manassés Contabilidade)
+**Contexto**: A chamada comercial com o Anderson Moreira da Manassés Contabilidade está agendada para hoje às 10:00. O objetivo é estruturar a abordagem comercial do Rodrigo para demonstrar o valor do tráfego high-intent (mesmo o site sendo novo) e definir os termos operacionais da parceria de afiliados (link de afiliado `/go/manasses`, cupons, rastreamento de leads e modelo de comissão de 50%).
+**Decisão**: Mapeamos os pontos fortes do Rodrigo para a call (leads ultra-qualificados de TI na fase de decisão de pejotização, fit exato com Fator R) e formulamos um roteiro completo de perguntas e estratégias de negociação para garantir uma parceria sólida.
+**Impacto**: Rodrigo entra na reunião preparado com argumentos focados em valor/conversão e um checklist técnico e comercial claro para fechar o negócio.
+
 ## [2026-05-28] Prospecção de Nova Parceria de Afiliação (Manassés Contabilidade)
 **Contexto**: O usuário recebeu contato de retorno da Manassés Contabilidade (Anderson Moreira) demonstrando interesse no programa de afiliação do site CLT vs PJ.
 **Decisão**:
