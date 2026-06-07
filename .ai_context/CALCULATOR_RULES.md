@@ -1,6 +1,6 @@
 # 🧮 Regras da Calculadora (Taxas e Impostos 2026)
 
-Este documento mantém as regras de negócios e os parâmetros fiscais oficiais de 2026 usados na lógica do [calculator.js](file:///c:/Projetos/cltvspj/src/lib/calculator.js).
+Este documento mantém as regras de negócios e os parâmetros fiscais oficiais de 2026 isolados em [2026.js](file:///c:/Projetos/cltvspj/src/lib/tax-rules/2026.js) e consumidos na lógica do [calculator.js](file:///c:/Projetos/cltvspj/src/lib/calculator.js).
 
 ## CLT
 

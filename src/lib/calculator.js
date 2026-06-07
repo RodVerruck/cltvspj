@@ -1,10 +1,7 @@
+import { TAX_RULES } from './tax-rules/index.js';
+
 export const calculateINSS = (sal) => {
-  const bands = [
-    { limit: 1621.00, rate: 0.075 },
-    { limit: 2902.84, rate: 0.09 },
-    { limit: 4354.27, rate: 0.12 },
-    { limit: 8475.55, rate: 0.14 },
-  ];
+  const bands = TAX_RULES.inss.bands;
   let inss = 0;
   let prev = 0;
   for (const { limit, rate } of bands) {
@@ -16,12 +13,13 @@ export const calculateINSS = (sal) => {
 };
 
 export function aplicarRedutorLei15270(rendimentoTributavel, irTradicional) {
-  if (rendimentoTributavel <= 5000.00) {
+  const rule = TAX_RULES.law15270;
+  if (rendimentoTributavel <= rule.exemptionLimit) {
     return 0;
   }
-  if (rendimentoTributavel <= 7350.00) {
+  if (rendimentoTributavel <= rule.reductionLimit) {
     // Formula oficial Lei 15.270/2025: Redução = R$ 978,62 - (0,133145 × rendimentoTributavel)
-    const reducao = 978.62 - (0.133145 * rendimentoTributavel);
+    const reducao = rule.formula.a - (rule.formula.b * rendimentoTributavel);
     const impostoFinal = irTradicional - Math.max(0, reducao);
     return Math.max(0, impostoFinal);
   }
@@ -29,15 +27,17 @@ export function aplicarRedutorLei15270(rendimentoTributavel, irTradicional) {
 }
 
 const calculateIRPFForBase = (irpfBase, grossAmount) => {
+  const irpfRules = TAX_RULES.irpf.faixas;
   let irpfTradicional = 0;
-  if (irpfBase > 4664.68) {
-    irpfTradicional = irpfBase * 0.275 - 908.73;
-  } else if (irpfBase > 3751.05) {
-    irpfTradicional = irpfBase * 0.225 - 675.49;
-  } else if (irpfBase > 2826.65) {
-    irpfTradicional = irpfBase * 0.15 - 394.16;
-  } else if (irpfBase > 2428.80) {
-    irpfTradicional = irpfBase * 0.075 - 182.16;
+  
+  if (irpfBase > irpfRules.faixa4.limit) {
+    irpfTradicional = irpfBase * irpfRules.faixa5.rate - irpfRules.faixa5.deduction;
+  } else if (irpfBase > irpfRules.faixa3.limit) {
+    irpfTradicional = irpfBase * irpfRules.faixa4.rate - irpfRules.faixa4.deduction;
+  } else if (irpfBase > irpfRules.faixa2.limit) {
+    irpfTradicional = irpfBase * irpfRules.faixa3.rate - irpfRules.faixa3.deduction;
+  } else if (irpfBase > irpfRules.isencao) {
+    irpfTradicional = irpfBase * irpfRules.faixa2.rate - irpfRules.faixa2.deduction;
   }
   
   return aplicarRedutorLei15270(grossAmount, Math.max(irpfTradicional, 0));
@@ -45,13 +45,14 @@ const calculateIRPFForBase = (irpfBase, grossAmount) => {
 
 const calculateIRPF = (grossAmount) => {
   const inss = calculateINSS(grossAmount);
+  const simplifiedDeduction = TAX_RULES.irpf.simplifiedDeduction;
   
   // Opção A: Deduções Legais (neste caso, apenas INSS do funcionário)
   const baseDeducoesLegais = Math.max(0, grossAmount - inss);
   const irpfDeducoesLegais = calculateIRPFForBase(baseDeducoesLegais, grossAmount);
   
-  // Opção B: Desconto Simplificado (R$ 607,20 fixo)
-  const baseDescontoSimplificado = Math.max(0, grossAmount - 607.20);
+  // Opção B: Desconto Simplificado
+  const baseDescontoSimplificado = Math.max(0, grossAmount - simplifiedDeduction);
   const irpfDescontoSimplificado = calculateIRPFForBase(baseDescontoSimplificado, grossAmount);
   
   // O imposto retido é o menor e mais vantajoso para o contribuinte
@@ -110,47 +111,53 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
   let inssPatronal = 0;
 
   if (regime === 'mei') {
+    const rulesMei = TAX_RULES.simples;
     const faturamentoAnualMEI = Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12;
-    if (faturamentoAnualMEI > 81000.00) isInvalidMEI = true;
-    pjTax = 86.05;
+    if (faturamentoAnualMEI > rulesMei.meiTetoAnual) isInvalidMEI = true;
+    pjTax = rulesMei.meiDasMensal;
     taxName = 'DAS MEI (Fixo)';
     proLabore = 0;
   } else if (regime === 'presumido') {
-    // Lucro Presumido TI/Serviços 2026: Carga base estimada = 14,33% (IRPJ 4.8%, CSLL 2.88%, PIS 0.65%, COFINS 3%, ISS 3%)
-    const basePjTax = monthlyGross * 0.1433;
+    const rulesPresumido = TAX_RULES.presumido;
+    const basePjTax = monthlyGross * rulesPresumido.taxConsolidatedRate;
     
-    // Adicional de IRPJ (Aproximação para serviços de TI): 10% sobre a parcela do lucro presumido (32%) que excede R$ 20.000 mensais
-    const lucroPresumido = monthlyGross * 0.32;
+    // Adicional de IRPJ (Aproximação para serviços de TI)
+    const lucroPresumido = monthlyGross * rulesPresumido.presumptionRate;
     let adicionalIRPJ = 0;
-    if (lucroPresumido > 20000) {
-      adicionalIRPJ = (lucroPresumido - 20000) * 0.10;
+    if (lucroPresumido > rulesPresumido.irpjAdditionalLimit) {
+      adicionalIRPJ = (lucroPresumido - rulesPresumido.irpjAdditionalLimit) * rulesPresumido.irpjAdditionalRate;
     }
     
     pjTax = basePjTax + adicionalIRPJ;
     // Pró-labore mínimo utilizado para fins de simplificação do fluxo comparativo
-    proLabore = 1621.00;
-    inssPatronal = proLabore * 0.20;
-    taxName = `Impostos L. Presumido (14,33%${adicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
+    proLabore = TAX_RULES.salaryMinimum;
+    inssPatronal = proLabore * rulesPresumido.inssPatronalRate;
+    const taxPctLabel = (rulesPresumido.taxConsolidatedRate * 100).toFixed(2).replace('.', ',');
+    taxName = `Impostos L. Presumido (${taxPctLabel}%${adicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
   } else {
     // Simples Nacional Anexo III
     const rbt12 = Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12;
+    const simplesRules = TAX_RULES.simples;
+    
     let aliquotaNominal = 0;
     let deducao = 0;
-    if (rbt12 <= 180000) { aliquotaNominal = 0.06; deducao = 0; }
-    else if (rbt12 <= 360000) { aliquotaNominal = 0.112; deducao = 9360; }
-    else if (rbt12 <= 720000) { aliquotaNominal = 0.135; deducao = 17640; }
-    else if (rbt12 <= 1800000) { aliquotaNominal = 0.16; deducao = 35640; }
-    else if (rbt12 <= 3600000) { aliquotaNominal = 0.21; deducao = 125640; }
-    else { aliquotaNominal = 0.33; deducao = 648000; }
     
-    const aliquotaEfetiva = rbt12 > 0 ? (rbt12 * aliquotaNominal - deducao) / rbt12 : 0.06;
+    for (const band of simplesRules.anexo3Bands) {
+      if (rbt12 <= band.limit) {
+        aliquotaNominal = band.rate;
+        deducao = band.deduction;
+        break;
+      }
+    }
     
-    // Regra extrema precisão: Se RBT12 > 3.6 milhões, o ISS (5%) é cobrado por fora do DAS no Anexo III
-    const issSeparado = rbt12 > 3600000 ? monthlyGross * 0.05 : 0;
+    const aliquotaEfetiva = rbt12 > 0 ? (rbt12 * aliquotaNominal - deducao) / rbt12 : simplesRules.anexo3Bands[0].rate;
+    
+    // Regra extrema precisão: Se RBT12 > sublimite do Simples Nacional, o ISS (5%) é cobrado por fora
+    const issSeparado = rbt12 > simplesRules.issSeparadoLimit ? monthlyGross * 0.05 : 0;
     pjTax = (monthlyGross * aliquotaEfetiva) + issSeparado;
     
     // Fator R Otimizado: 28% do faturamento ou salário mínimo
-    proLabore = Math.max(1621.00, monthlyGross * 0.28);
+    proLabore = Math.max(TAX_RULES.salaryMinimum, monthlyGross * 0.28);
     const aliqPct = (aliquotaEfetiva * 100).toFixed(2).replace('.', ',');
     taxName = `DAS Simples (${aliqPct}%)${issSeparado > 0 ? ' + ISS 5%' : ''}`;
   }
@@ -158,7 +165,7 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
   let inssSocio = 0;
   let irpfSocio = 0;
   if (proLabore > 0) {
-    inssSocio = Math.min(proLabore, 8475.55) * 0.11;
+    inssSocio = Math.min(proLabore, TAX_RULES.inss.ceiling) * 0.11;
     // Aproximação utilizando tabela mensal do IRPF
     irpfSocio = calculateIRPF(proLabore);
   }
@@ -166,9 +173,11 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
   // Fluxo de caixa e Dividendos
   const dividendGross = monthlyGross - pjTax - inssPatronal - proLabore;
   let dividendTax = 0;
+  
   // Simplificação comparativa da Lei 15.270/2025: 10% de IRRF sobre a totalidade caso as distribuições mensais de lucro superem R$ 50.000
-  if (dividendGross > 50000) {
-    dividendTax = dividendGross * 0.10;
+  const dividendRule = TAX_RULES.law15270;
+  if (dividendGross > dividendRule.dividendTaxLimit) {
+    dividendTax = dividendGross * dividendRule.dividendTaxRate;
   }
   
   const dividendNet = dividendGross - dividendTax;

@@ -15,6 +15,8 @@ Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do te
 - Adicionamos o parâmetro opcional `faturamento12Meses` à calculadora PJ (com tratamento via `Number()`) e um campo correspondente com ajuda visual explicativa e de apoio na UI para que a alíquota efetiva do Simples Nacional consuma o faturamento acumulado dos últimos 12 meses (RBT12 Real).
 - Ajustamos a verificação de MEI excedido para confrontar com o teto anual de R$ 81.000,00 utilizando o faturamento de 12 meses (real ou estimado) e atualizamos a descrição e banner de alerta do MEI na interface do usuário.
 - Revisamos e ajustamos os comentários e descrições técnicas de impostos no Lucro Presumido e de Dividendos, identificando-os como simplificações comparativas legítimas.
+- **Refatoração e Isolamento Fiscais**: Criamos o diretório `src/lib/tax-rules/` e movemos todas as constantes e limites vigentes de 2026 para o arquivo isolado `2026.js`, agrupando as referências legislativas oficiais externas em comentários JSDoc. Consumimos o objeto importado `TAX_RULES` de forma centralizada em `calculator.js`.
+- **Validação por Regressão**: Criamos e executamos um script de regressão automatizado (`test_regressao.mjs`) que validou a correspondência decimal exata de todos os cálculos e saídas CLT e PJ antes e depois da refatoração.
 
 ## [2026-06-07] Auditoria #9: Aprovação Final da "Realidade Legal" sobre a "Simplificação de Negócio"
 **Contexto**: Após a Auditoria #8, o usuário deu uma instrução arquitetural decisiva: *"se o calculator rules estiver desatualizado, não precisa seguir ele. faça o que estiver correto e atualizado dentro da lei"*. Isso mudou fundamentalmente o escopo do simulador.
