@@ -113,6 +113,7 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
     inssPatronal = proLabore * 0.20;
     taxName = `Impostos L. Presumido (14,33%${adicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
   } else {
+    // Simples Nacional Anexo III
     const rbt12 = monthlyGross * 12;
     let aliquotaNominal = 0;
     let deducao = 0;
@@ -129,6 +130,7 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
     const issSeparado = rbt12 > 3600000 ? monthlyGross * 0.05 : 0;
     pjTax = (monthlyGross * aliquotaEfetiva) + issSeparado;
     
+    // Fator R Otimizado: 28% do faturamento ou salário mínimo
     proLabore = Math.max(1621.00, monthlyGross * 0.28);
     const aliqPct = (aliquotaEfetiva * 100).toFixed(2).replace('.', ',');
     taxName = `DAS Simples (${aliqPct}%)${issSeparado > 0 ? ' + ISS 5%' : ''}`;
@@ -138,11 +140,13 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
   let irpfSocio = 0;
   if (proLabore > 0) {
     inssSocio = Math.min(proLabore, 8475.55) * 0.11;
-    irpfSocio = calculateIRPF(proLabore); // Usa a mesma função auxiliar da CLT com desconto simplificado
+    irpfSocio = calculateIRPF(proLabore); // IRPF sobre o pró-labore
   }
 
+  // Fluxo de caixa e Dividendos
   const dividendGross = monthlyGross - pjTax - inssPatronal - proLabore;
   let dividendTax = 0;
+  // Lei 15.270/2025: 10% de IRRF sobre distribuições mensais de lucro > 50k
   if (dividendGross > 50000) {
     dividendTax = dividendGross * 0.10;
   }

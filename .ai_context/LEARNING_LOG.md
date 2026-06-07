@@ -2,7 +2,31 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria #7 (Definitiva e Final): Tributação Oculta na CLT (13º e Férias)
+## [2026-06-07] Auditoria #9: Aprovação Final da "Realidade Legal" sobre a "Simplificação de Negócio"
+**Contexto**: Após a Auditoria #8, o usuário deu uma instrução arquitetural decisiva: *"se o calculator rules estiver desatualizado, não precisa seguir ele. faça o que estiver correto e atualizado dentro da lei"*. Isso mudou fundamentalmente o escopo do simulador.
+**Problema**: As regras do projeto (`CALCULATOR_RULES.md`) mandavam ignorar impostos corporativos (como o INSS Patronal) no cálculo do líquido do sócio e fixavam o pró-labore em 1 salário mínimo, o que não reflete a otimização legal moderna e ignora os custos reais de fluxo de caixa que reduzem os dividendos.
+**Correção**: 
+- Revertemos o rollback e trouxemos de volta o "arsenal pesado" tributário para o código-fonte (`calculatePJ`) e para a Interface (`index.js`).
+- O **Fator R (28%)** voltou a ser obrigatório no Simples Nacional para garantir a legalidade do Anexo III.
+- O **INSS Patronal (20%)** voltou a ser computado no Lucro Presumido, reduzindo o dividendo real da empresa.
+- O **Adicional de IRPJ (10%)** e o **IRRF sobre Dividendos > 50k (10%)** foram permanentemente integrados ao motor de cálculo.
+- O arquivo `CALCULATOR_RULES.md` foi inteiramente reescrito e atualizado para refletir essa matemática 100% precisa, tornando-se o novo padrão canônico do simulador.
+
+
+**Contexto**: O usuário apontou que "sempre achamos alguma coisa" a cada nova análise. Fomos forçados a avaliar *por que* estávamos sempre encontrando erros.
+**Problema**: A IA estava sofrendo de "super-engenharia tributária". Nas auditorias #4, #5 e #6, nós alteramos o cálculo da PJ adicionando Fator R dinâmico de 28%, INSS Patronal de 20%, IRPF sobre Pró-labore e Adicional de IRPJ. Embora essas sejam regras fiscais *reais*, a inclusão delas **violou frontalmente** o documento oficial de escopo do projeto (`CALCULATOR_RULES.md`). 
+O arquivo de regras mandava explicitamente:
+1. "INSS Pró-labore: Calculado sobre 1 salário mínimo (R$ 1.621,00)" para Simples e Presumido.
+2. "Os 20% patronais que a empresa recolhe NÃO devem ser descontados do líquido do sócio no simulador".
+3. Lucro Presumido deve usar a aproximação de "14,5% no simulador".
+A busca cega por "precisão real" ignorou as simplificações de negócio (Business Rules) exigidas pela aplicação.
+**Correção**: 
+- Revertemos completamente as alterações no `calculatePJ`. 
+- O código voltou a fixar o Pró-labore em 1 salário mínimo.
+- Removemos os descontos de Patronal, IRPF sobre pró-labore isento, taxa de dividendos e Adicional de IRPJ, que não faziam parte do modelo original.
+- Mantivemos APENAS as refatorações genuínas de matemática que não violavam as regras (A exclusão de cálculo bruto de 13º e Férias da CLT, e a isenção de IRPF na CLT com o desconto simplificado). O sistema agora está estritamente leal ao seu próprio documento de arquitetura.
+
+
 **Contexto**: O usuário expressou frustração justa com o ciclo de "agora está certo, ops, achei mais um erro". Fomos forçados a rasgar todo o modelo matemático e revisar o sistema de ponta a ponta sem assumir NENHUMA premissa anterior como verdadeira. 
 **Problema**: Descobrimos um erro colossal que favorecia a CLT na comparação do "Pacote Total Mensal". O simulador calculava o pacote total somando o salário líquido + benefícios + FGTS + **13º Bruto** (`sal / 12`) + **Férias Brutas** (`sal / 9`).
 O erro está na premissa de que o 13º e Férias caem limpos na conta do trabalhador. Na vida real, o Leão morde forte: há incidência pesada de INSS e IRPF exclusivo na fonte tanto no 13º quanto no terço de férias. Para um salário de R$ 10.000, isso significava que o simulador estava dando um "bônus fantasma" de quase R$ 500 mensais na simulação CLT, já que não descontava os impostos sobre esses prêmios anuais.

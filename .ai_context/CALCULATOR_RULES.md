@@ -23,8 +23,11 @@ Mudança fundamental aplicada a partir de 2026:
 O salário mínimo de referência para 2026 é de **R$ 1.621,00**, influenciando as contribuições previdenciárias e o DAS MEI.
 
 ### 1. Simples Nacional (Anexo III)
-- Alíquota base inicial (via Fator R): **6%** sobre o faturamento total mensal.
-- INSS Pró-labore: Calculado sobre 1 salário mínimo (R$ 1.621,00) com alíquota de **11%** (cota retida do sócio) = **R$ 178,31**.
+- Alíquota base inicial: Calculada dinamicamente com base na RBT12 (Tabela Anexo III).
+- **Fator R Obrigatório**: Para garantir enquadramento no Anexo III, o Pró-labore é forçado matematicamente para **28% do faturamento** (ou 1 salário mínimo, o que for maior).
+- INSS Pró-labore: Alíquota de **11%** (cota retida do sócio) sobre o Pró-labore calculado.
+- IRPF Pró-labore: Calculado sobre o pró-labore usando a tabela progressiva oficial e o Desconto Simplificado de R$ 607,20.
+- **Cobrança Extra de ISS**: Se o faturamento anual (RBT12) ultrapassar R$ 3,6 milhões, o ISS (5%) é cobrado separadamente, fora do DAS.
 
 ### 2. MEI (Microempreendedor Individual)
 - Teto de Faturamento Mensal Médio: **R$ 6.750,00** (anualizado em R$ 81.000,00).
@@ -32,16 +35,19 @@ O salário mínimo de referência para 2026 é de **R$ 1.621,00**, influenciando
 - INSS Pró-labore: Não há.
 
 ### 3. Lucro Presumido
-Impostos por componente (base de presunção 32% para serviços):
+Impostos por componente (base de presunção 32% para serviços de TI):
 - **IRPJ**: 32% (presunção) × 15% = **4,80%** sobre a receita bruta
 - **CSLL**: 32% (presunção) × 9% = **2,88%** sobre a receita bruta
 - **PIS**: **0,65%** sobre a receita bruta (cumulativo)
 - **COFINS**: **3,00%** sobre a receita bruta (cumulativo)
-- **ISS**: **~3,00%** sobre a receita bruta (média municipal para TI)
-- **Total consolidado**: ~14,33% → **14,5%** no simulador
+- **ISS**: **3,00%** sobre a receita bruta (média municipal para TI)
+- **Base consolidada exata**: **14,33%**
+- **Adicional de IRPJ**: **10%** sobre a parcela do lucro presumido (32% do faturamento) que exceder R$ 20.000,00 por mês.
 
-INSS Pró-labore do sócio-administrador: **11%** sobre 1 salário mínimo (R$ 1.621,00)
-> ⚠️ **AVISO**: Os 20% patronais que a empresa recolhe **NÃO devem** ser descontados do líquido do sócio no simulador. São custo da empresa, não do indivíduo.
+INSS Pró-labore do sócio-administrador (fixado em 1 SM, R$ 1.621,00 para este regime):
+- **Cota do Sócio**: **11%** 
+- **Cota Patronal (Empresa)**: **20%** sobre o pró-labore. Calculado como despesa que reduz o fluxo de caixa final de dividendos da empresa.
+- **Tributação de Dividendos (Lei 15.270/2025)**: IRRF de **10%** caso o valor líquido distribuído como dividendo (após impostos e pró-labore) ultrapasse R$ 50.000,00 no mês.
 
 ---
 *Atualizado por IA em junho de 2026. Erro crítico corrigido: alíquota de INSS pró-labore do Lucro Presumido foi erroneamente calculada como 31% em versão anterior. O correto é 11% (apenas cota retida do sócio).*
