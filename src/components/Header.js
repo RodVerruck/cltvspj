@@ -5,7 +5,6 @@ export default function Header() {
     <nav className="sticky top-0 z-[10000] border-b border-rule bg-paper/80 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-4 flex items-center justify-between gap-6">
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="w-8 h-8 border-[1.5px] border-ink rounded-full inline-flex items-center justify-center text-[12px] font-bold font-sans group-hover:bg-ink group-hover:text-paper transition-all">×</span>
           <span className="font-display text-2xl md:text-[24px] tracking-tight text-ink">
             CLT <em className="italic text-ink-muted">vs</em> PJ
           </span>
