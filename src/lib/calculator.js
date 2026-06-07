@@ -127,6 +127,7 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
     }
     
     pjTax = basePjTax + adicionalIRPJ;
+    // Pró-labore mínimo utilizado para fins de simplificação do fluxo comparativo
     proLabore = 1621.00;
     inssPatronal = proLabore * 0.20;
     taxName = `Impostos L. Presumido (14,33%${adicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
@@ -158,7 +159,8 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
   let irpfSocio = 0;
   if (proLabore > 0) {
     inssSocio = Math.min(proLabore, 8475.55) * 0.11;
-    irpfSocio = calculateIRPF(proLabore); // IRPF sobre o pró-labore
+    // Aproximação utilizando tabela mensal do IRPF
+    irpfSocio = calculateIRPF(proLabore);
   }
 
   // Fluxo de caixa e Dividendos
