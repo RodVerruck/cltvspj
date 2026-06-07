@@ -26,7 +26,7 @@ export default function Home() {
   const [dependentes, setDependentes] = useState('0');
   const [pensaoAlimenticia, setPensaoAlimenticia] = useState('');
   const [plrAnual, setPlrAnual] = useState('');
-  const [proLaboreInput, setProLaboreInput] = useState('padrao');
+  const [proLaboreInput, setProLaboreInput] = useState('minimo');
   const [proLaboreCustom, setProLaboreCustom] = useState('');
   const [folha12Meses, setFolha12Meses] = useState('');
   const [issRate, setIssRate] = useState('3');
@@ -409,8 +409,8 @@ export default function Home() {
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                       {[
-                        { value: 'padrao', label: 'Padrão (Fator R)' },
                         { value: 'minimo', label: 'Mínimo (R$ 1.621)' },
+                        { value: 'padrao', label: 'Otimizado (Fator R)' },
                         { value: '3000', label: 'R$ 3.000' },
                         { value: '5000', label: 'R$ 5.000' },
                         { value: '8000', label: 'R$ 8.000' },
