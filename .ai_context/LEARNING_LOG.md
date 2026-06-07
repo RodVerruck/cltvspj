@@ -2,7 +2,12 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria #4 (Final e Mais Profunda): Fluxo de Caixa Real da PJ e Fator R
+## [2026-06-07] Auditoria #5 (Precisão Extrema): Desconto Simplificado IRPF
+**Contexto**: A pedido contínuo por "100% de precisão", revisamos o cálculo do IRPF para a CLT e o Pró-labore. Encontramos um último "gap" fiscal: o **Desconto Simplificado do IRPF de 2026**, fixado oficialmente em R$ 607,20.
+**Problema**: O cálculo usava a dedução do INSS puro (`sal - inss`). Para salários entre R$ 5.000 e ~R$ 5.800, o INSS pago é inferior a R$ 607,20. Pela lei, a Receita e a Fonte Pagadora são obrigadas a aplicar a dedução mais vantajosa. Ao não usar o desconto simplificado, o simulador estava gerando imposto de renda (IRPF) indevido para essa faixa de salário, já que a base de cálculo ficava ligeiramente acima do limite de isenção da Lei 15.270.
+**Correção**: Implementada a fórmula `Math.max(inss, 607.20)` tanto para a CLT quanto para o Pró-labore PJ. Isso garante que a dedução legal correta seja aplicada automaticamente, igualando o simulador aos sistemas oficiais da Receita Federal. O IRPF agora é zero para quem ganha até R$ 5.600 CLT.
+
+
 **Contexto**: A pedido de uma nova análise criteriosa de precisão de 100%, reavaliamos as minúcias fiscais da tributação PJ (Simples e Presumido) em comparação com o mundo real. Descobrimos falhas na modelagem do "cash flow" PJ:
 1. **Fator R no Simples Anexo III**: O cálculo assumia 1 salário mínimo de pró-labore independentemente do faturamento. Isso é **ilegal** para manter-se no Anexo III se o faturamento for alto (cairia no Anexo V com 15,5% de imposto!). **Correção**: Implementado `proLabore = Math.max(1621.00, monthlyGross * 0.28)` para garantir a conformidade com a exigência de 28% da Receita Federal.
 2. **IRPF sobre Pró-labore**: O simulador não cobrava IRPF do sócio sobre o pró-labore (como se fosse isento). O pró-labore é tributado **exatamente como salário CLT**. **Correção**: Adicionada a rotina de IRPF sobre o pró-labore com o redutor da Lei 15.270/2025.

@@ -33,7 +33,9 @@ export const calculateCLT = (salary, benefits) => {
   const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
 
   const inss = calculateINSS(sal);
-  const irpfBase = sal - inss;
+  // Desconto Simplificado 2026: R$ 607,20. Aplica-se se for maior que a dedução do INSS.
+  const descontoIrpf = Math.max(inss, 607.20);
+  const irpfBase = sal - descontoIrpf;
   let irpfTradicional = 0;
   if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
   else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
@@ -104,7 +106,9 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
   let irpfSocio = 0;
   if (proLabore > 0) {
     inssSocio = Math.min(proLabore, 8475.55) * 0.11;
-    const irpfBase = proLabore - inssSocio;
+    // Desconto Simplificado 2026: R$ 607,20
+    const descontoIrpfSocio = Math.max(inssSocio, 607.20);
+    const irpfBase = proLabore - descontoIrpfSocio;
     let irpfTradicional = 0;
     if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
     else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
