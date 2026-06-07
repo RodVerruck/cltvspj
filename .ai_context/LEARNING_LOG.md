@@ -2,6 +2,21 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-07] Auditoria #13: Refinamentos Finais de Transparência, Credibilidade e Compliance
+**Contexto**: Finalizamos os refinamentos da Calculadora CLT vs PJ focando na clareza e transparência matemática, consistência de redação previdenciária/dividendos e prevenção contra distorções e falsas interpretações por parte do usuário.
+**Problema**:
+- Falta de transparência na conta de DAS dentro do simulador de otimização tributária (Passo 5).
+- Risco de má interpretação jurídica sobre a isenção de dividendos e as regras da Lei 15.270/2025.
+- Linguagem de "Confiança Baixa" no Fator R que prejudicava a credibilidade percebida do simulador.
+- Comparações com valores muito desproporcionais de entrada (CLT vs PJ) podiam sugerir vantagens artificiais decorrentes puramente da assimetria dos dados inseridos, não dos regimes.
+**Correção**:
+- Detalhamos a conta matemática no Passo 5, mostrando: DAS Atual (Anexo V), DAS Projetado (Anexo III) e a Economia no DAS resultante.
+- Atualizamos a nota dos dividendos no Passo 2 para uma redação juridicamente neutra: *"Dividendos líquidos distribuídos após a aplicação das regras tributárias consideradas nesta simulação."*
+- Removemos a palavra "Confiança" e adotamos "Dados do Fator R:", classificando em badges de estilo cinza/neutro (*Dados Reais*, *Histórico Parcial*, *Estimados por Referência*).
+- Implementamos o banner amarelo de **Alerta de Comparação Desproporcional** para relações fora da faixa de 0.8 a 1.2 (`pj.gross / clt.gross`), explicando a assimetria ao usuário.
+- Adicionamos a legenda de cenário permanente de remunerações brutas no Hero Card.
+- Testes de regressão do motor de cálculo reexecutados e aprovados com 100% de sucesso.
+
 ## [2026-06-07] Auditoria #12: Ajustes de Compliance, Previdência, Impacto e Ajuste de Fator R Mínimo
 **Contexto**: Refinamos o simulador para garantir segurança jurídica (compliance), padronizar os indicadores de impacto financeiro (badges coloridas) e neutralizar o copy sobre previdência PJ. Também corrigimos a distorção no cálculo do Fator R estimado em faturamentos muito baixos, introduzindo alertas de viabilidade de negócio e otimizando a experiência padrão de simulação (UX).
 **Problema**:

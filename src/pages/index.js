@@ -82,6 +82,9 @@ export default function Home() {
     impactoBolinha = '🔴';
   }
 
+  const relacao = pj.gross / (clt.gross || 1);
+  const showAlertaDiscrepancia = relacao > 1.2 || relacao < 0.8;
+
   const isHistoricoInformado = Number(faturamento12Meses) > 0 && Number(folha12Meses) > 0;
   const isPadraoFatorR = proLaboreInput === 'padrao';
 
@@ -653,6 +656,9 @@ export default function Home() {
                     <p className="text-sm text-ink-muted max-w-xl font-sans leading-relaxed">
                       Desenvolvido com base nas regras tributárias vigentes e destinado a fins de simulação e apoio à tomada de decisão.
                     </p>
+                    <p className="text-[11px] text-ink-fade font-mono mt-3 pt-3 border-t border-rule/30">
+                      Comparação baseada em: CLT R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mês (salário bruto) vs PJ R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mês (faturamento bruto).
+                    </p>
                   </div>
 
                   <div className={`border rounded-lg p-6 min-w-[280px] lg:text-right flex flex-col justify-center bg-white/70 backdrop-blur-sm ${
@@ -675,6 +681,21 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+
+              {/* ALERTA DE COMPARAÇÃO DESPROPORCIONAL */}
+              {showAlertaDiscrepancia && (
+                <div className="bg-[#fff3cd] border border-[#ffeeba] rounded-xl p-5 mb-8 flex gap-4 items-start relative animate-fade-in overflow-hidden shadow-sm text-left">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ffc107]"></div>
+                  <AlertCircle className="text-[#856404] flex-shrink-0 mt-0.5" size={22} />
+                  <div>
+                    <h4 className="font-display text-lg text-ink font-bold mb-1 text-[#856404]">Alerta de Comparação Desproporcional</h4>
+                    <p className="text-xs text-ink-muted leading-relaxed font-sans">
+                      Você está comparando um salário CLT de <strong className="text-ink">R$ {clt.gross.toLocaleString('pt-BR')}/mês</strong> com um faturamento PJ de <strong className="text-ink">R$ {pj.gross.toLocaleString('pt-BR')}/mês</strong>. 
+                      Como os valores brutos informados diferem significativamente (relação de {(pj.gross / (clt.gross || 1)).toFixed(2).replace('.', ',')}x), parte da diferença financeira mostrada no resultado decorre da assimetria dos valores brutos simulados, e não exclusivamente da diferença de regimes tributários.
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Passo 2: COMPARE & Custos Operacionais */}
               <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 mt-12 mb-10 pt-10 border-t border-rule items-start">
@@ -792,18 +813,16 @@ export default function Home() {
                         <div className="absolute top-0 bottom-0 left-[100%] w-0.5 bg-ink/40" style={{ left: '28%' }}></div>
                       </div>
 
-                      <div className="flex justify-between items-center text-[11px] text-ink-fade mt-1.5">
+                      <div className="flex justify-between items-center text-[11px] text-ink-fade mt-1.5 font-sans">
                         <span>Fator R = Folha 12m ÷ RBT12</span>
                         <span className="flex items-center gap-1.5">
-                          <span>Confiança do Fator R:</span>
-                          <span className={`font-mono text-[9px] uppercase font-bold px-1.5 py-0.5 rounded border ${
-                            pj.contabilidadeMetadata.nivelConfiancaFatorR === 'alta' 
-                              ? 'bg-green-50 text-green-700 border-green-200' 
+                          <span>Dados do Fator R:</span>
+                          <span className="font-mono text-[9px] uppercase font-bold px-1.5 py-0.5 rounded border bg-paper-dark text-ink-muted border-rule/80">
+                            {pj.contabilidadeMetadata.nivelConfiancaFatorR === 'alta' 
+                              ? 'Dados Reais' 
                               : pj.contabilidadeMetadata.nivelConfiancaFatorR === 'media' 
-                                ? 'bg-yellow-50 text-yellow-700 border-yellow-200' 
-                                : 'bg-orange-50 text-orange-700 border-orange-200'
-                          }`}>
-                            {pj.contabilidadeMetadata.nivelConfiancaFatorR === 'alta' ? 'Alta' : pj.contabilidadeMetadata.nivelConfiancaFatorR === 'media' ? 'Média' : 'Baixa (Estimado)'}
+                                ? 'Histórico Parcial' 
+                                : 'Estimados por Referência'}
                           </span>
                         </span>
                       </div>
@@ -871,17 +890,25 @@ export default function Home() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5 font-mono text-xs text-ink-muted">
                     <div className="bg-paper/30 border border-rule/50 rounded-lg p-4">
                       <div className="font-semibold text-ink mb-2">1. Comparativo de Caixa Mensal:</div>
+                      <div className="flex justify-between py-1 border-b border-rule/40 pl-2 text-[11px] text-ink-fade">
+                        <span>DAS Atual (Anexo V):</span>
+                        <span className="font-mono">R$ {pj.simplesDAS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-rule/40 pl-2 text-[11px] text-ink-fade">
+                        <span>DAS Projetado (Anexo III):</span>
+                        <span className="font-mono">R$ {pj.fatorROptimization.dasOtimizado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
                       <div className="flex justify-between py-1 border-b border-rule/40">
-                        <span>Economia no DAS (Anexo III):</span>
-                        <span className="text-money font-semibold">+R$ {pj.fatorROptimization.economiaDas.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="font-medium">(=) Economia no DAS:</span>
+                        <span className="text-money font-semibold font-mono">+R$ {pj.fatorROptimization.economiaDas.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                       <div className="flex justify-between py-1 border-b border-rule/40">
                         <span>INSS pessoal adicional:</span>
-                        <span className="text-hot">-R$ {pj.fatorROptimization.inssAdicional.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="text-hot font-semibold font-mono">-R$ {pj.fatorROptimization.inssAdicional.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                       <div className="flex justify-between py-1 border-b border-rule/40">
                         <span>IRPF pessoal adicional:</span>
-                        <span className="text-hot">-R$ {pj.fatorROptimization.irpfAdicional.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="text-hot font-semibold font-mono">-R$ {pj.fatorROptimization.irpfAdicional.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                       <div className="flex justify-between pt-2 font-bold text-ink text-sm">
                         <span>Ganho tributário real no bolso:</span>
@@ -1085,8 +1112,13 @@ export default function Home() {
                       </div>
                     )}
                     <div className="flex justify-between py-2 border-b border-rule">
-                      <span className="text-ink-muted">Distribuição de Dividendos</span>
-                      <span className="text-money">Isento (Regras Atuais)</span>
+                      <div>
+                        <span className="text-ink-muted block">Distribuição de Dividendos</span>
+                        <span className="text-[10px] text-ink-fade leading-tight block font-sans max-w-[260px] mt-0.5">
+                          Dividendos líquidos distribuídos após a aplicação das regras tributárias consideradas nesta simulação.
+                        </span>
+                      </div>
+                      <span className="text-money font-semibold align-top pt-1">Isento (Regras Atuais)</span>
                     </div>
                     <div className="flex justify-between pt-3 mt-1 font-semibold border-t-2 border-money/30">
                       <span className="text-ink">Total de Impostos</span>
