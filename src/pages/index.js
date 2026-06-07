@@ -691,13 +691,13 @@ export default function Home() {
                     <p className="text-sm text-ink leading-relaxed">
                       {pj.net > clt.totalPackage ? (
                         <>
-                          Esta simulação aponta <strong className="text-money">+R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano</strong> como PJ.
-                          {' '}Um contador especializado pode confirmar esse número — e identificar otimizações adicionais — em menos de 30 minutos.
+                          Esta simulação aponta <strong className="text-money">+R$ {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês</strong> a favor do PJ.
+                          {' '}Um contador pode confirmar esse número e identificar otimizações adicionais em 30 minutos.
                         </>
                       ) : (
                         <>
-                          Neste cenário, a CLT aparece mais vantajosa em <strong className="text-ink">R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano</strong>.
-                          {' '}Mas benefícios tributários específicos do seu perfil podem mudar esse quadro. Um contador pode confirmar em 30 minutos.
+                          Neste cenário, a CLT aparece mais vantajosa em <strong className="text-ink">R$ {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês</strong>.
+                          {' '}Um contador pode confirmar se esse resultado se mantém no seu perfil específico em 30 minutos.
                         </>
                       )}
                     </p>
