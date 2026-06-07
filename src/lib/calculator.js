@@ -1,9 +1,9 @@
 export const calculateINSS = (sal) => {
   const bands = [
-    { limit: 1518.00, rate: 0.075 },
-    { limit: 2793.88, rate: 0.09 },
-    { limit: 4190.83, rate: 0.12 },
-    { limit: 8157.41, rate: 0.14 },
+    { limit: 1621.00, rate: 0.075 },
+    { limit: 2902.84, rate: 0.09 },
+    { limit: 4354.27, rate: 0.12 },
+    { limit: 8475.55, rate: 0.14 },
   ];
   let inss = 0;
   let prev = 0;
@@ -58,24 +58,49 @@ export const calculateCLT = (salary, benefits) => {
   };
 };
 
-export const calculatePJ = (pjRate, hoursPerMonth) => {
+export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
   const rate = parseFloat(pjRate) || 0;
   const hours = parseFloat(hoursPerMonth) || 0;
   const monthlyGross = rate * hours;
 
-  // DAS Simples Nacional Anexo III (6%)
-  const simplesDAS = monthlyGross * 0.06;
-  // INSS sobre pró-labore mínimo
-  const inssProLabore = Math.min(monthlyGross, 1518.00) * 0.11;
+  let pjTax = 0;
+  let inssProLabore = 0;
+  let taxName = 'DAS Simples Nacional (6%)';
+  let isInvalidMEI = false;
 
-  const totalTaxes = simplesDAS + inssProLabore;
+  if (regime === 'mei') {
+    // Teto mensal do MEI em 2026: R$ 6.750,00
+    if (monthlyGross > 6750.00) {
+      isInvalidMEI = true;
+    }
+    // DAS MEI 2026: INSS (5% de R$ 1621) + ISS (R$ 5) = R$ 86,05
+    pjTax = 86.05;
+    inssProLabore = 0;
+    taxName = 'DAS MEI (Fixo)';
+  } else if (regime === 'presumido') {
+    // Lucro Presumido para TI/Serviços 2026: alíquota consolidada média de 15%
+    pjTax = monthlyGross * 0.15;
+    // INSS pró-labore mínimo no Lucro Presumido (31% de R$ 1621) = R$ 502,51
+    inssProLabore = Math.min(monthlyGross, 1621.00) * 0.31;
+    taxName = 'Impostos Lucro Presumido (15%)';
+  } else {
+    // Simples Nacional Anexo III (6% de DAS)
+    pjTax = monthlyGross * 0.06;
+    // INSS pró-labore mínimo no Simples (11% de R$ 1621) = R$ 178,31
+    inssProLabore = Math.min(monthlyGross, 1621.00) * 0.11;
+    taxName = 'DAS Simples Nacional (6%)';
+  }
+
+  const totalTaxes = pjTax + inssProLabore;
   const netMonthly = monthlyGross - totalTaxes;
 
   return {
     gross: monthlyGross,
     net: netMonthly,
-    simplesDAS,
+    simplesDAS: pjTax,
     inssProLabore,
-    totalTaxes
+    totalTaxes,
+    taxName,
+    isInvalidMEI
   };
 };

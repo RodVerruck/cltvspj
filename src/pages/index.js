@@ -26,7 +26,14 @@ export default function Home() {
   };
 
   const clt = calculateCLT(salary, benefits);
-  const pj = calculatePJ(pjRate, hoursPerMonth);
+  let pj = calculatePJ(pjRate, hoursPerMonth, regime);
+  let meiExcedido = false;
+
+  if (regime === 'mei' && pj.isInvalidMEI) {
+    meiExcedido = true;
+    pj = calculatePJ(pjRate, hoursPerMonth, 'simples');
+  }
+
   const difference = pj.net - clt.net;
   const percentDiff = clt.net > 0 ? ((difference / clt.net) * 100).toFixed(1) : 0;
 
@@ -218,7 +225,7 @@ export default function Home() {
                         {regime === 'simples' ? 'Simples Nacional' : regime === 'presumido' ? 'Lucro Presumido' : 'MEI'}
                       </p>
                       <p className="text-xs text-hot/80 mt-1">
-                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Alíquotas: 1.6% a 32% selon atividade' : 'Teto mensal: R$ 8.500'}
+                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Alíquotas: 1.6% a 32% conforme a atividade' : 'Teto mensal: R$ 6.750 (DAS R$ 86,05)'}
                       </p>
                     </div>
                   </div>
@@ -250,6 +257,21 @@ export default function Home() {
                 <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Considerando benefícios, impostos, férias, 13º e nova isenção de IR.</p>
               </div>
 
+              {/* ALERTA TETO MEI EXCEDIDO */}
+              {meiExcedido && (
+                <div className="bg-hot-light border border-hot/30 rounded-xl p-6 mb-8 flex gap-4 items-start relative animate-fade-in overflow-hidden shadow-sm">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-hot"></div>
+                  <AlertCircle className="text-hot flex-shrink-0 mt-0.5" size={22} />
+                  <div>
+                    <h4 className="font-display text-xl text-ink font-bold mb-1">Teto do MEI Excedido</h4>
+                    <p className="text-sm text-ink-muted leading-relaxed font-sans">
+                      O faturamento mensal simulado de <strong className="text-ink">R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong> ultrapassa o limite mensal médio permitido de <strong className="text-ink">R$ 6.750,00</strong> para o MEI em 2026. 
+                      Para que sua comparação seja realista e legal, recalculamos os impostos e o valor líquido abaixo automaticamente com base nas regras do <strong className="text-ink">Simples Nacional Anexo III (Fator R)</strong>.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* HERO RESULT CARD */}
               <div className={`border rounded-xl p-8 md:p-10 mb-12 relative overflow-hidden transition-colors duration-500 shadow-sm ${
                 pj.net > clt.net 
@@ -269,7 +291,7 @@ export default function Home() {
                       )}
                     </h3>
                     <p className="text-base text-ink-muted max-w-xl font-sans">
-                      Cálculo completo considerando salários brutos, descontos de impostos vigentes em 2026, nova faixa de isenção de IR até R$ 5.000, benefícios CLT (13º, férias, FGTS) e o Fator R otimizado para o PJ.
+                      Cálculo completo considerando salários brutos, descontos de impostos vigentes em 2026, nova faixa de isenção de IR até R$ 5.000, benefícios CLT (13º, férias, FGTS) e o regime PJ {meiExcedido ? 'Simples Nacional (teto do MEI excedido)' : regime === 'mei' ? 'MEI' : regime === 'presumido' ? 'Lucro Presumido' : 'Simples Nacional com Fator R'}.
                     </p>
                   </div>
 
@@ -307,7 +329,15 @@ export default function Home() {
               <div className="flex flex-col">
                 <span className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-2">Como PJ</span>
                 <span className={`font-display text-5xl text-ink leading-none mb-2 ${pj.net > clt.net ? 'text-money' : ''}`}>R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
-                <span className="text-sm text-ink-muted">Simples Anexo III com Fator R otimizado</span>
+                <span className="text-sm text-ink-muted">
+                  {meiExcedido 
+                    ? 'Simples Anexo III (Teto MEI excedido)' 
+                    : regime === 'mei' 
+                      ? 'MEI - Microempreendedor Individual' 
+                      : regime === 'presumido' 
+                        ? 'Lucro Presumido (Alíquota 15%)' 
+                        : 'Simples Anexo III com Fator R otimizado'}
+                </span>
               </div>
             </div>
 
@@ -359,13 +389,15 @@ export default function Home() {
                     <span className="text-ink">R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-rule">
-                    <span className="text-ink-muted">(-) DAS Simples Nacional (6%)</span>
+                    <span className="text-ink-muted">(-) {pj.taxName || 'DAS Simples Nacional (6%)'}</span>
                     <span className="text-hot">-R$ {pj.simplesDAS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-rule">
-                    <span className="text-ink-muted">(-) INSS Pró-labore (11%)</span>
-                    <span className="text-hot">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                  </div>
+                  {pj.inssProLabore > 0 && (
+                    <div className="flex justify-between py-2 border-b border-rule">
+                      <span className="text-ink-muted">(-) INSS Pró-labore {regime === 'presumido' ? '(31%)' : '(11%)'}</span>
+                      <span className="text-hot">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between pt-3 mt-1 font-semibold">
                     <span className="text-ink">Total de Impostos</span>
                     <span className="text-hot">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>

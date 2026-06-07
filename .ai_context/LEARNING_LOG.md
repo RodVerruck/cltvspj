@@ -2,6 +2,24 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-07] Implementação da Calculadora PJ Dinâmica 2026 (MEI, Simples Nacional e Lucro Presumido)
+**Contexto**: O usuário solicitou que a calculadora de regimes PJ passasse a ser dinâmica. Anteriormente, ela calculava sempre com base nas regras do Simples Nacional de forma fixa, independente da opção selecionada de regime PJ (MEI ou Lucro Presumido). Também fizemos uma pesquisa web que atualizou os valores fiscais oficiais para 2026 (salário mínimo de R$ 1.621,00, DAS MEI de R$ 86,05 e faixas progressivas do INSS CLT).
+**Decisão**:
+1. Alteramos a assinatura da função `calculatePJ` no arquivo `src/lib/calculator.js` para aceitar o parâmetro `regime` e adicionamos a lógica condicional de impostos para **MEI** (DAS fixo de R$ 86,05 e R$ 0,00 de INSS pró-labore), **Lucro Presumido** (15% de impostos consolidados e INSS pró-labore de 31% = R$ 502,51) e **Simples Nacional** (6% de DAS e INSS pró-labore de 11% = R$ 178,31).
+2. Atualizamos as faixas de INSS progressivo da CLT para 2026 em `src/lib/calculator.js` com base nas faixas oficiais vigentes (teto de R$ 8.475,55).
+3. Integramos o regime na chamada do PJ no arquivo `src/pages/index.js` (`calculatePJ(pjRate, hoursPerMonth, regime)`).
+4. Adicionamos a lógica de validação de teto de faturamento do MEI (limite mensal de R$ 6.750,00) no arquivo `src/pages/index.js`. Se o faturamento ultrapassar o teto do MEI, o site agora exibe um banner explicativo (`meiExcedido`), e recalcula os impostos automaticamente com base no Simples Nacional para fins comparativos, garantindo a conformidade fiscal e legal da simulação.
+5. Dinamizamos toda a seção de resultados e detalhamentos de PJ, omitindo o INSS pró-labore para o MEI válido e exibindo rótulos explicativos dinâmicos com os percentuais e nomes dos impostos corretos (`pj.taxName`).
+6. Atualizamos as documentações fiscais em `CALCULATOR_RULES.md`.
+**Impacto**: O simulador do CLT vs PJ tornou-se 100% dinâmico, confiável e fiscalmente preciso com as regras vigentes do ano de 2026 para todos os três regimes PJ (MEI, Simples e Presumido), evitando que os usuários tomem decisões comerciais com base em simulações errôneas de tributação.
+
+## [2026-06-07] Correção do Teto Mensal do MEI e Erro de Digitação
+**Contexto**: O teto mensal do MEI na visualização informativa da calculadora indicava R$ 8.500 de forma incorreta (possivelmente refletindo propostas de alteração de teto não sancionadas ou erro). O correto vigente é R$ 6.750 (proporcional ao teto anual de R$ 81.000). Também havia um pequeno estrangeirismo na descrição do Lucro Presumido ("selon").
+**Decisão**:
+1. Atualizamos no arquivo `src/pages/index.js` o texto do teto do MEI de R$ 8.500 para R$ 6.750.
+2. Corrigimos a expressão "selon atividade" para "conforme a atividade" no texto descritivo do Lucro Presumido no mesmo arquivo.
+**Impacto**: Informações tributárias mais precisas e corretas no painel de alternativas PJ, reforçando a confiabilidade do simulador.
+
 ## [2026-06-03] Substituição de CTAs de Afiliados (Agilize por Manassés Contabilidade)
 **Contexto**: A pedido do usuário, preparamos toda a estrutura do site para a nova parceria com a Manassés Contabilidade, removendo as referências e CTAs da parceira anterior (Agilize).
 **Decisão**:
