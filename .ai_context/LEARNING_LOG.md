@@ -2,6 +2,13 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-07] Auditoria de Precisão Fiscal de 100% e Implementação de Fórmulas Oficiais
+**Contexto**: O usuário solicitou uma auditoria profunda nos cálculos fiscais do simulador para garantir 100% de precisão com a legislação de 2026. Identificamos que a fórmula usada no redutor linear de IRPF da Lei 15.270/2025 era uma aproximação linear proporcional simples (gerando discrepâncias significativas de centenas de reais) e que o cálculo de férias da CLT omitia o terço constitucional mensalizado.
+**Decisão**:
+1. Implementamos a fórmula de redução oficial definida pela Lei 15.270/2025 para a faixa de base de cálculo de R$ 5.000,01 a R$ 7.350,00: `Redução = R$ 978,62 - (0,133145 × baseCalculo)`, garantindo precisão de centavos na fonte pagadora do IRPF.
+2. Atualizamos o cálculo de férias mensalizadas da CLT de `sal / 12` para `sal / 9` para integrar a provisão exata do terço constitucional das férias (`1/12 + 1/36 = 1/9` do salário bruto), o que reflete com total precisão a lei trabalhista.
+**Impacto**: Confiabilidade e integridade jurídica absoluta do simulador para fins de comparação salarial real.
+
 ## [2026-06-07] Implementação da Calculadora PJ Dinâmica 2026 (MEI, Simples Nacional e Lucro Presumido)
 **Contexto**: O usuário solicitou que a calculadora de regimes PJ passasse a ser dinâmica. Anteriormente, ela calculava sempre com base nas regras do Simples Nacional de forma fixa, independente da opção selecionada de regime PJ (MEI ou Lucro Presumido). Também fizemos uma pesquisa web que atualizou os valores fiscais oficiais para 2026 (salário mínimo de R$ 1.621,00, DAS MEI de R$ 86,05 e faixas progressivas do INSS CLT).
 **Decisão**:

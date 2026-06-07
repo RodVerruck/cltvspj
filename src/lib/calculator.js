@@ -16,12 +16,14 @@ export const calculateINSS = (sal) => {
 };
 
 export function aplicarRedutorLei15270(baseCalculo, irTradicional) {
-  if (baseCalculo <= 5000) {
+  if (baseCalculo <= 5000.00) {
     return 0;
   }
-  if (baseCalculo <= 7350) {
-    const reducao = irTradicional * ((7350 - baseCalculo) / 2350);
-    return Math.max(0, irTradicional - reducao);
+  if (baseCalculo <= 7350.00) {
+    // Formula oficial Lei 15.270/2025: Redução = R$ 978,62 - (0,133145 × baseCalculo)
+    const reducao = 978.62 - (0.133145 * baseCalculo);
+    const impostoFinal = irTradicional - Math.max(0, reducao);
+    return Math.max(0, impostoFinal);
   }
   return irTradicional;
 }
@@ -43,7 +45,8 @@ export const calculateCLT = (salary, benefits) => {
   const netSalary = sal - inss - irpf;
   const fgts = sal * 0.08;
   const decimoTerceiro = sal / 12;
-  const ferias = sal / 12;
+  // Provisão de férias de 1/12 + 1/3 constitucional = sal / 9
+  const ferias = sal / 9;
 
   return {
     gross: sal,
