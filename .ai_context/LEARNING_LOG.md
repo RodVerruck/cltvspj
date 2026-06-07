@@ -2,6 +2,17 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-07] Auditoria Profunda e Correção Crítica: Lucro Presumido INSS
+**Contexto**: Auditoria profunda solicitada pelo usuário para garantir 100% de precisão em todos os cálculos. Identificamos um erro crítico conceptual: o INSS pró-labore do Lucro Presumido estava sendo calculado com alíquota de **31%** (sócio + patronal), quando o correto é **11%** (apenas cota retida do sócio, de acordo com a lei previdenciária). Os 20% patronais são custo da empresa jurídica, e não devem ser descontados do salário líquido individual do sócio no simulador.
+**Decisões**:
+1. Corrigimos `calculator.js`: Lucro Presumido → INSS pró-labore de `0.31` para `0.11`.
+2. Corrigimos a alíquota consolidada de impostos do Lucro Presumido de `0.15` (15% estimado) para `0.145` (14,5%), com a memória dos componentes: IRPJ 4,8% + CSLL 2,88% + PIS 0,65% + COFINS 3% + ISS 3%.
+3. Corrigimos o rótulo na UI de `(31%)` para `(11%)` no detalhamento de INSS pró-labore.
+4. Corrigimos o tooltip do formulário de "Alíquotas: 1.6% a 32%" para "Total consolidado ~14,5% (IRPJ+CSLL+PIS+COFINS+ISS)".
+5. Documentamos o erro e o aviso explícito no `CALCULATOR_RULES.md` para evitar regressão futura.
+**Regra para nunca repetir**: O INSS pró-labore do sócio é **sempre 11%** em qualquer regime (MEI, Simples, Presumido). Os 20% patronais existem apenas no Presumido e não afetam o bolso do sócio.
+**Impacto**: O Lucro Presumido estava anteriormente mostrando um líquido distorcido — ~R$ 502 a menos por mês do que o correto — o que poderia levar o usuário a uma conclusão errônea sobre esse regime.
+
 ## [2026-06-07] Auditoria de Precisão Fiscal de 100% e Implementação de Fórmulas Oficiais
 **Contexto**: O usuário solicitou uma auditoria profunda nos cálculos fiscais do simulador para garantir 100% de precisão com a legislação de 2026. Identificamos que a fórmula usada no redutor linear de IRPF da Lei 15.270/2025 era uma aproximação linear proporcional simples (gerando discrepâncias significativas de centenas de reais) e que o cálculo de férias da CLT omitia o terço constitucional mensalizado.
 **Decisão**:

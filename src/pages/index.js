@@ -225,7 +225,7 @@ export default function Home() {
                         {regime === 'simples' ? 'Simples Nacional' : regime === 'presumido' ? 'Lucro Presumido' : 'MEI'}
                       </p>
                       <p className="text-xs text-hot/80 mt-1">
-                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Alíquotas: 1.6% a 32% conforme a atividade' : 'Teto mensal: R$ 6.750 (DAS R$ 86,05)'}
+                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Total consolidado ~14,5% (IRPJ+CSLL+PIS+COFINS+ISS)' : 'Teto mensal: R$ 6.750 (DAS R$ 86,05)'}
                       </p>
                     </div>
                   </div>
@@ -335,7 +335,7 @@ export default function Home() {
                     : regime === 'mei' 
                       ? 'MEI - Microempreendedor Individual' 
                       : regime === 'presumido' 
-                        ? 'Lucro Presumido (Alíquota 15%)' 
+                        ? 'Lucro Presumido (Carga ~14,5%)' 
                         : 'Simples Anexo III com Fator R otimizado'}
                 </span>
               </div>
@@ -394,7 +394,7 @@ export default function Home() {
                   </div>
                   {pj.inssProLabore > 0 && (
                     <div className="flex justify-between py-2 border-b border-rule">
-                      <span className="text-ink-muted">(-) INSS Pró-labore {regime === 'presumido' ? '(31%)' : '(11%)'}</span>
+                      <span className="text-ink-muted">(-) INSS Pró-labore (11%)</span>
                       <span className="text-hot">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                   )}

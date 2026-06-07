@@ -81,11 +81,18 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
     inssProLabore = 0;
     taxName = 'DAS MEI (Fixo)';
   } else if (regime === 'presumido') {
-    // Lucro Presumido para TI/Serviços 2026: alíquota consolidada média de 15%
-    pjTax = monthlyGross * 0.15;
-    // INSS pró-labore mínimo no Lucro Presumido (31% de R$ 1621) = R$ 502,51
-    inssProLabore = Math.min(monthlyGross, 1621.00) * 0.31;
-    taxName = 'Impostos Lucro Presumido (15%)';
+    // Lucro Presumido para TI/Serviços 2026:
+    // IRPJ: 32% (presunção) × 15% = 4,80%
+    // CSLL: 32% (presunção) × 9% = 2,88%
+    // PIS: 0,65% (cumulativo)
+    // COFINS: 3,00% (cumulativo)
+    // ISS: ~3,00% (média municipal para serviços de TI)
+    // Total consolidado: ~14,33% → arredondado para 14,5%
+    pjTax = monthlyGross * 0.145;
+    // INSS pró-labore no Lucro Presumido: 11% (apenas quota retida do sócio)
+    // OBS: Os 20% patronais são custo da empresa, não do sócio individual
+    inssProLabore = Math.min(monthlyGross, 1621.00) * 0.11;
+    taxName = 'Impostos Lucro Presumido (14,5%)';
   } else {
     // Simples Nacional Anexo III (6% de DAS)
     pjTax = monthlyGross * 0.06;

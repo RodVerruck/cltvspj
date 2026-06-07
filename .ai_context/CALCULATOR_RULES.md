@@ -32,8 +32,16 @@ O salário mínimo de referência para 2026 é de **R$ 1.621,00**, influenciando
 - INSS Pró-labore: Não há.
 
 ### 3. Lucro Presumido
-- Impostos consolidados sobre faturamento: Alíquota média de **15,00%** (IRPJ, CSLL, PIS, COFINS e ISS municipal médio).
-- INSS Pró-labore: Calculado sobre 1 salário mínimo (R$ 1.621,00) com alíquota de **31%** (11% retido do sócio + 20% patronal CPP) = **R$ 502,51**.
+Impostos por componente (base de presunção 32% para serviços):
+- **IRPJ**: 32% (presunção) × 15% = **4,80%** sobre a receita bruta
+- **CSLL**: 32% (presunção) × 9% = **2,88%** sobre a receita bruta
+- **PIS**: **0,65%** sobre a receita bruta (cumulativo)
+- **COFINS**: **3,00%** sobre a receita bruta (cumulativo)
+- **ISS**: **~3,00%** sobre a receita bruta (média municipal para TI)
+- **Total consolidado**: ~14,33% → **14,5%** no simulador
+
+INSS Pró-labore do sócio-administrador: **11%** sobre 1 salário mínimo (R$ 1.621,00)
+> ⚠️ **AVISO**: Os 20% patronais que a empresa recolhe **NÃO devem** ser descontados do líquido do sócio no simulador. São custo da empresa, não do indivíduo.
 
 ---
-*Atualizado por IA em junho de 2026.*
+*Atualizado por IA em junho de 2026. Erro crítico corrigido: alíquota de INSS pró-labore do Lucro Presumido foi erroneamente calculada como 31% em versão anterior. O correto é 11% (apenas cota retida do sócio).*
