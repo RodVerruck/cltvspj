@@ -2,7 +2,17 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Correção Crítica #2: Comparação CLT usa `totalPackage` (não `net`)
+## [2026-06-07] Auditoria #3: Simples Nacional Alíquota Efetiva + Validações Legais
+**Contexto**: Terceira rodada de auditoria. Verificamos três pontos críticos:
+1. **Redutor Lei 15.270** — Confirmado: a fórmula `978,62 - (0,133145 × base)` usa a "base de cálculo" do IRPF (salário bruto menos INSS), não o salário bruto puro. O código estava correto (passa `irpfBase = sal - inss`). ✅
+2. **Tabela IRPF 2026** — Confirmado: a tabela base permanece com os mesmos valores de 2025 (isenção até 2.259,20). A isenção efetiva até R$ 5.000 se dá pelo redutor, não por mudança na tabela base. Código estava correto. ✅
+3. **Simples Nacional alíquota fixa 6%** — BUG: o simulador usava 6% fixo para qualquer faturamento. Acima de R$ 15.000/mês (R$ 180k/ano), a alíquota efetiva do Simples sobe. Corrigido para usar a fórmula real das 6 faixas do Anexo III.
+**Fórmula implementada**: `alíquotaEfetiva = (RBT12 × alíquotaNominal - dedução) / RBT12` onde RBT12 = faturamento mensal × 12.
+**Dead code removido**: variáveis `difference` e `percentDiff` eram calculadas mas nunca renderizadas. Removidas.
+**Label dinâmica**: `pj.taxName` agora reflete a alíquota efetiva real na UI (ex: "DAS Simples Nacional (7,30%)").
+**Regra**: O Simples Nacional NUNCA deve usar alíquota fixa de 6% para todos os faturamentos. Use sempre a fórmula por faixa com RBT12 estimado.
+
+
 **Contexto**: O breakdown CLT exibia FGTS, 13º e Férias como itens positivos (+verde), mas o "Total" mostrava apenas `clt.net` (salário líquido mensal, sem incluí-los). Isso tornava a comparação matematicamente inconsistente: as somas do breakdown não batiam no total. Além disso, a comparação principal (hero card e compare section) usava `clt.net` vs `pj.net`, sendo injusta com a CLT, pois a PJ não tem FGTS, 13º nem férias.
 **Decisão**: Trocar todas as referências de comparação de `clt.net` para `clt.totalPackage`:
 1. Cálculo de `difference` e `percentDiff` → usam `clt.totalPackage`

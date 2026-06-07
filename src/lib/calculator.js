@@ -94,11 +94,31 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
     inssProLabore = Math.min(monthlyGross, 1621.00) * 0.11;
     taxName = 'Impostos Lucro Presumido (14,5%)';
   } else {
-    // Simples Nacional Anexo III (6% de DAS)
-    pjTax = monthlyGross * 0.06;
-    // INSS pró-labore mínimo no Simples (11% de R$ 1621) = R$ 178,31
+    // Simples Nacional Anexo III 2026 — calcula alíquota efetiva real por faixa
+    // Fórmula: alíqEfetiva = (RBT12 × alíqNominal - dedução) / RBT12
+    const rbt12 = monthlyGross * 12; // Receita Bruta Acumulada dos últimos 12 meses (estimada)
+    let aliquotaNominal = 0;
+    let deducao = 0;
+    if (rbt12 <= 180000) {
+      aliquotaNominal = 0.06;      deducao = 0;
+    } else if (rbt12 <= 360000) {
+      aliquotaNominal = 0.112;     deducao = 9360;
+    } else if (rbt12 <= 720000) {
+      aliquotaNominal = 0.135;     deducao = 17640;
+    } else if (rbt12 <= 1800000) {
+      aliquotaNominal = 0.16;      deducao = 35640;
+    } else if (rbt12 <= 3600000) {
+      aliquotaNominal = 0.21;      deducao = 125640;
+    } else {
+      aliquotaNominal = 0.33;      deducao = 648000;
+    }
+    const aliquotaEfetiva = rbt12 > 0 ? (rbt12 * aliquotaNominal - deducao) / rbt12 : 0.06;
+    pjTax = monthlyGross * aliquotaEfetiva;
+    // INSS pró-labore mínimo no Simples (11% de 1 salário mínimo = R$ 178,31)
     inssProLabore = Math.min(monthlyGross, 1621.00) * 0.11;
-    taxName = 'DAS Simples Nacional (6%)';
+    // Nome da alíquota para exibição
+    const aliqPct = (aliquotaEfetiva * 100).toFixed(2).replace('.', ',');
+    taxName = `DAS Simples Nacional (${aliqPct}%)`;
   }
 
   const totalTaxes = pjTax + inssProLabore;

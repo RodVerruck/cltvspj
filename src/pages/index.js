@@ -34,9 +34,6 @@ export default function Home() {
     pj = calculatePJ(pjRate, hoursPerMonth, 'simples');
   }
 
-  const difference = pj.net - clt.totalPackage;
-  const percentDiff = clt.totalPackage > 0 ? ((difference / clt.totalPackage) * 100).toFixed(1) : 0;
-
   return (
     <>
       <Head>
@@ -331,12 +328,12 @@ export default function Home() {
                 <span className={`font-display text-5xl text-ink leading-none mb-2 ${pj.net > clt.totalPackage ? 'text-money' : ''}`}>R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
                 <span className="text-sm text-ink-muted">
                   {meiExcedido 
-                    ? 'Simples Anexo III (Teto MEI excedido)' 
+                    ? `Simples Anexo III (Teto MEI excedido) — ${pj.taxName}` 
                     : regime === 'mei' 
                       ? 'MEI - Microempreendedor Individual' 
                       : regime === 'presumido' 
                         ? 'Lucro Presumido (Carga ~14,5%)' 
-                        : 'Simples Anexo III com Fator R otimizado'}
+                        : pj.taxName}
                 </span>
               </div>
             </div>
