@@ -2,7 +2,15 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria #3: Simples Nacional Alíquota Efetiva + Validações Legais
+## [2026-06-07] Auditoria #4 (Final e Mais Profunda): Fluxo de Caixa Real da PJ e Fator R
+**Contexto**: A pedido de uma nova análise criteriosa de precisão de 100%, reavaliamos as minúcias fiscais da tributação PJ (Simples e Presumido) em comparação com o mundo real. Descobrimos falhas na modelagem do "cash flow" PJ:
+1. **Fator R no Simples Anexo III**: O cálculo assumia 1 salário mínimo de pró-labore independentemente do faturamento. Isso é **ilegal** para manter-se no Anexo III se o faturamento for alto (cairia no Anexo V com 15,5% de imposto!). **Correção**: Implementado `proLabore = Math.max(1621.00, monthlyGross * 0.28)` para garantir a conformidade com a exigência de 28% da Receita Federal.
+2. **IRPF sobre Pró-labore**: O simulador não cobrava IRPF do sócio sobre o pró-labore (como se fosse isento). O pró-labore é tributado **exatamente como salário CLT**. **Correção**: Adicionada a rotina de IRPF sobre o pró-labore com o redutor da Lei 15.270/2025.
+3. **INSS Patronal (Lucro Presumido)**: A empresa de Lucro Presumido paga 20% de INSS patronal sobre o pró-labore do sócio. Embora não seja descontado do "salário" do sócio, é dinheiro que sai do caixa da empresa e reduz o montante disponível para distribuição de lucros. **Correção**: Incluído `inssPatronal` reduzindo os dividendos no Lucro Presumido.
+4. **Imposto sobre Dividendos (Lei 15.270/2025)**: A partir de 2026, distribuições de lucros superiores a R$ 50.000 mensais sofrem retenção de 10% na fonte. **Correção**: Implementada a dedução `dividendTax = dividendGross * 0.10` para parcelas superiores a 50k.
+**Resultado**: O simulador agora reflete **exatamente o dinheiro líquido no bolso do sócio**, descontando não apenas os impostos federais da NF, mas também os impostos pessoais e os custos embutidos de folha necessários para operar nos regimes corretos. A UI foi atualizada para exibir esses descontos ocultos.
+
+
 **Contexto**: Terceira rodada de auditoria. Verificamos três pontos críticos:
 1. **Redutor Lei 15.270** — Confirmado: a fórmula `978,62 - (0,133145 × base)` usa a "base de cálculo" do IRPF (salário bruto menos INSS), não o salário bruto puro. O código estava correto (passa `irpfBase = sal - inss`). ✅
 2. **Tabela IRPF 2026** — Confirmado: a tabela base permanece com os mesmos valores de 2025 (isenção até 2.259,20). A isenção efetiva até R$ 5.000 se dá pelo redutor, não por mudança na tabela base. Código estava correto. ✅

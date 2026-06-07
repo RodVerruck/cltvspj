@@ -395,6 +395,24 @@ export default function Home() {
                       <span className="text-hot">-R$ {pj.inssProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                   )}
+                  {pj.irpfProLabore > 0 && (
+                    <div className="flex justify-between py-2 border-b border-rule">
+                      <span className="text-ink-muted">(-) IRPF Pró-labore</span>
+                      <span className="text-hot">-R$ {pj.irpfProLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  )}
+                  {pj.inssPatronal > 0 && (
+                    <div className="flex justify-between py-2 border-b border-rule">
+                      <span className="text-ink-muted">(-) INSS Patronal (20%)</span>
+                      <span className="text-hot">-R$ {pj.inssPatronal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  )}
+                  {pj.dividendTax > 0 && (
+                    <div className="flex justify-between py-2 border-b border-rule">
+                      <span className="text-ink-muted">(-) IRRF Dividendos (10% &gt; 50k)</span>
+                      <span className="text-hot">-R$ {pj.dividendTax.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between pt-3 mt-1 font-semibold">
                     <span className="text-ink">Total de Impostos</span>
                     <span className="text-hot">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>

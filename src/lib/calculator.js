@@ -67,68 +67,71 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
   const monthlyGross = rate * hours;
 
   let pjTax = 0;
-  let inssProLabore = 0;
-  let taxName = 'DAS Simples Nacional (6%)';
+  let taxName = '';
   let isInvalidMEI = false;
+  let proLabore = 0;
+  let inssPatronal = 0;
 
   if (regime === 'mei') {
-    // Teto mensal do MEI em 2026: R$ 6.750,00
-    if (monthlyGross > 6750.00) {
-      isInvalidMEI = true;
-    }
-    // DAS MEI 2026: INSS (5% de R$ 1621) + ISS (R$ 5) = R$ 86,05
+    if (monthlyGross > 6750.00) isInvalidMEI = true;
     pjTax = 86.05;
-    inssProLabore = 0;
     taxName = 'DAS MEI (Fixo)';
+    proLabore = 0;
   } else if (regime === 'presumido') {
-    // Lucro Presumido para TI/Serviços 2026:
-    // IRPJ: 32% (presunção) × 15% = 4,80%
-    // CSLL: 32% (presunção) × 9% = 2,88%
-    // PIS: 0,65% (cumulativo)
-    // COFINS: 3,00% (cumulativo)
-    // ISS: ~3,00% (média municipal para serviços de TI)
-    // Total consolidado: ~14,33% → arredondado para 14,5%
     pjTax = monthlyGross * 0.145;
-    // INSS pró-labore no Lucro Presumido: 11% (apenas quota retida do sócio)
-    // OBS: Os 20% patronais são custo da empresa, não do sócio individual
-    inssProLabore = Math.min(monthlyGross, 1621.00) * 0.11;
+    proLabore = 1621.00;
+    inssPatronal = proLabore * 0.20;
     taxName = 'Impostos Lucro Presumido (14,5%)';
   } else {
-    // Simples Nacional Anexo III 2026 — calcula alíquota efetiva real por faixa
-    // Fórmula: alíqEfetiva = (RBT12 × alíqNominal - dedução) / RBT12
-    const rbt12 = monthlyGross * 12; // Receita Bruta Acumulada dos últimos 12 meses (estimada)
+    const rbt12 = monthlyGross * 12;
     let aliquotaNominal = 0;
     let deducao = 0;
-    if (rbt12 <= 180000) {
-      aliquotaNominal = 0.06;      deducao = 0;
-    } else if (rbt12 <= 360000) {
-      aliquotaNominal = 0.112;     deducao = 9360;
-    } else if (rbt12 <= 720000) {
-      aliquotaNominal = 0.135;     deducao = 17640;
-    } else if (rbt12 <= 1800000) {
-      aliquotaNominal = 0.16;      deducao = 35640;
-    } else if (rbt12 <= 3600000) {
-      aliquotaNominal = 0.21;      deducao = 125640;
-    } else {
-      aliquotaNominal = 0.33;      deducao = 648000;
-    }
+    if (rbt12 <= 180000) { aliquotaNominal = 0.06; deducao = 0; }
+    else if (rbt12 <= 360000) { aliquotaNominal = 0.112; deducao = 9360; }
+    else if (rbt12 <= 720000) { aliquotaNominal = 0.135; deducao = 17640; }
+    else if (rbt12 <= 1800000) { aliquotaNominal = 0.16; deducao = 35640; }
+    else if (rbt12 <= 3600000) { aliquotaNominal = 0.21; deducao = 125640; }
+    else { aliquotaNominal = 0.33; deducao = 648000; }
+    
     const aliquotaEfetiva = rbt12 > 0 ? (rbt12 * aliquotaNominal - deducao) / rbt12 : 0.06;
     pjTax = monthlyGross * aliquotaEfetiva;
-    // INSS pró-labore mínimo no Simples (11% de 1 salário mínimo = R$ 178,31)
-    inssProLabore = Math.min(monthlyGross, 1621.00) * 0.11;
-    // Nome da alíquota para exibição
+    proLabore = Math.max(1621.00, monthlyGross * 0.28);
     const aliqPct = (aliquotaEfetiva * 100).toFixed(2).replace('.', ',');
-    taxName = `DAS Simples Nacional (${aliqPct}%)`;
+    taxName = `DAS Simples (${aliqPct}%)`;
   }
 
-  const totalTaxes = pjTax + inssProLabore;
-  const netMonthly = monthlyGross - totalTaxes;
+  let inssSocio = 0;
+  let irpfSocio = 0;
+  if (proLabore > 0) {
+    inssSocio = Math.min(proLabore, 8475.55) * 0.11;
+    const irpfBase = proLabore - inssSocio;
+    let irpfTradicional = 0;
+    if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
+    else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
+    else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44;
+    else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44;
+    irpfSocio = aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
+  }
+
+  const dividendGross = monthlyGross - pjTax - inssPatronal - proLabore;
+  let dividendTax = 0;
+  if (dividendGross > 50000) {
+    dividendTax = dividendGross * 0.10;
+  }
+  
+  const dividendNet = dividendGross - dividendTax;
+  const proLaboreNet = proLabore - inssSocio - irpfSocio;
+  const netMonthly = dividendNet + proLaboreNet;
+  const totalTaxes = pjTax + inssPatronal + inssSocio + irpfSocio + dividendTax;
 
   return {
     gross: monthlyGross,
     net: netMonthly,
     simplesDAS: pjTax,
-    inssProLabore,
+    inssProLabore: inssSocio,
+    irpfProLabore: irpfSocio,
+    inssPatronal,
+    dividendTax,
     totalTaxes,
     taxName,
     isInvalidMEI
