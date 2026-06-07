@@ -2,7 +2,17 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria Profunda e Correção Crítica: Lucro Presumido INSS
+## [2026-06-07] Correção Crítica #2: Comparação CLT usa `totalPackage` (não `net`)
+**Contexto**: O breakdown CLT exibia FGTS, 13º e Férias como itens positivos (+verde), mas o "Total" mostrava apenas `clt.net` (salário líquido mensal, sem incluí-los). Isso tornava a comparação matematicamente inconsistente: as somas do breakdown não batiam no total. Além disso, a comparação principal (hero card e compare section) usava `clt.net` vs `pj.net`, sendo injusta com a CLT, pois a PJ não tem FGTS, 13º nem férias.
+**Decisão**: Trocar todas as referências de comparação de `clt.net` para `clt.totalPackage`:
+1. Cálculo de `difference` e `percentDiff` → usam `clt.totalPackage`
+2. Hero card (cor, recomendação, diferença mensal/anual, percentual) → `clt.totalPackage`
+3. Compare section "Como CLT" → agora mostra `clt.totalPackage` com rótulo "Pacote total: líquido + 13º + férias + FGTS"
+4. Breakdown CLT: "Valor Líquido Total" → renomeado para "Total do Pacote Mensal" mostrando `clt.totalPackage` (a soma agora fecha!)
+5. CTA condicional → `pj.net > clt.totalPackage`
+**Regra**: `clt.net` = salário líquido mensal (sem FGTS/13º/férias). `clt.totalPackage` = pacote total real = o valor correto para comparar com PJ.
+
+
 **Contexto**: Auditoria profunda solicitada pelo usuário para garantir 100% de precisão em todos os cálculos. Identificamos um erro crítico conceptual: o INSS pró-labore do Lucro Presumido estava sendo calculado com alíquota de **31%** (sócio + patronal), quando o correto é **11%** (apenas cota retida do sócio, de acordo com a lei previdenciária). Os 20% patronais são custo da empresa jurídica, e não devem ser descontados do salário líquido individual do sócio no simulador.
 **Decisões**:
 1. Corrigimos `calculator.js`: Lucro Presumido → INSS pró-labore de `0.31` para `0.11`.

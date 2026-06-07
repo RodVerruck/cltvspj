@@ -34,8 +34,8 @@ export default function Home() {
     pj = calculatePJ(pjRate, hoursPerMonth, 'simples');
   }
 
-  const difference = pj.net - clt.net;
-  const percentDiff = clt.net > 0 ? ((difference / clt.net) * 100).toFixed(1) : 0;
+  const difference = pj.net - clt.totalPackage;
+  const percentDiff = clt.totalPackage > 0 ? ((difference / clt.totalPackage) * 100).toFixed(1) : 0;
 
   return (
     <>
@@ -274,17 +274,17 @@ export default function Home() {
 
               {/* HERO RESULT CARD */}
               <div className={`border rounded-xl p-8 md:p-10 mb-12 relative overflow-hidden transition-colors duration-500 shadow-sm ${
-                pj.net > clt.net 
+                pj.net > clt.totalPackage 
                   ? 'bg-money-light border-money/20' 
                   : 'bg-hot-light border-hot/20'
               }`}>
-                <div className={`absolute top-0 left-0 w-2 h-full ${pj.net > clt.net ? 'bg-money' : 'bg-hot'}`}></div>
+                <div className={`absolute top-0 left-0 w-2 h-full ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-hot'}`}></div>
                 
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                   <div>
                     <span className="font-mono text-xs uppercase tracking-widest text-ink-muted block mb-2">Recomendação</span>
                     <h3 className="font-display text-3xl md:text-4xl text-ink font-bold leading-tight mb-3">
-                      {pj.net > clt.net ? (
+                      {pj.net > clt.totalPackage ? (
                         <>A opção <span className="text-money italic font-bold">PJ</span> é mais vantajosa para você.</>
                       ) : (
                         <>A opção <span className="text-hot italic font-bold">CLT</span> é mais vantajosa para você.</>
@@ -296,21 +296,21 @@ export default function Home() {
                   </div>
 
                   <div className={`border rounded-lg p-6 min-w-[280px] lg:text-right flex flex-col justify-center bg-white/70 backdrop-blur-sm ${
-                    pj.net > clt.net ? 'border-money/15' : 'border-hot/15'
+                    pj.net > clt.totalPackage ? 'border-money/15' : 'border-hot/15'
                   }`}>
                     <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted block mb-1">
-                      {pj.net > clt.net ? 'Rendimento Extra Mensal (PJ)' : 'Rendimento Extra Mensal (CLT)'}
+                      {pj.net > clt.totalPackage ? 'Rendimento Extra Mensal (PJ)' : 'Rendimento Extra Mensal (CLT)'}
                     </span>
-                    <span className={`font-display text-4xl md:text-5xl font-black block leading-none mb-2 ${pj.net > clt.net ? 'text-money' : 'text-hot'}`}>
-                      + R$ {Math.abs(pj.net - clt.net).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                    <span className={`font-display text-4xl md:text-5xl font-black block leading-none mb-2 ${pj.net > clt.totalPackage ? 'text-money' : 'text-hot'}`}>
+                      + R$ {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                     </span>
                     <span className="text-xs text-ink-muted font-sans block mb-3">
-                      Equivale a <strong className="text-ink">{Math.abs(((pj.net - clt.net) / (pj.net > clt.net ? clt.net : pj.net)) * 100).toFixed(1)}%</strong> a mais de rendimento.
+                      Equivale a <strong className="text-ink">{Math.abs(((pj.net - clt.totalPackage) / (pj.net > clt.totalPackage ? clt.totalPackage : pj.net)) * 100).toFixed(1)}%</strong> a mais de rendimento.
                     </span>
                     <span className={`font-mono text-[10px] uppercase tracking-wider text-ink-muted block border-t pt-3 ${
-                      pj.net > clt.net ? 'border-money/15' : 'border-hot/15'
+                      pj.net > clt.totalPackage ? 'border-money/15' : 'border-hot/15'
                     }`}>
-                      Diferença anual: + R$ {Math.abs((pj.net - clt.net) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano
+                      Diferença anual: + R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano
                     </span>
                   </div>
                 </div>
@@ -320,15 +320,15 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 mt-16 mb-16 pt-12 border-t border-rule items-start">
               <div className="flex flex-col">
                 <span className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-2">Como CLT</span>
-                <span className={`font-display text-5xl text-ink leading-none mb-2 ${clt.net >= pj.net ? 'text-money' : ''}`}>R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
-                <span className="text-sm text-ink-muted">Líquido + benefícios, já com Lei 15.270</span>
+                <span className={`font-display text-5xl text-ink leading-none mb-2 ${clt.totalPackage >= pj.net ? 'text-money' : ''}`}>R$ {clt.totalPackage.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                <span className="text-sm text-ink-muted">Pacote total: líquido + 13º + férias + FGTS</span>
               </div>
 
               <div className="hidden md:block w-full h-full min-h-[100px] bg-rule"></div>
 
               <div className="flex flex-col">
                 <span className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-2">Como PJ</span>
-                <span className={`font-display text-5xl text-ink leading-none mb-2 ${pj.net > clt.net ? 'text-money' : ''}`}>R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                <span className={`font-display text-5xl text-ink leading-none mb-2 ${pj.net > clt.totalPackage ? 'text-money' : ''}`}>R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
                 <span className="text-sm text-ink-muted">
                   {meiExcedido 
                     ? 'Simples Anexo III (Teto MEI excedido)' 
@@ -374,9 +374,9 @@ export default function Home() {
                     <span className="text-ink-muted">Férias (mensal)</span>
                     <span className="text-money">R$ {clt.ferias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  <div className="flex justify-between pt-3 mt-1 font-semibold">
-                    <span className="text-ink">Valor Líquido Total</span>
-                    <span className="text-money text-base">R$ {clt.net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  <div className="flex justify-between pt-3 mt-1 font-semibold border-t-2 border-money/30">
+                    <span className="text-ink">Total do Pacote Mensal</span>
+                    <span className="text-money text-base">R$ {clt.totalPackage.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
               </div>
@@ -414,7 +414,7 @@ export default function Home() {
           )}
 
         {/* Conditional CTA for PJ > CLT */}
-        {pj.net > clt.net && (
+        {pj.net > clt.totalPackage && (
         <section className="py-16 md:py-20 bg-money text-paper animate-fade-in">
               <div className="max-w-6xl mx-auto px-6 md:px-8">
                   <div className="grid md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-center">
