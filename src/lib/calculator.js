@@ -80,10 +80,20 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
     taxName = 'DAS MEI (Fixo)';
     proLabore = 0;
   } else if (regime === 'presumido') {
-    pjTax = monthlyGross * 0.145;
+    // Lucro Presumido TI/Serviços 2026: Base exata = 14,33% (IRPJ 4.8%, CSLL 2.88%, PIS 0.65%, COFINS 3%, ISS 3%)
+    const basePjTax = monthlyGross * 0.1433;
+    
+    // Adicional de IRPJ: 10% sobre a parcela do lucro presumido (32%) que excede R$ 20.000 mensais
+    const lucroPresumido = monthlyGross * 0.32;
+    let adicionalIRPJ = 0;
+    if (lucroPresumido > 20000) {
+      adicionalIRPJ = (lucroPresumido - 20000) * 0.10;
+    }
+    
+    pjTax = basePjTax + adicionalIRPJ;
     proLabore = 1621.00;
     inssPatronal = proLabore * 0.20;
-    taxName = 'Impostos Lucro Presumido (14,5%)';
+    taxName = `Impostos L. Presumido (14,33%${adicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
   } else {
     const rbt12 = monthlyGross * 12;
     let aliquotaNominal = 0;

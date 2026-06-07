@@ -2,7 +2,13 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria #5 (Precisão Extrema): Desconto Simplificado IRPF
+## [2026-06-07] Auditoria #6 (Casos de Altíssima Renda): Adicional de IRPJ no Lucro Presumido
+**Contexto**: Validamos se as fórmulas suportariam desenvolvedores trabalhando para o exterior (Contractors) ou ganhando faturamentos extremamente altos (ex: R$ 70.000+ por mês) onde o Lucro Presumido costuma ser usado.
+**Problema 1 (Alíquota base)**: Estávamos usando uma alíquota fixa aproximada de `14,5%`. Em valores muito altos, essa aproximação falha. A soma exata para TI (IRPJ 4.8%, CSLL 2.88%, PIS 0.65%, COFINS 3%, ISS 3%) é **14,33%**.
+**Problema 2 (Adicional de IRPJ)**: Ignorávamos o "Adicional de IRPJ". Pela lei, se a parcela de lucro presumido da empresa (32% do faturamento em serviços) ultrapassar R$ 20.000 mensais, incide um imposto extra de **10% sobre o valor excedente**. Isso começa a afetar qualquer um que fature acima de R$ 62.500/mês.
+**Correção**: Substituímos os 14,5% pelo valor estrito de 14,33% e implementamos o cálculo dinâmico do `adicionalIRPJ` penalizando os lucros extraordinários conforme manda a lei. O `taxName` da UI também foi atualizado para avisar o usuário quando esse imposto extra entra em ação (`+ Adic. IRPJ`).
+
+
 **Contexto**: A pedido contínuo por "100% de precisão", revisamos o cálculo do IRPF para a CLT e o Pró-labore. Encontramos um último "gap" fiscal: o **Desconto Simplificado do IRPF de 2026**, fixado oficialmente em R$ 607,20.
 **Problema**: O cálculo usava a dedução do INSS puro (`sal - inss`). Para salários entre R$ 5.000 e ~R$ 5.800, o INSS pago é inferior a R$ 607,20. Pela lei, a Receita e a Fonte Pagadora são obrigadas a aplicar a dedução mais vantajosa. Ao não usar o desconto simplificado, o simulador estava gerando imposto de renda (IRPF) indevido para essa faixa de salário, já que a base de cálculo ficava ligeiramente acima do limite de isenção da Lei 15.270.
 **Correção**: Implementada a fórmula `Math.max(inss, 607.20)` tanto para a CLT quanto para o Pró-labore PJ. Isso garante que a dedução legal correta seja aplicada automaticamente, igualando o simulador aos sistemas oficiais da Receita Federal. O IRPF agora é zero para quem ganha até R$ 5.600 CLT.
