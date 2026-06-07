@@ -28,38 +28,56 @@ export function aplicarRedutorLei15270(baseCalculo, irTradicional) {
   return irTradicional;
 }
 
-export const calculateCLT = (salary, benefits) => {
-  const sal = parseFloat(salary) || 0;
-  const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
-
-  const inss = calculateINSS(sal);
-  // Desconto Simplificado 2026: R$ 607,20. Aplica-se se for maior que a dedução do INSS.
+const calculateIRPF = (grossAmount) => {
+  const inss = calculateINSS(grossAmount);
   const descontoIrpf = Math.max(inss, 607.20);
-  const irpfBase = sal - descontoIrpf;
+  const irpfBase = grossAmount - descontoIrpf;
   let irpfTradicional = 0;
   if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
   else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
   else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44;
   else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44;
+  
+  return aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
+};
 
-  const irpf = aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
+export const calculateCLT = (salary, benefits) => {
+  const sal = parseFloat(salary) || 0;
+  if (sal === 0) return { gross: 0, net: 0, benefits: 0, inss: 0, irpf: 0, fgts: 0, decimoTerceiro: 0, ferias: 0, totalPackage: 0 };
 
+  const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
+
+  const inss = calculateINSS(sal);
+  const irpf = calculateIRPF(sal);
   const netSalary = sal - inss - irpf;
+
   const fgts = sal * 0.08;
-  const decimoTerceiro = sal / 12;
-  // Provisão de férias de 1/12 + 1/3 constitucional = sal / 9
-  const ferias = sal / 9;
+
+  // Benefícios anuais: cálculo do valor LÍQUIDO (descontando INSS e IRPF reais)
+  // 13º Salário
+  const gross13 = sal;
+  const inss13 = calculateINSS(gross13);
+  const irpf13 = calculateIRPF(gross13);
+  const net13 = gross13 - inss13 - irpf13;
+  const decimoTerceiroMensal = net13 / 12;
+
+  // Férias (1/3 adicional)
+  const grossFerias = sal * (4/3);
+  const inssFerias = calculateINSS(grossFerias);
+  const irpfFerias = calculateIRPF(grossFerias);
+  const netFerias = grossFerias - inssFerias - irpfFerias;
+  const feriasMensal = netFerias / 12;
 
   return {
     gross: sal,
     net: netSalary + totalBenefits,
     benefits: totalBenefits,
     inss,
-    irpf: Math.max(irpf, 0),
+    irpf,
     fgts,
-    decimoTerceiro,
-    ferias,
-    totalPackage: netSalary + totalBenefits + fgts + decimoTerceiro + ferias
+    decimoTerceiro: decimoTerceiroMensal,
+    ferias: feriasMensal,
+    totalPackage: netSalary + totalBenefits + fgts + decimoTerceiroMensal + feriasMensal
   };
 };
 
@@ -106,25 +124,21 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
     else { aliquotaNominal = 0.33; deducao = 648000; }
     
     const aliquotaEfetiva = rbt12 > 0 ? (rbt12 * aliquotaNominal - deducao) / rbt12 : 0.06;
-    pjTax = monthlyGross * aliquotaEfetiva;
+    
+    // Regra extrema precisão: Se RBT12 > 3.6 milhões, o ISS (5%) é cobrado por fora do DAS no Anexo III
+    const issSeparado = rbt12 > 3600000 ? monthlyGross * 0.05 : 0;
+    pjTax = (monthlyGross * aliquotaEfetiva) + issSeparado;
+    
     proLabore = Math.max(1621.00, monthlyGross * 0.28);
     const aliqPct = (aliquotaEfetiva * 100).toFixed(2).replace('.', ',');
-    taxName = `DAS Simples (${aliqPct}%)`;
+    taxName = `DAS Simples (${aliqPct}%)${issSeparado > 0 ? ' + ISS 5%' : ''}`;
   }
 
   let inssSocio = 0;
   let irpfSocio = 0;
   if (proLabore > 0) {
     inssSocio = Math.min(proLabore, 8475.55) * 0.11;
-    // Desconto Simplificado 2026: R$ 607,20
-    const descontoIrpfSocio = Math.max(inssSocio, 607.20);
-    const irpfBase = proLabore - descontoIrpfSocio;
-    let irpfTradicional = 0;
-    if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
-    else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
-    else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44;
-    else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44;
-    irpfSocio = aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
+    irpfSocio = calculateIRPF(proLabore); // Usa a mesma função auxiliar da CLT com desconto simplificado
   }
 
   const dividendGross = monthlyGross - pjTax - inssPatronal - proLabore;

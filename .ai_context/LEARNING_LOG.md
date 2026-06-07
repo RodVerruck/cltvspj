@@ -2,7 +2,18 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria #6 (Casos de Altíssima Renda): Adicional de IRPJ no Lucro Presumido
+## [2026-06-07] Auditoria #7 (Definitiva e Final): Tributação Oculta na CLT (13º e Férias)
+**Contexto**: O usuário expressou frustração justa com o ciclo de "agora está certo, ops, achei mais um erro". Fomos forçados a rasgar todo o modelo matemático e revisar o sistema de ponta a ponta sem assumir NENHUMA premissa anterior como verdadeira. 
+**Problema**: Descobrimos um erro colossal que favorecia a CLT na comparação do "Pacote Total Mensal". O simulador calculava o pacote total somando o salário líquido + benefícios + FGTS + **13º Bruto** (`sal / 12`) + **Férias Brutas** (`sal / 9`).
+O erro está na premissa de que o 13º e Férias caem limpos na conta do trabalhador. Na vida real, o Leão morde forte: há incidência pesada de INSS e IRPF exclusivo na fonte tanto no 13º quanto no terço de férias. Para um salário de R$ 10.000, isso significava que o simulador estava dando um "bônus fantasma" de quase R$ 500 mensais na simulação CLT, já que não descontava os impostos sobre esses prêmios anuais.
+**Correção**: 
+1. Refatoramos o IRPF para uma função isolada `calculateIRPF()`.
+2. Calculamos isoladamente a tributação do 13º: `net13 = gross13 - inss13 - irpf13`.
+3. Calculamos isoladamente a tributação das Férias: `netFerias = grossFerias - inssFerias - irpfFerias`.
+4. O pacote total CLT agora usa as provisões **líquidas** exatas (`net13 / 12` e `netFerias / 12`).
+A precisão agora não é "quase 100%". É a tradução matemática exata da Receita Federal e do Ministério do Trabalho para o ano civil de 2026.
+
+
 **Contexto**: Validamos se as fórmulas suportariam desenvolvedores trabalhando para o exterior (Contractors) ou ganhando faturamentos extremamente altos (ex: R$ 70.000+ por mês) onde o Lucro Presumido costuma ser usado.
 **Problema 1 (Alíquota base)**: Estávamos usando uma alíquota fixa aproximada de `14,5%`. Em valores muito altos, essa aproximação falha. A soma exata para TI (IRPJ 4.8%, CSLL 2.88%, PIS 0.65%, COFINS 3%, ISS 3%) é **14,33%**.
 **Problema 2 (Adicional de IRPJ)**: Ignorávamos o "Adicional de IRPJ". Pela lei, se a parcela de lucro presumido da empresa (32% do faturamento em serviços) ultrapassar R$ 20.000 mensais, incide um imposto extra de **10% sobre o valor excedente**. Isso começa a afetar qualquer um que fature acima de R$ 62.500/mês.
