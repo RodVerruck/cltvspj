@@ -3,19 +3,22 @@
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
 ## [2026-06-07] Auditoria #12: Ajustes de Compliance, Previdência, Impacto e Ajuste de Fator R Mínimo
-**Contexto**: Refinamos o simulador para garantir segurança jurídica (compliance), padronizar os indicadores de impacto financeiro (badges coloridas) e neutralizar o copy sobre previdência PJ. Também corrigimos a distorção no cálculo do Fator R estimado em faturamentos muito baixos.
+**Contexto**: Refinamos o simulador para garantir segurança jurídica (compliance), padronizar os indicadores de impacto financeiro (badges coloridas) e neutralizar o copy sobre previdência PJ. Também corrigimos a distorção no cálculo do Fator R estimado em faturamentos muito baixos, introduzindo alertas de viabilidade de negócio.
 **Problema**:
 - Havia risco jurídico ao prometer "total conformidade" e ao tratar a redução de INSS como "economia" previdenciária simples.
 - Faltava um indicador de economia relevante geral no Hero Card que resumisse o impacto financeiro (baixo/moderado/alto).
 - Havia um bloco de código antigo e duplicado de CTA de parceiros no final de `src/pages/index.js` que exibia um banner redundante.
 - O score comercial interno precisava de teto (limite de 10) e o termo "comercial" devia ser limpo para não constar nos bundles do cliente.
-- Em faturamentos extremamente baixos (ex: R$ 120/mês), o pró-labore padrão era forçado para o salário mínimo de R$ 1.621,00, gerando um Fator R estimado bizarro de 1350,83% (acima de 100%), o que assustava o usuário.
+- O pró-labore padrão mínimo de 1 salário mínimo no Simples Nacional gerava Fator R de 1350% para faturamentos muito baixos. Tentativas anteriores de remover esse piso criaram pró-labores irreais previdenciariamente (ex: R$ 44,80/mês e INSS de R$ 4,93/mês), contrariando a legislação do INSS.
+- Faltava um aviso para alertar o usuário leigo de que simulações com faturamento menor que o pró-labore representam negócios economicamente inviáveis.
 **Correção**:
 - Substituímos menções de conformidade total por textos declaratórios de caráter simulatório e informativo.
 - Implementamos a classificação em badges: ganho < R$ 100/mês (Impacto Baixo 🟢), ganho entre R$ 100 e R$ 499/mês (Impacto Moderado 🟡), ganho >= R$ 500/mês (Impacto Alto 🔴) no Hero Card e no Passo 5.
 - Refatoramos o Passo 6 (Previdência) para destacar a "Diferença de contribuição previdenciária" e incluir uma nota neutra e transparente.
 - Aplicamos o teto de 10 ao `oportunidadeScore` no motor de cálculo e renomeamos o comentário interno para "Score de Oportunidade de Revisão".
-- Adicionamos proteção ao pró-labore padrão (`padrao`): se o faturamento mensal for menor que o salário mínimo, o pró-labore padrão assume `monthlyGross * 0.28` no Simples Nacional e `monthlyGross` no Lucro Presumido, evitando distorções visuais de Fator R acima de 100%.
+- Mantivemos o piso previdenciário de 1 salário mínimo (R$ 1.621,00) no motor de cálculo para fins de INSS de pró-labore correto.
+- Na UI, criamos a diferenciação de cenários do Fator R (*Fator R Real*, *Projetado* e *Estimado*), alterando a redação técnica para *"Para fins previdenciários, a simulação considera a contribuição mínima baseada em 1 salário mínimo vigente (R$ 1.621,00)"*.
+- Adicionamos o **Alerta de Viabilidade** caso o faturamento mensal seja menor que o pró-labore considerado para fins previdenciários: *"O faturamento informado é inferior ao pró-labore considerado para fins previdenciários. Este cenário normalmente indica uma empresa economicamente inviável ou uma simulação exploratória."*
 - Removemos permanentemente o banner de CTA duplicado de parceiros do final de `src/pages/index.js` (linhas 1145–1199).
 - Validamos os resultados com o script de testes de regressão automatizados (`test_regressao.mjs`), que obteve 100% de sucesso.
 

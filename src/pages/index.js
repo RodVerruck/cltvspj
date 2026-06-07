@@ -82,6 +82,29 @@ export default function Home() {
     impactoBolinha = '🔴';
   }
 
+  const isHistoricoInformado = Number(faturamento12Meses) > 0 && Number(folha12Meses) > 0;
+  const isPadraoFatorR = proLaboreInput === 'padrao';
+
+  let FatorRLabel = 'Fator R Estimado';
+  let FatorRDesc = `Para fins previdenciários, a simulação considera a contribuição baseada no pró-labore selecionado de R$ ${pj.proLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mês.`;
+
+  if (isHistoricoInformado) {
+    FatorRLabel = 'Fator R Real';
+    FatorRDesc = 'Calculado a partir do histórico real de 12 meses informado por você.';
+  } else if (isPadraoFatorR) {
+    FatorRLabel = 'Fator R Projetado';
+    if (pj.gross < 5789.28) {
+      FatorRDesc = 'Para fins previdenciários, a simulação considera a contribuição mínima baseada em 1 salário mínimo vigente (R$ 1.621,00).';
+    } else {
+      FatorRDesc = 'Cenário projetado automaticamente a partir do pró-labore padrão (28%) para obter o enquadramento no Anexo III.';
+    }
+  }
+
+  const excede100 = pj.fatorRPercent > 100;
+  if (excede100) {
+    FatorRDesc = `Para fins previdenciários, a simulação considera a contribuição mínima baseada em 1 salário mínimo vigente (R$ 1.621,00), que supera o faturamento mensal simulado de R$ ${pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.`;
+  }
+
   return (
     <>
       <Head>
@@ -757,7 +780,7 @@ export default function Home() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1 text-ink">
-                        <span>Fator R Atual: {pj.fatorRPercent.toFixed(2).replace('.', ',')}%</span>
+                        <span>{FatorRLabel}: {pj.fatorRPercent > 100 ? '>100%' : `${pj.fatorRPercent.toFixed(2).replace('.', ',')}%`}</span>
                         <span>Meta: 28%</span>
                       </div>
                       
@@ -804,7 +827,18 @@ export default function Home() {
                   </div>
 
                   <div className="mt-4 pt-3.5 border-t border-rule/40 text-xs text-ink-muted leading-relaxed font-sans text-left">
-                    {pj.motivoEnquadramento}
+                    <strong>Nota do cenário</strong>: {FatorRDesc}
+                    <br />
+                    <span className="text-[11px] text-ink-fade mt-1.5 block leading-relaxed">{pj.motivoEnquadramento}</span>
+
+                    {pj.proLabore > pj.gross && (
+                      <div className="bg-[#fff3cd] border border-[#ffeeba] text-[#856404] p-3.5 rounded-lg text-xs leading-relaxed font-sans mt-3.5 flex items-start gap-2 animate-fade-in shadow-sm">
+                        <span className="text-sm">⚠️</span>
+                        <span>
+                          <strong>Alerta de Viabilidade</strong>: O faturamento informado é inferior ao pró-labore considerado para fins previdenciários. Este cenário normalmente indica uma empresa economicamente inviável ou uma simulação exploratória.
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

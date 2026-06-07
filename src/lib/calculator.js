@@ -175,12 +175,10 @@ export const calculatePJ = (
       proLabore = 8000.00;
     } else if (proLaboreInput === 'padrao') {
       if (regime === 'presumido') {
-        proLabore = Math.min(monthlyGross, TAX_RULES.salaryMinimum);
+        proLabore = TAX_RULES.salaryMinimum;
       } else {
-        // Simples Nacional: assume fator R idealizado (28% do faturamento ou salário mínimo, limitado se faturamento for menor que o salário mínimo)
-        proLabore = monthlyGross < TAX_RULES.salaryMinimum
-          ? monthlyGross * 0.28
-          : Math.max(TAX_RULES.salaryMinimum, monthlyGross * 0.28);
+        // Simples Nacional: assume fator R idealizado (28% do faturamento ou salário mínimo)
+        proLabore = Math.max(TAX_RULES.salaryMinimum, monthlyGross * 0.28);
       }
     } else {
       // Personalizado ou numérico
