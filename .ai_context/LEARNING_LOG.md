@@ -2,7 +2,23 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria #13: Refinamentos Finais de Transparência, Credibilidade e Compliance
+## [2026-06-07] Auditoria #14: Otimização de Conversão UX — CTA Ancorado, Acordeão e Tipografia de Impacto
+**Contexto**: Análise UX profunda identificou 4 problemas críticos de conversão no funil de afiliado (Manassés Contabilidade): CTA aparecendo tarde demais, resultado resolvendo demais o problema sem gerar necessidade de contador, CTA sem âncora emocional ao número calculado, e hierarquia visual plana no card de resultado.
+**Problemas**:
+- O CTA da Manassés (Passo 9) aparecia após Fator R, Simulador, Previdência, Detalhamento e Checklist — quando o usuário já tinha sua resposta e a motivação de acionar o contador havia caído drasticamente.
+- O número de impacto (`+R$ X`) estava em `text-4xl md:text-5xl`, sem dominar visualmente a seção como âncora emocional do resultado.
+- Os Passos 3–8 (análises técnicas) ficavam todos abertos por padrão, gerando paralisia analítica e reduzindo a chance do usuário chegar ao CTA.
+**Correções implementadas em `src/pages/index.js`**:
+- **CTA Ancorado (P0)**: Inserido bloco `CTAAncorado` imediatamente após o Hero Result Card, sempre visível em qualquer resultado. O copy usa o valor anual exato calculado como âncora emocional: *"Esta simulação aponta +R$ X.XXX/ano como PJ. Um contador especializado pode confirmar esse número em menos de 30 minutos."* Versão alternativa para quando CLT vence.
+- **Tipografia de Impacto (P3→P0)**: Número de rendimento extra escalado de `text-4xl md:text-5xl` para `text-5xl md:text-6xl lg:text-7xl font-black`.
+- **Acordeão de Detalhamento (P1)**: Estado `showDetalhamento` adicionado. Passos 3–10 (Qualidade de Dados, Fator R, Simulador de Otimização, Previdência, Detalhamento linha a linha, Checklist, Limitações e CTA final Manassés) embrulhados em acordeão colapsável. Inicia **fechado** por padrão para maximizar conversão. Botão com ícone de chevron animado e descrição das seções internas.
+**Regras para não repetir**:
+- CTA de afiliado nunca deve aparecer apenas no final de uma longa página de resultados. Deve ter uma versão ancorada imediatamente após o número de impacto.
+- O número financeiro principal do resultado deve ter tamanho tipográfico dominante (mínimo `text-5xl` em mobile, até `text-7xl` em desktop).
+- Detalhamentos técnicos devem ser colapsáveis por padrão quando o objetivo primário é conversão.
+- Estado de acordeão deve ser reset para `false` a cada novo cálculo se necessário (não implementado ainda — candidato para próxima iteração).
+
+
 **Contexto**: Finalizamos os refinamentos da Calculadora CLT vs PJ focando na clareza e transparência matemática, consistência de redação previdenciária/dividendos e prevenção contra distorções e falsas interpretações por parte do usuário.
 **Problema**:
 - Falta de transparência na conta de DAS dentro do simulador de otimização tributária (Passo 5).

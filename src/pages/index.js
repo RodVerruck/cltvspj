@@ -21,6 +21,7 @@ export default function Home() {
   const [showResults, setShowResults] = useState(false);
   const [regime, setRegime] = useState('simples');
   const [showingResults, setShowingResults] = useState(false);
+  const [showDetalhamento, setShowDetalhamento] = useState(false);
 
   // Novos estados para a evolução tributária
   const [dependentes, setDependentes] = useState('0');
@@ -667,7 +668,7 @@ export default function Home() {
                     <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted block mb-1">
                       {pj.net > clt.totalPackage ? 'Rendimento Extra Mensal (PJ)' : 'Rendimento Extra Mensal (CLT)'}
                     </span>
-                    <span className={`font-display text-4xl md:text-5xl font-black block leading-none mb-2 ${pj.net > clt.totalPackage ? 'text-money' : 'text-hot'}`}>
+                    <span className={`font-display text-5xl md:text-6xl lg:text-7xl font-black block leading-none mb-2 ${pj.net > clt.totalPackage ? 'text-money' : 'text-hot'}`}>
                       + R$ {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                     </span>
                     <span className="text-xs text-ink-muted font-sans block mb-3">
@@ -679,6 +680,36 @@ export default function Home() {
                       Diferença anual: + R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano
                     </span>
                   </div>
+                </div>
+              </div>
+
+              {/* CTA ANCORADO — aparece sempre imediatamente após o Hero Card */}
+              <div className="border border-rule/60 rounded-xl p-5 mb-6 animate-fade-in font-sans bg-paper relative overflow-hidden shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="max-w-xl">
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-ink-fade mb-1.5">Próximo passo recomendado</p>
+                    <p className="text-sm text-ink leading-relaxed">
+                      {pj.net > clt.totalPackage ? (
+                        <>
+                          Esta simulação aponta <strong className="text-money">+R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano</strong> como PJ.
+                          {' '}Um contador especializado pode confirmar esse número — e identificar otimizações adicionais — em menos de 30 minutos.
+                        </>
+                      ) : (
+                        <>
+                          Neste cenário, a CLT aparece mais vantajosa em <strong className="text-ink">R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano</strong>.
+                          {' '}Mas benefícios tributários específicos do seu perfil podem mudar esse quadro. Um contador pode confirmar em 30 minutos.
+                        </>
+                      )}
+                    </p>
+                  </div>
+                  <a
+                    href="/go/manasses"
+                    rel="sponsored nofollow"
+                    className="group inline-flex items-center gap-2 rounded transition-all duration-300 font-bold whitespace-nowrap shadow-sm hover:shadow-md bg-[#0c4a3e] text-[#f5f1e8] hover:bg-[#0a3d33] hover:scale-[1.02] px-5 py-3 text-sm flex-shrink-0"
+                  >
+                    Falar com contador
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
                 </div>
               </div>
 
@@ -738,6 +769,32 @@ export default function Home() {
                   )}
                 </div>
               </div>
+
+              {/* ACORDEÃO — botão de toggle para os detalhamentos técnicos */}
+              <div className="mt-8 mb-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDetalhamento(!showDetalhamento)}
+                  className="w-full flex items-center justify-between gap-3 py-4 px-5 border border-rule rounded-lg bg-white hover:bg-paper transition-colors font-sans group shadow-sm"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
+                      {showDetalhamento ? 'Ocultar detalhamento técnico' : 'Ver detalhamento completo'}
+                    </span>
+                    <span className="text-[10px] font-mono bg-rule/50 text-ink-fade px-1.5 py-0.5 rounded">
+                      Fator R · Simulador · Previdência · Impostos linha a linha
+                    </span>
+                  </span>
+                  <span className={`text-ink-muted transition-transform duration-300 ${showDetalhamento ? 'rotate-180' : ''}`}>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+
+              {showDetalhamento && (
+              <div className="animate-fade-in">
 
               {/* Passo 3: Qualidade dos Dados e Potencial de Planejamento */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 font-sans">
@@ -1215,6 +1272,8 @@ export default function Home() {
                   *Esta ferramenta é um simulador simplificado com finalidade exclusivamente informativa e de apoio à tomada de decisão. As estimativas tributárias não constituem orientação contábil formal ou aconselhamento jurídico e devem ser validadas individualmente com um profissional qualificado antes de qualquer enquadramento societário ou tributário.
                 </p>
               </div>
+
+              </div>)} {/* fim do acordeão showDetalhamento */}
 
             </div>
           </section>
