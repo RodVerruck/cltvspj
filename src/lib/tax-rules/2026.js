@@ -28,6 +28,7 @@ export const TAX_RULES_2026 = {
   // IRPF (Tabela básica mensal progressiva de 2026)
   irpf: {
     simplifiedDeduction: 607.20,
+    dependentDeduction: 189.59, // Dedução mensal por dependente em 2026
     faixas: {
       isencao: 2428.80,
       faixa2: { limit: 2826.65, rate: 0.075, deduction: 182.16 },
@@ -37,19 +38,29 @@ export const TAX_RULES_2026 = {
     }
   },
 
-  // Lei 15.270/2025 (Redutor de imposto e dividendos)
+  // Tabela especial de tributação do PLR (Participação nos Lucros ou Resultados) de 2026
+  plr: {
+    bands: [
+      { limit: 8214.40, rate: 0.00, deduction: 0.00 },
+      { limit: 9922.28, rate: 0.075, deduction: 616.08 },
+      { limit: 13167.00, rate: 0.15, deduction: 1360.25 },
+      { limit: 16380.38, rate: 0.225, deduction: 2347.78 },
+      { limit: Infinity, rate: 0.275, deduction: 3166.80 }
+    ]
+  },
+
+  // Lei 15.270/2025 (Redutor de imposto)
   law15270: {
     exemptionLimit: 5000.00,
     reductionLimit: 7350.00,
     formula: {
       a: 978.62,
       b: 0.133145
-    },
-    dividendTaxRate: 0.10,
-    dividendTaxLimit: 50000.00
+    }
+    // Dividendos são considerados 100% isentos sob regras vigentes
   },
 
-  // Simples Nacional - TI (Anexo III) e MEI
+  // Simples Nacional - TI e MEI
   simples: {
     meiTetoAnual: 81000.00,
     meiDasMensal: 86.05, // DAS MEI para prestador de serviços em 2026 (5% do SM + ISS R$ 5,00)
@@ -61,12 +72,24 @@ export const TAX_RULES_2026 = {
       { limit: 3600000, rate: 0.21, deduction: 125640 },
       { limit: Infinity, rate: 0.33, deduction: 648000 }
     ],
+    anexo5Bands: [
+      { limit: 180000, rate: 0.155, deduction: 0 },
+      { limit: 360000, rate: 0.18, deduction: 4500 },
+      { limit: 720000, rate: 0.195, deduction: 9900 },
+      { limit: 1800000, rate: 0.205, deduction: 17100 },
+      { limit: 3600000, rate: 0.23, deduction: 62100 },
+      { limit: Infinity, rate: 0.305, deduction: 540000 }
+    ],
     issSeparadoLimit: 3600000
   },
 
-  // Lucro Presumido - TI
+  // Lucro Presumido - TI (Composição de alíquotas separadas para auditoria)
   presumido: {
-    taxConsolidatedRate: 0.1433, // Carga base aproximada (IRPJ 4.8% + CSLL 2.88% + PIS 0.65% + COFINS 3% + ISS 3%)
+    irpjRate: 0.0480, // IRPJ: 4.8% (15% sobre presunção de 32%)
+    csllRate: 0.0288, // CSLL: 2.88% (9% sobre presunção de 32%)
+    pisRate: 0.0065,  // PIS: 0.65%
+    cofinsRate: 0.0300, // COFINS: 3.00%
+    defaultIssRate: 0.0300, // ISS padrão: 3.00%
     presumptionRate: 0.32, // Presunção de TI: 32%
     irpjAdditionalRate: 0.10, // Adicional de IRPJ: 10%
     irpjAdditionalLimit: 20000.00, // Parcela mensal de lucro presumido isenta de adicional

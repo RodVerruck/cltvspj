@@ -22,17 +22,46 @@ export default function Home() {
   const [regime, setRegime] = useState('simples');
   const [showingResults, setShowingResults] = useState(false);
 
+  // Novos estados para a evolução tributária
+  const [dependentes, setDependentes] = useState('0');
+  const [pensaoAlimenticia, setPensaoAlimenticia] = useState('');
+  const [plrAnual, setPlrAnual] = useState('');
+  const [proLaboreInput, setProLaboreInput] = useState('padrao');
+  const [proLaboreCustom, setProLaboreCustom] = useState('');
+  const [folha12Meses, setFolha12Meses] = useState('');
+  const [issRate, setIssRate] = useState('3');
+
   const handleCalculate = () => {
     setShowResults(true);
   };
 
-  const clt = calculateCLT(salary, benefits);
-  let pj = calculatePJ(pjRate, hoursPerMonth, regime, faturamento12Meses);
+  const clt = calculateCLT(salary, benefits, dependentes, pensaoAlimenticia, plrAnual);
+  let pj = calculatePJ(
+    pjRate, 
+    hoursPerMonth, 
+    regime, 
+    faturamento12Meses, 
+    proLaboreInput === 'personalizado' ? proLaboreCustom : proLaboreInput, 
+    folha12Meses, 
+    issRate,
+    dependentes,
+    pensaoAlimenticia
+  );
   let meiExcedido = false;
 
   if (regime === 'mei' && pj.isInvalidMEI) {
     meiExcedido = true;
-    pj = calculatePJ(pjRate, hoursPerMonth, 'simples', faturamento12Meses);
+    pj = calculatePJ(
+      pjRate, 
+      hoursPerMonth, 
+      'simples', 
+      faturamento12Meses, 
+      proLaboreInput === 'personalizado' ? proLaboreCustom : proLaboreInput, 
+      folha12Meses, 
+      issRate,
+      dependentes,
+      pensaoAlimenticia
+    );
   }
 
   return (
@@ -115,7 +144,54 @@ export default function Home() {
               <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Painel de Dados Pessoais (Deduções IRPF) */}
+            <div className="bg-white border border-rule rounded-md p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-6 relative shadow-sm">
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
+              <div>
+                <h3 className="font-display text-xl text-ink mb-1 flex items-center gap-1.5 font-bold">
+                  Deduções de Imposto de Renda
+                  <span className="text-[9px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Pessoa Física</span>
+                </h3>
+                <p className="text-xs text-ink-muted leading-relaxed font-sans">
+                  Valores deduzidos no cálculo tradicional do IRPF para o salário CLT e para o Pró-labore PJ.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-xs text-ink-muted mb-1 block">Dependentes IRPF</label>
+                  <select 
+                    value={dependentes}
+                    onChange={(e) => setDependentes(e.target.value)}
+                    className="font-mono text-sm text-ink bg-transparent border-b-2 border-rule pb-2 outline-none w-full focus:border-money"
+                  >
+                    <option value="0">0 dependentes</option>
+                    <option value="1">1 dependente</option>
+                    <option value="2">2 dependentes</option>
+                    <option value="3">3 dependentes</option>
+                    <option value="4">4 dependentes</option>
+                    <option value="5">5+ dependentes</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs text-ink-muted mb-1 block">Pensão Alimentícia Judicial</label>
+                  <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                    <span className="font-mono text-sm text-ink-fade">R$</span>
+                    <input 
+                      type="text" 
+                      value={pensaoAlimenticia} 
+                      onChange={(e) => setPensaoAlimenticia(e.target.value)}
+                      placeholder="0,00"
+                      className="font-mono text-sm text-ink bg-transparent outline-none w-full py-0.5"
+                    />
+                  </div>
+                  <p className="text-[9px] text-ink-fade mt-1 leading-tight font-sans">
+                    Apenas pensão homologada judicialmente ou por escritura pública.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-sans">
               {/* BLOCO CLT */}
               <div className="bg-white border border-rule rounded-md p-8 relative">
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
@@ -160,6 +236,32 @@ export default function Home() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                  <p className="text-[10px] text-ink-fade mt-4 leading-normal font-sans bg-paper p-3 rounded border border-rule">
+                    💡 <strong>Nota sobre Benefícios</strong>: Benefícios corporativos pagos pela empresa (como plano de saúde familiar, VR, etc.) entram integralmente isentos de impostos e elevam o valor do seu Pacote Total.
+                  </p>
+                </div>
+
+                <div className="mt-6 border-t border-rule pt-6">
+                  <h4 className="font-display text-lg text-ink mb-4 font-bold">PLR / Bônus Anual</h4>
+                  <div>
+                    <label className="text-xs text-ink-muted mb-1 block flex items-center gap-1.5">
+                      PLR anual (opcional)
+                      <span className="text-[9px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Tributação Exclusiva</span>
+                    </label>
+                    <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                      <span className="font-mono text-lg text-ink-fade">R$</span>
+                      <input
+                        type="text"
+                        value={plrAnual}
+                        onChange={(e) => setPlrAnual(e.target.value)}
+                        placeholder="0,00"
+                        className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1 placeholder:text-ink-fade/40"
+                      />
+                    </div>
+                    <p className="text-[10px] text-ink-fade mt-1.5 leading-normal font-sans">
+                      Informe apenas se sua empresa possui programa de PLR.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -208,24 +310,117 @@ export default function Home() {
                   </div>
                 </div>
 
+                {/* Configuração do Pró-labore */}
+                {regime !== 'mei' && (
+                  <div className="mb-6">
+                    <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                      Configuração do Pró-labore
+                      <span className="text-ink-fade hover:text-ink cursor-help relative group" title="O pró-labore é o salário do sócio-administrador. Ele deve ser compatível com a atividade exercida.">
+                        <Info size={13} className="inline-block" />
+                      </span>
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+                      {[
+                        { value: 'padrao', label: 'Padrão (Fator R)' },
+                        { value: 'minimo', label: 'Mínimo (R$ 1.621)' },
+                        { value: '3000', label: 'R$ 3.000' },
+                        { value: '5000', label: 'R$ 5.000' },
+                        { value: '8000', label: 'R$ 8.000' },
+                        { value: 'personalizado', label: 'Personalizado' }
+                      ].map((opt) => (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => setProLaboreInput(opt.value)}
+                          className={`py-1.5 px-1.5 text-[11px] font-medium rounded transition-colors border ${proLaboreInput === opt.value ? 'bg-ink text-paper border-ink' : 'text-ink-muted border-rule hover:bg-rule/30'}`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    {proLaboreInput === 'personalizado' && (
+                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money animate-fade-in">
+                        <span className="font-mono text-lg text-ink-fade">R$</span>
+                        <input
+                          type="text"
+                          value={proLaboreCustom}
+                          onChange={(e) => setProLaboreCustom(e.target.value)}
+                          placeholder="0,00"
+                          className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
+                        />
+                        <span className="text-xs text-ink-fade">/mês</span>
+                      </div>
+                    )}
+                    <p className="text-[10px] text-ink-fade mt-1 leading-normal font-sans">
+                      ⚠️ <em>Pró-labore deve ser compatível com a atividade exercida.</em>
+                    </p>
+                  </div>
+                )}
+
                 {regime === 'simples' && (
+                  <div className="mb-6 animate-fade-in grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                        Faturamento 12m
+                        <span className="text-[9px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
+                      </label>
+                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                        <span className="font-mono text-base text-ink-fade">R$</span>
+                        <input
+                          type="text"
+                          value={faturamento12Meses}
+                          onChange={(e) => setFaturamento12Meses(e.target.value)}
+                          placeholder="Acumulado 12m"
+                          className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5 placeholder:text-ink-fade/40"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                        Folha 12m
+                        <span className="text-[9px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
+                      </label>
+                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                        <span className="font-mono text-base text-ink-fade">R$</span>
+                        <input
+                          type="text"
+                          value={folha12Meses}
+                          onChange={(e) => setFolha12Meses(e.target.value)}
+                          placeholder="Acumulado 12m"
+                          className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5 placeholder:text-ink-fade/40"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-span-1 sm:col-span-2">
+                      <p className="text-[10px] text-ink-fade leading-normal font-sans">
+                        Se não informado, será considerado apenas o pró-labore na folha do Fator R.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {regime === 'presumido' && (
                   <div className="mb-6 animate-fade-in">
                     <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
-                      Faturamento acumulado 12 meses
-                      <span className="text-[10px] bg-rule/50 px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
+                      ISS do município (Alíquota)
+                      <span className="text-[10px] bg-rule/50 px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Municipal</span>
                     </label>
-                    <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                      <span className="font-mono text-lg text-ink-fade">R$</span>
-                      <input
-                        type="text"
-                        value={faturamento12Meses}
-                        onChange={(e) => setFaturamento12Meses(e.target.value)}
-                        placeholder="Estimar pelo faturamento atual"
-                        className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1 placeholder:text-ink-fade/40"
-                      />
+                    <div className="flex border border-rule rounded overflow-hidden">
+                      {['2', '3', '4', '5'].map((rate) => (
+                        <button
+                          key={rate}
+                          type="button"
+                          onClick={() => setIssRate(rate)}
+                          className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${issRate === rate ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}
+                        >
+                          {rate}%
+                        </button>
+                      ))}
                     </div>
-                    <p className="text-[10px] text-ink-fade mt-1 leading-normal font-sans">
-                      Informe a soma dos últimos 12 meses de faturamento retroativo. Se deixado em branco, estimamos o RBT12 com base no faturamento mensal atual.
+                    <p className="text-[10px] text-ink-fade mt-1.5 leading-normal font-sans">
+                      A alíquota de ISS varia de 2% a 5% conforme a cidade. <strong>Consulte seu contador ou prefeitura.</strong>
                     </p>
                   </div>
                 )}
@@ -244,8 +439,20 @@ export default function Home() {
                       <p className="text-sm text-hot font-medium">
                         {regime === 'simples' ? 'Simples Nacional' : regime === 'presumido' ? 'Lucro Presumido' : 'MEI'}
                       </p>
-                      <p className="text-xs text-hot/80 mt-1">
-                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Total consolidado ~14,5% (IRPJ+CSLL+PIS+COFINS+ISS)' : 'Teto anual: R$ 81.000 (DAS R$ 86,05)'}
+                      <p className="text-xs text-hot/80 mt-1 leading-relaxed">
+                        {regime === 'simples' ? (
+                          <>
+                            Simulação voltada para atividades de serviços sujeitas ao Fator R. 
+                            Pró-labore/Folha de pagamento ≥ 28% do faturamento enquadra no <strong>Anexo III (inicia em 6%)</strong>, caso contrário cai no <strong>Anexo V (inicia em 15,5%)</strong>.
+                          </>
+                        ) : regime === 'presumido' ? (
+                          <>
+                            Tributação federal de 11,33% (IRPJ+CSLL+PIS+COFINS) + ISS do município. 
+                            <strong> Nota</strong>: Estimativa baseada em empresa sem funcionários (não inclui RAT, Terceiros/Sistema S e INSS patronal sobre salários).
+                          </>
+                        ) : (
+                          'Teto anual: R$ 81.000 (DAS R$ 86,05).'
+                        )}
                       </p>
                     </div>
                   </div>
@@ -394,6 +601,12 @@ export default function Home() {
                     <span className="text-ink-muted">Férias (mensal)</span>
                     <span className="text-money">R$ {clt.ferias.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
+                  {clt.plr > 0 && (
+                    <div className="flex justify-between py-2 border-b border-rule">
+                      <span className="text-ink-muted">PLR / Bônus (mensalizado)</span>
+                      <span className="text-money">R$ {clt.plr.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between pt-3 mt-1 font-semibold border-t-2 border-money/30">
                     <span className="text-ink">Total do Pacote Mensal</span>
                     <span className="text-money text-base">R$ {clt.totalPackage.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -412,6 +625,39 @@ export default function Home() {
                     <span className="text-ink-muted">(-) {pj.taxName || 'DAS Simples Nacional (6%)'}</span>
                     <span className="text-hot">-R$ {pj.simplesDAS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
+
+                  {/* Detalhamento de Lucro Presumido se aplicável */}
+                  {regime === 'presumido' && !meiExcedido && (
+                    <>
+                      <div className="flex justify-between py-1 border-b border-rule pl-4 text-xs font-mono text-ink-muted">
+                        <span>- IRPJ (4,80%)</span>
+                        <span>R$ {pj.lpIRPJ.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-rule pl-4 text-xs font-mono text-ink-muted">
+                        <span>- CSLL (2,88%)</span>
+                        <span>R$ {pj.lpCSLL.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-rule pl-4 text-xs font-mono text-ink-muted">
+                        <span>- PIS (0,65%)</span>
+                        <span>R$ {pj.lpPIS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-rule pl-4 text-xs font-mono text-ink-muted">
+                        <span>- COFINS (3,00%)</span>
+                        <span>R$ {pj.lpCOFINS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-rule pl-4 text-xs font-mono text-ink-muted">
+                        <span>- ISS ({issRate}%)</span>
+                        <span>R$ {pj.lpISS.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
+                      {pj.lpAdicionalIRPJ > 0 && (
+                        <div className="flex justify-between py-1 border-b border-rule pl-4 text-xs font-mono text-ink-muted">
+                          <span>- Adicional de IRPJ (10%)</span>
+                          <span>R$ {pj.lpAdicionalIRPJ.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      )}
+                    </>
+                  )}
+
                   {pj.inssProLabore > 0 && (
                     <div className="flex justify-between py-2 border-b border-rule">
                       <span className="text-ink-muted">(-) INSS Pró-labore (11%)</span>
@@ -430,12 +676,10 @@ export default function Home() {
                       <span className="text-hot">-R$ {pj.inssPatronal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                   )}
-                  {pj.dividendTax > 0 && (
-                    <div className="flex justify-between py-2 border-b border-rule">
-                      <span className="text-ink-muted">(-) IRRF Dividendos (10% &gt; 50k)</span>
-                      <span className="text-hot">-R$ {pj.dividendTax.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                    </div>
-                  )}
+                  <div className="flex justify-between py-2 border-b border-rule">
+                    <span className="text-ink-muted">Distribuição de Dividendos</span>
+                    <span className="text-money">Isento (Regras Atuais)</span>
+                  </div>
                   <div className="flex justify-between pt-3 mt-1 font-semibold">
                     <span className="text-ink">Total de Impostos</span>
                     <span className="text-hot">R$ {pj.totalTaxes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>

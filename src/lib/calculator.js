@@ -43,15 +43,18 @@ const calculateIRPFForBase = (irpfBase, grossAmount) => {
   return aplicarRedutorLei15270(grossAmount, Math.max(irpfTradicional, 0));
 };
 
-const calculateIRPF = (grossAmount) => {
+export const calculateIRPF = (grossAmount, dependentes = 0, pensaoAlimenticia = 0) => {
   const inss = calculateINSS(grossAmount);
   const simplifiedDeduction = TAX_RULES.irpf.simplifiedDeduction;
+  const numDependentes = parseInt(dependentes) || 0;
+  const valorPensao = parseFloat(pensaoAlimenticia) || 0;
+  const deducaoDependentes = numDependentes * TAX_RULES.irpf.dependentDeduction;
   
-  // Opção A: Deduções Legais (neste caso, apenas INSS do funcionário)
-  const baseDeducoesLegais = Math.max(0, grossAmount - inss);
+  // Opção A: Deduções Legais (neste caso: INSS + Dependentes + Pensão Judicial)
+  const baseDeducoesLegais = Math.max(0, grossAmount - inss - deducaoDependentes - valorPensao);
   const irpfDeducoesLegais = calculateIRPFForBase(baseDeducoesLegais, grossAmount);
   
-  // Opção B: Desconto Simplificado
+  // Opção B: Desconto Simplificado (substitui todas as deduções legais, desconta apenas o simplificado fixo)
   const baseDescontoSimplificado = Math.max(0, grossAmount - simplifiedDeduction);
   const irpfDescontoSimplificado = calculateIRPFForBase(baseDescontoSimplificado, grossAmount);
   
@@ -59,14 +62,32 @@ const calculateIRPF = (grossAmount) => {
   return Math.min(irpfDeducoesLegais, irpfDescontoSimplificado);
 };
 
-export const calculateCLT = (salary, benefits) => {
+export const calculatePLR = (plrAmount) => {
+  const amount = parseFloat(plrAmount) || 0;
+  if (amount === 0) return { gross: 0, irpf: 0, net: 0 };
+  const bands = TAX_RULES.plr.bands;
+  let irpf = 0;
+  for (const band of bands) {
+    if (amount <= band.limit) {
+      irpf = amount * band.rate - band.deduction;
+      break;
+    }
+  }
+  return {
+    gross: amount,
+    irpf: Math.max(0, irpf),
+    net: Math.max(0, amount - Math.max(0, irpf))
+  };
+};
+
+export const calculateCLT = (salary, benefits, dependentes = 0, pensaoAlimenticia = 0, plrAnual = 0) => {
   const sal = parseFloat(salary) || 0;
-  if (sal === 0) return { gross: 0, net: 0, benefits: 0, inss: 0, irpf: 0, fgts: 0, decimoTerceiro: 0, ferias: 0, totalPackage: 0 };
+  if (sal === 0) return { gross: 0, net: 0, benefits: 0, inss: 0, irpf: 0, fgts: 0, decimoTerceiro: 0, ferias: 0, plr: 0, totalPackage: 0 };
 
   const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
 
   const inss = calculateINSS(sal);
-  const irpf = calculateIRPF(sal);
+  const irpf = calculateIRPF(sal, dependentes, pensaoAlimenticia);
   const netSalary = sal - inss - irpf;
 
   const fgts = sal * 0.08;
@@ -75,16 +96,20 @@ export const calculateCLT = (salary, benefits) => {
   // 13º Salário
   const gross13 = sal;
   const inss13 = calculateINSS(gross13);
-  const irpf13 = calculateIRPF(gross13);
+  const irpf13 = calculateIRPF(gross13, dependentes, pensaoAlimenticia);
   const net13 = gross13 - inss13 - irpf13;
   const decimoTerceiroMensal = net13 / 12;
 
   // Férias (1/3 adicional)
   const grossFerias = sal * (4/3);
   const inssFerias = calculateINSS(grossFerias);
-  const irpfFerias = calculateIRPF(grossFerias);
+  const irpfFerias = calculateIRPF(grossFerias, dependentes, pensaoAlimenticia);
   const netFerias = grossFerias - inssFerias - irpfFerias;
   const feriasMensal = netFerias / 12;
+
+  // PLR / Bônus Anual
+  const plrCalculada = calculatePLR(plrAnual);
+  const plrMensal = plrCalculada.net / 12;
 
   return {
     gross: sal,
@@ -95,11 +120,22 @@ export const calculateCLT = (salary, benefits) => {
     fgts,
     decimoTerceiro: decimoTerceiroMensal,
     ferias: feriasMensal,
-    totalPackage: netSalary + totalBenefits + fgts + decimoTerceiroMensal + feriasMensal
+    plr: plrMensal,
+    totalPackage: netSalary + totalBenefits + fgts + decimoTerceiroMensal + feriasMensal + plrMensal
   };
 };
 
-export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamento12Meses = 0) => {
+export const calculatePJ = (
+  pjRate, 
+  hoursPerMonth, 
+  regime = 'simples', 
+  faturamento12Meses = 0, 
+  proLaboreInput = 'padrao', 
+  folha12Meses = 0, 
+  issRate = 3,
+  dependentes = 0,
+  pensaoAlimenticia = 0
+) => {
   const rate = parseFloat(pjRate) || 0;
   const hours = parseFloat(hoursPerMonth) || 0;
   const monthlyGross = rate * hours;
@@ -110,6 +146,41 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
   let proLabore = 0;
   let inssPatronal = 0;
 
+  // Detalhes adicionais para Lucro Presumido
+  let lpIRPJ = 0;
+  let lpCSLL = 0;
+  let lpPIS = 0;
+  let lpCOFINS = 0;
+  let lpISS = 0;
+  let lpAdicionalIRPJ = 0;
+
+  // Determinar valor nominal do Pró-labore bruto mensal
+  if (regime === 'mei') {
+    proLabore = 0;
+  } else {
+    // Para Simples e Lucro Presumido
+    if (proLaboreInput === 'minimo' || proLaboreInput === '1621') {
+      proLabore = TAX_RULES.salaryMinimum;
+    } else if (proLaboreInput === '3000') {
+      proLabore = 3000.00;
+    } else if (proLaboreInput === '5000') {
+      proLabore = 5000.00;
+    } else if (proLaboreInput === '8000') {
+      proLabore = 8000.00;
+    } else if (proLaboreInput === 'padrao') {
+      if (regime === 'presumido') {
+        proLabore = TAX_RULES.salaryMinimum;
+      } else {
+        // Simples Nacional: assume fator R idealizado (28% do faturamento ou salário mínimo)
+        proLabore = Math.max(TAX_RULES.salaryMinimum, monthlyGross * 0.28);
+      }
+    } else {
+      // Personalizado ou numérico
+      const numericVal = parseFloat(proLaboreInput) || 0;
+      proLabore = numericVal > 0 ? numericVal : TAX_RULES.salaryMinimum;
+    }
+  }
+
   if (regime === 'mei') {
     const rulesMei = TAX_RULES.simples;
     const faturamentoAnualMEI = Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12;
@@ -119,67 +190,76 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
     proLabore = 0;
   } else if (regime === 'presumido') {
     const rulesPresumido = TAX_RULES.presumido;
-    const basePjTax = monthlyGross * rulesPresumido.taxConsolidatedRate;
-    
-    // Adicional de IRPJ (Aproximação para serviços de TI)
+    const userIss = (parseFloat(issRate) || 3) / 100;
+
+    // Impostos Corporativos isolados
+    lpIRPJ = monthlyGross * rulesPresumido.irpjRate;
+    lpCSLL = monthlyGross * rulesPresumido.csllRate;
+    lpPIS = monthlyGross * rulesPresumido.pisRate;
+    lpCOFINS = monthlyGross * rulesPresumido.cofinsRate;
+    lpISS = monthlyGross * userIss;
+
+    // Adicional de IRPJ
     const lucroPresumido = monthlyGross * rulesPresumido.presumptionRate;
-    let adicionalIRPJ = 0;
     if (lucroPresumido > rulesPresumido.irpjAdditionalLimit) {
-      adicionalIRPJ = (lucroPresumido - rulesPresumido.irpjAdditionalLimit) * rulesPresumido.irpjAdditionalRate;
+      lpAdicionalIRPJ = (lucroPresumido - rulesPresumido.irpjAdditionalLimit) * rulesPresumido.irpjAdditionalRate;
     }
-    
-    pjTax = basePjTax + adicionalIRPJ;
-    // Pró-labore mínimo utilizado para fins de simplificação do fluxo comparativo
-    proLabore = TAX_RULES.salaryMinimum;
+
+    pjTax = lpIRPJ + lpCSLL + lpPIS + lpCOFINS + lpISS + lpAdicionalIRPJ;
+
     inssPatronal = proLabore * rulesPresumido.inssPatronalRate;
-    const taxPctLabel = (rulesPresumido.taxConsolidatedRate * 100).toFixed(2).replace('.', ',');
-    taxName = `Impostos L. Presumido (${taxPctLabel}%${adicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
+    const taxPctLabel = ((rulesPresumido.irpjRate + rulesPresumido.csllRate + rulesPresumido.pisRate + rulesPresumido.cofinsRate + userIss) * 100).toFixed(2).replace('.', ',');
+    taxName = `Impostos L. Presumido (${taxPctLabel}%${lpAdicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
   } else {
-    // Simples Nacional Anexo III
+    // Simples Nacional
     const rbt12 = Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12;
+    const folha12 = Number(folha12Meses) > 0 ? Number(folha12Meses) : proLabore * 12;
+
+    // Calcular Fator R real ou baseado na anualização implícita
+    const fatorR = rbt12 > 0 ? (folha12 / rbt12) : 0;
     const simplesRules = TAX_RULES.simples;
-    
+
+    let isAnexo3 = true;
+    let bands = simplesRules.anexo3Bands;
+
+    // Se Fator R for menor que 28%, cai no Anexo V
+    if (fatorR < 0.28) {
+      isAnexo3 = false;
+      bands = simplesRules.anexo5Bands;
+    }
+
     let aliquotaNominal = 0;
     let deducao = 0;
-    
-    for (const band of simplesRules.anexo3Bands) {
+
+    for (const band of bands) {
       if (rbt12 <= band.limit) {
         aliquotaNominal = band.rate;
         deducao = band.deduction;
         break;
       }
     }
-    
-    const aliquotaEfetiva = rbt12 > 0 ? (rbt12 * aliquotaNominal - deducao) / rbt12 : simplesRules.anexo3Bands[0].rate;
-    
-    // Regra extrema precisão: Se RBT12 > sublimite do Simples Nacional, o ISS (5%) é cobrado por fora
+
+    const aliquotaEfetiva = rbt12 > 0 ? (rbt12 * aliquotaNominal - deducao) / rbt12 : bands[0].rate;
+
+    // Se RBT12 > sublimite do Simples Nacional, o ISS (5%) é cobrado por fora
     const issSeparado = rbt12 > simplesRules.issSeparadoLimit ? monthlyGross * 0.05 : 0;
     pjTax = (monthlyGross * aliquotaEfetiva) + issSeparado;
-    
-    // Fator R Otimizado: 28% do faturamento ou salário mínimo
-    proLabore = Math.max(TAX_RULES.salaryMinimum, monthlyGross * 0.28);
+
     const aliqPct = (aliquotaEfetiva * 100).toFixed(2).replace('.', ',');
-    taxName = `DAS Simples (${aliqPct}%)${issSeparado > 0 ? ' + ISS 5%' : ''}`;
+    taxName = `DAS Simples Anexo ${isAnexo3 ? 'III' : 'V'} (${aliqPct}%)${issSeparado > 0 ? ' + ISS 5%' : ''}`;
   }
 
   let inssSocio = 0;
   let irpfSocio = 0;
   if (proLabore > 0) {
     inssSocio = Math.min(proLabore, TAX_RULES.inss.ceiling) * 0.11;
-    // Aproximação utilizando tabela mensal do IRPF
-    irpfSocio = calculateIRPF(proLabore);
+    // O IRPF sobre o pró-labore herda os dependentes e a pensão judicial
+    irpfSocio = calculateIRPF(proLabore, dependentes, pensaoAlimenticia);
   }
 
   // Fluxo de caixa e Dividendos
   const dividendGross = monthlyGross - pjTax - inssPatronal - proLabore;
-  let dividendTax = 0;
-  
-  // Simplificação comparativa da Lei 15.270/2025: 10% de IRRF sobre a totalidade caso as distribuições mensais de lucro superem R$ 50.000
-  const dividendRule = TAX_RULES.law15270;
-  if (dividendGross > dividendRule.dividendTaxLimit) {
-    dividendTax = dividendGross * dividendRule.dividendTaxRate;
-  }
-  
+  const dividendTax = 0; // Isenção de dividendos integral sob as regras do ano vigente
   const dividendNet = dividendGross - dividendTax;
   const proLaboreNet = proLabore - inssSocio - irpfSocio;
   const netMonthly = dividendNet + proLaboreNet;
@@ -195,6 +275,14 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
     dividendTax,
     totalTaxes,
     taxName,
-    isInvalidMEI
+    isInvalidMEI,
+    proLabore,
+    // Variáveis detalhadas do Lucro Presumido
+    lpIRPJ,
+    lpCSLL,
+    lpPIS,
+    lpCOFINS,
+    lpISS,
+    lpAdicionalIRPJ
   };
 };

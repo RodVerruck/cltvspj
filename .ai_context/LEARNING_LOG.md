@@ -2,6 +2,23 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-07] Auditoria #11: Evolução para Calculadora Tributária Contábil
+**Contexto**: A fim de transformar o simulador CLT vs PJ em uma calculadora com precisão de software contábil, adicionamos suporte a novos parâmetros fiscais (dependentes, pensão judicial, PLR anual, ISS customizado e pró-labore customizado) e revertemos regras experimentais de dividendos para alinhamento estrito com a legislação.
+**Problema**:
+- O IRPF assumia implicitamente 0 dependentes e nenhuma dedução de pensão judicial, além de não calcular bônus/PLR da CLT, o que distorcia a comparação.
+- O pró-labore era fixo em 28% no Simples e 1 salário mínimo no Presumido, impedindo os usuários de simularem retiradas personalizadas.
+- O Fator R forçava a cobrança pelo Anexo III, sem considerar o enquadramento real no Anexo V por falta de folha de salários adequada.
+- O Lucro Presumido era estimado por uma alíquota única simplificada, sem detalhar tributos federais e ISS municipal de forma auditável e clara.
+- O desconto de 10% experimental sobre dividendos não condizia com a lei federal em vigor para o período.
+**Correção**:
+- Adicionamos os estados `dependentes` (R$ 189,59/mês cada) e `pensaoAlimenticia` (Pensão Judicial), aplicando-os como deduções na base legal tradicional de IRPF no motor de cálculo da CLT e do Pró-labore PJ.
+- Criamos a função `calculatePLR` consumindo a tabela especial progressiva de 2026, com o input de PLR anual CLT opcional na interface e inclusão no Pacote Total.
+- Implementamos o seletor de Pró-labore com valores de referência (Mínimo, R$ 3k, R$ 5k, R$ 8k e Personalizado), exibindo tooltip sobre compatibilidade profissional.
+- Codificamos a lógica de transição para o Anexo V do Simples Nacional caso o Fator R (`folha12Meses / faturamento12Meses` ou anualizado implícito) seja inferior a 28%.
+- Decompusemos os impostos federais do Lucro Presumido (IRPJ 4,8%, CSLL 2,88%, PIS 0,65%, COFINS 3,0%) e adicionamos seletor de ISS municipal (2% a 5%), exibindo cada tributo separadamente no detalhamento para empresas sem funcionários.
+- Removemos a cobrança experimental de impostos sobre dividendos, tornando a distribuição 100% isenta na interface e no motor de cálculo.
+- Validamos a robustez matemática através do script de testes automatizados `test_regressao.mjs`, que passou com sucesso.
+
 ## [2026-06-07] Auditoria #10: Correção e Alinhamento Legal IRPF, INSS Pró-labore e RBT12 Real
 **Contexto**: O usuário identificou que a aplicação do redutor de IRPF da Lei 15.270/2025 necessitava ser parametrizada sobre o rendimento tributável bruto, e não sobre a base líquida deduzida, e que a tabela de IRPF 2026 básica devia ser atualizada. Também observou que a tabela progressiva previdenciária não se aplica ao pró-labore do sócio (contribuinte individual), sendo o correto manter a alíquota fixa de 11% retida na fonte, e que usar estimativa linear para o cálculo do Simples Nacional omitia a variação do faturamento histórico real nos últimos 12 meses (RBT12).
 **Problema**:
