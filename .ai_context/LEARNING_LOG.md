@@ -2,7 +2,47 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
-## [2026-06-07] Auditoria #14: Otimização de Conversão UX — CTA Ancorado, Acordeão e Tipografia de Impacto
+## [2026-06-07] Implementação do Dashboard de Analytics Admin (`/admin`)
+
+**Contexto**: Usuário queria visualizar métricas de acessos do site diretamente, sem ter que abrir o Google Analytics. Optou por um dashboard customizado integrado ao GA4 Data API via Service Account.
+
+**Decisões Arquiteturais**:
+- Criada página `/admin` com tela de login protegida por senha (`ADMIN_PASSWORD` no `.env.local`). Senha atual: `cltvspj2026`.
+- Autenticação via token diário (base64 de `senha:data`) armazenado em `sessionStorage` — expira automaticamente à meia-noite.
+- API Route `src/pages/api/admin-auth.js` valida a senha e gera o token. Função `validateToken` exportada e reutilizada pela API de analytics.
+- API Route `src/pages/api/analytics.js` autentica com o Google via `google-auth-library` (Service Account) e chama a GA4 Data API com 7 relatórios paralelos: KPIs gerais, usuários por dia, top páginas, origens de tráfego, dispositivos, países e comparativo semanal.
+- Dashboard usa `chart.js` + `react-chartjs-2` para gráficos (Line, Bar, Doughnut).
+- **Design totalmente isolado do site público**: CSS inline (JS-in-CSS) para não contaminar o design system editorial. Tema dark premium (`#0f1117` fundo, `#151824` cards).
+- Auto-refresh a cada 5 minutos via `setInterval`.
+- Skeleton loading durante carregamento dos dados.
+
+**Variáveis necessárias no `.env.local`**:
+```
+ADMIN_PASSWORD=cltvspj2026
+GA4_PROPERTY_ID=      # ID numérico da propriedade (ex: 123456789)
+GA4_CLIENT_EMAIL=     # Email da Service Account
+GA4_PRIVATE_KEY=      # Chave privada JSON (com \n escapados)
+```
+
+**Como configurar a Service Account**:
+1. Google Cloud Console → IAM & Admin → Service Accounts → Criar conta
+2. Criar chave JSON → copiar `client_email` e `private_key`
+3. Google Analytics → Admin → Gerenciamento de acesso → adicionar email com papel **Leitor**
+4. Preencher `.env.local` e reiniciar `npm run dev`
+
+**Arquivos criados**:
+- `src/pages/admin/index.js` — Dashboard completo (login + gráficos)
+- `src/pages/api/admin-auth.js` — Autenticação admin
+- `src/pages/api/analytics.js` — Integração GA4 Data API
+
+**Pacotes instalados**: `google-auth-library`, `chart.js`, `react-chartjs-2`
+
+**Regras para não repetir**:
+- O admin NUNCA deve ter `robots: index` — sempre `noindex, nofollow`.
+- O CSS do admin deve ser isolado (JS-in-CSS) para não vazar no design system editorial do site.
+- O token de sessão usa a DATA como parte do hash — expira naturalmente à meia-noite, sem necessidade de logout manual.
+
+
 **Contexto**: Análise UX profunda identificou 4 problemas críticos de conversão no funil de afiliado (Manassés Contabilidade): CTA aparecendo tarde demais, resultado resolvendo demais o problema sem gerar necessidade de contador, CTA sem âncora emocional ao número calculado, e hierarquia visual plana no card de resultado.
 **Problemas**:
 - O CTA da Manassés (Passo 9) aparecia após Fator R, Simulador, Previdência, Detalhamento e Checklist — quando o usuário já tinha sua resposta e a motivação de acionar o contador havia caído drasticamente.
