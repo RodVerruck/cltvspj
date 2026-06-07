@@ -146,8 +146,8 @@ export default function Post({ post, relatedPosts }) {
               <div className="mt-24">
                 <AffiliateCTA
                   partner="manasses"
-                  title="Abra seu CNPJ com quem entende de TI."
-                  description="A Manassés Contabilidade cuida da abertura do seu CNPJ grátis e da contabilidade mensal com 50% de desconto na primeira mensalidade."
+                  title="Planejamento contábil especializado para TI."
+                  description="A Manassés Contabilidade cuida da contabilidade mensal da sua empresa com suporte humanizado e 50% de desconto na primeira mensalidade."
                   buttonText="Conhecer a Manassés"
                 />
               </div>

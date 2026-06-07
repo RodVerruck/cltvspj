@@ -9,12 +9,14 @@ Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do te
 - Risco de má interpretação jurídica sobre a isenção de dividendos e as regras da Lei 15.270/2025.
 - Linguagem de "Confiança Baixa" no Fator R que prejudicava a credibilidade percebida do simulador.
 - Comparações com valores muito desproporcionais de entrada (CLT vs PJ) podiam sugerir vantagens artificiais decorrentes puramente da assimetria dos dados inseridos, não dos regimes.
+- O CTA da parceira Manassés na Home e nos posts exibia valores comerciais não confirmados ("a partir de R$ 349/mês") e menção à "abertura de CNPJ grátis", além de ter perdido o visual verde escuro editorial de afiliação.
 **Correção**:
 - Detalhamos a conta matemática no Passo 5, mostrando: DAS Atual (Anexo V), DAS Projetado (Anexo III) e a Economia no DAS resultante.
 - Atualizamos a nota dos dividendos no Passo 2 para uma redação juridicamente neutra: *"Dividendos líquidos distribuídos após a aplicação das regras tributárias consideradas nesta simulação."*
 - Removemos a palavra "Confiança" e adotamos "Dados do Fator R:", classificando em badges de estilo cinza/neutro (*Dados Reais*, *Histórico Parcial*, *Estimados por Referência*).
 - Implementamos o banner amarelo de **Alerta de Comparação Desproporcional** para relações fora da faixa de 0.8 a 1.2 (`pj.gross / clt.gross`), explicando a assimetria ao usuário.
 - Adicionamos a legenda de cenário permanente de remunerações brutas no Hero Card.
+- **Ajuste de Estilo e Copy do CTA**: Restauramos o estilo verde floresta editorial (`#0c4a3e`) com texto off-white (`#f5f1e8`) no bloco de recomendação e alteramos o copy para não citar valores ou abertura de CNPJ gratuita, focando unicamente na assessoria no Fator R de TI e no desconto de 50% na primeira mensalidade. Propagamos essa mesma diretriz nos arquivos MDX e componentes de posts.
 - Testes de regressão do motor de cálculo reexecutados e aprovados com 100% de sucesso.
 
 ## [2026-06-07] Auditoria #12: Ajustes de Compliance, Previdência, Impacto e Ajuste de Fator R Mínimo

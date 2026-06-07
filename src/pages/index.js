@@ -1171,31 +1171,27 @@ export default function Home() {
 
               {/* Passo 9: CTA Manassés Contabilidade (Contextual dosado pelo OportunidadeScore) */}
               {pj.contabilidadeMetadata.showContadorCTA && (
-                <div className={`rounded-xl p-6 md:p-8 mb-8 animate-fade-in font-sans border shadow-sm text-left ${
-                  pj.contabilidadeMetadata.oportunidadeScore >= 8 
-                    ? 'bg-money-light border-money/30 relative' // Destacado
-                    : pj.contabilidadeMetadata.oportunidadeScore >= 5
-                      ? 'bg-paper border-rule/80' // Normal
-                      : 'bg-paper-dark border-rule/50' // Discreto
-                }`}>
+                <div className="rounded-xl p-6 md:p-8 mb-8 animate-fade-in font-sans bg-[#0c4a3e] text-[#f5f1e8] border border-[#0c4a3e]/10 relative overflow-hidden shadow-md text-left">
+                  <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#f5f1e8 1px, transparent 1px), linear-gradient(90deg, #f5f1e8 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+                  
                   {pj.contabilidadeMetadata.oportunidadeScore >= 8 && (
-                    <span className="absolute top-0 right-0 bg-money text-white font-mono text-[9px] uppercase font-bold tracking-widest px-3 py-1 rounded-bl-lg shadow-sm">
+                    <span className="absolute top-0 right-0 bg-[#f5f1e8] text-[#0c4a3e] font-mono text-[9px] uppercase font-bold tracking-widest px-3 py-1 rounded-bl-lg shadow-sm">
                       Recomendado
                     </span>
                   )}
                   
-                  <div className="flex flex-col md:flex-row md:items-center gap-6 justify-between font-sans">
+                  <div className="flex flex-col md:flex-row md:items-center gap-6 justify-between font-sans relative z-10">
                     <div className="max-w-xl">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-ink-muted block mb-2 font-bold">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#f5f1e8]/50 block mb-2 font-bold">
                         Parceiro Contábil Recomendado
                       </span>
-                      <p className={`leading-relaxed text-ink ${pj.contabilidadeMetadata.oportunidadeScore >= 8 ? 'text-base font-semibold' : 'text-sm'}`}>
+                      <p className={`leading-relaxed text-[#f5f1e8] ${pj.contabilidadeMetadata.oportunidadeScore >= 8 ? 'text-base font-semibold' : 'text-sm'}`}>
                         {pj.contabilidadeMetadata.ctaCaso === 'equilibrio' 
                           ? `A diferença encontrada foi de apenas R$ ${Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} por mês. Nessa situação, benefícios CLT, aposentadoria, estabilidade e estratégia empresarial podem ser tão relevantes quanto os impostos. Recomendamos falar com a equipe da Manassés.`
                           : pj.contabilidadeMetadata.ctaTexto}
                       </p>
-                      <p className="text-[11px] text-ink-fade mt-2">
-                        Abertura de CNPJ grátis, assessoria do Fator R de TI e suporte via WhatsApp a partir de R$ 349/mês. <strong>Ganha 50% de desconto na primeira mensalidade!</strong>
+                      <p className="text-[11px] text-[#f5f1e8]/75 mt-2">
+                        Assessoria especializada no Fator R para profissionais de TI e suporte dedicado via WhatsApp. <strong>Ganha 50% de desconto na primeira mensalidade!</strong>
                       </p>
                     </div>
                     
@@ -1203,11 +1199,7 @@ export default function Home() {
                       <a
                         href="/go/manasses"
                         rel="sponsored nofollow"
-                        className={`group inline-flex items-center gap-2 rounded transition-all duration-300 font-bold whitespace-nowrap shadow-sm hover:shadow-md ${
-                          pj.contabilidadeMetadata.oportunidadeScore >= 8
-                            ? 'bg-money text-white hover:bg-money-hover px-6 py-4 text-base'
-                            : 'bg-ink text-paper hover:bg-ink-muted px-5 py-3 text-sm'
-                        }`}
+                        className="group inline-flex items-center gap-2 rounded transition-all duration-300 font-bold whitespace-nowrap shadow-sm hover:shadow-md bg-[#f5f1e8] text-[#0c4a3e] hover:bg-white hover:scale-[1.02] px-6 py-4 text-base"
                       >
                         Fazer diagnóstico gratuito
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
