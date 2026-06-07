@@ -1201,7 +1201,7 @@ export default function Home() {
                         rel="sponsored nofollow"
                         className="group inline-flex items-center gap-2 rounded transition-all duration-300 font-bold whitespace-nowrap shadow-sm hover:shadow-md bg-[#f5f1e8] text-[#0c4a3e] hover:bg-white hover:scale-[1.02] px-6 py-4 text-base"
                       >
-                        Falar com contador
+                        Falar com especialista
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </a>
                     </div>
