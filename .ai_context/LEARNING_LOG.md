@@ -9,10 +9,12 @@ Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do te
 - A alteração do INSS do pró-labore para progressivo estava incorreta juridicamente, pois contribuintes individuais recolhem taxa fixa de 11%.
 - O motor de cálculo assumia faturamento constante (`monthlyGross * 12`) para calcular a alíquota efetiva do Simples Nacional, criando erros de simulação estruturais em regimes progressivos.
 **Correção**:
-- Atualizamos as faixas básicas de IRPF vigentes para 2026 no `calculateIRPFForBase` (isenção básica de R$ 2.428,80 e respectivas parcelas a deduzir) e alteramos a chamada do redutor para receber o `grossAmount`.
+- Atualizamos as faixas básicas de IRPF vigentes para 2026 no `calculateIRPFForBase` (isenção básica de R$ 2.428,80 e respectivas parcelas a deduzir), renomeamos a variável de base no redutor para `rendimentoTributavel` e alteramos a chamada do redutor para receber o `grossAmount`.
 - Refatoramos a determinação do IRPF comparando a base tradicional legal com o desconto simplificado e retendo o menor imposto de forma separada no código.
 - Revertemos o INSS pró-labore do sócio para a alíquota fixa de 11% limitada ao teto do INSS e restauramos o rótulo de 11% na interface do usuário.
-- Adicionamos o parâmetro opcional `faturamento12Meses` à calculadora PJ e um campo correspondente na interface do usuário para que a alíquota efetiva do Simples Nacional seja calculada com base no faturamento real acumulado dos últimos 12 meses (RBT12 Real), com fallback para a estimativa mensal atual caso não preenchido.
+- Adicionamos o parâmetro opcional `faturamento12Meses` à calculadora PJ (com tratamento via `Number()`) e um campo correspondente com ajuda visual explicativa e de apoio na UI para que a alíquota efetiva do Simples Nacional consuma o faturamento acumulado dos últimos 12 meses (RBT12 Real).
+- Ajustamos a verificação de MEI excedido para confrontar com o teto anual de R$ 81.000,00 utilizando o faturamento de 12 meses (real ou estimado) e atualizamos a descrição e banner de alerta do MEI na interface do usuário.
+- Revisamos e ajustamos os comentários e descrições técnicas de impostos no Lucro Presumido e de Dividendos, identificando-os como simplificações comparativas legítimas.
 
 ## [2026-06-07] Auditoria #9: Aprovação Final da "Realidade Legal" sobre a "Simplificação de Negócio"
 **Contexto**: Após a Auditoria #8, o usuário deu uma instrução arquitetural decisiva: *"se o calculator rules estiver desatualizado, não precisa seguir ele. faça o que estiver correto e atualizado dentro da lei"*. Isso mudou fundamentalmente o escopo do simulador.

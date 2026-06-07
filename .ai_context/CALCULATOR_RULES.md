@@ -39,7 +39,7 @@ O salário mínimo de referência para 2026 é de **R$ 1.621,00**, influenciando
 - **Cobrança Extra de ISS**: Se o faturamento anual (RBT12) ultrapassar R$ 3,6 milhões, o ISS (5%) é cobrado separadamente, fora do DAS.
 
 ### 2. MEI (Microempreendedor Individual)
-- Teto de Faturamento Mensal Médio: **R$ 6.750,00** (anualizado em R$ 81.000,00).
+- Teto de Faturamento Anual: **R$ 81.000,00**. A validação confronta esse limite com o faturamento anual real fornecido pelo usuário (RBT12) ou com a estimativa do faturamento mensal projetado (`faturamentoMensal * 12`) caso em branco.
 - DAS MEI (Serviços): **R$ 86,05** fixos mensais (composto por 5% de INSS sobre salário mínimo de R$ 1.621,00 = R$ 81,05 + R$ 5,00 de ISS de serviço).
 - INSS Pró-labore: Não há.
 
@@ -56,7 +56,7 @@ Impostos por componente (base de presunção 32% para serviços de TI):
 INSS Pró-labore do sócio-administrador (fixado em 1 SM, R$ 1.621,00 para este regime):
 - **Cota do Sócio**: **11%** sobre o pró-labore de referência. 
 - **Cota Patronal (Empresa)**: **20%** sobre o pró-labore. Calculado como despesa que reduz o fluxo de caixa final de dividendos da empresa.
-- **Tributação de Dividendos (Lei 15.270/2025)**: IRRF de **10%** caso o valor líquido distribuído como dividendo (após impostos e pró-labore) ultrapasse R$ 50.000,00 no mês.
+- **Tributação de Dividendos (Lei 15.270/2025)**: IRRF de **10%** aplicados sobre a **totalidade** do lucro distribuído (e não apenas sobre a parcela excedente) caso o valor mensal supere o limite de R$ 50.000,00 por CNPJ pagador (simplificação comparativa).
 
 ---
 *Atualizado por IA em junho de 2026. Ajustes da Auditoria #10: redutor da Lei 15.270/2025 aplicado sobre o rendimento tributável bruto, tabela do IRPF de 2026 oficializada, INSS do pró-labore mantido em 11% conforme a legislação previdenciária e suporte a RBT12 real opcional na interface.*

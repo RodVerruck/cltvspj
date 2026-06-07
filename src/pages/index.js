@@ -245,7 +245,7 @@ export default function Home() {
                         {regime === 'simples' ? 'Simples Nacional' : regime === 'presumido' ? 'Lucro Presumido' : 'MEI'}
                       </p>
                       <p className="text-xs text-hot/80 mt-1">
-                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Total consolidado ~14,5% (IRPJ+CSLL+PIS+COFINS+ISS)' : 'Teto mensal: R$ 6.750 (DAS R$ 86,05)'}
+                        {regime === 'simples' ? 'Cálculo baseado no Anexo III (Alíquota 6%)' : regime === 'presumido' ? 'Total consolidado ~14,5% (IRPJ+CSLL+PIS+COFINS+ISS)' : 'Teto anual: R$ 81.000 (DAS R$ 86,05)'}
                       </p>
                     </div>
                   </div>
@@ -285,7 +285,7 @@ export default function Home() {
                   <div>
                     <h4 className="font-display text-xl text-ink font-bold mb-1">Teto do MEI Excedido</h4>
                     <p className="text-sm text-ink-muted leading-relaxed font-sans">
-                      O faturamento mensal simulado de <strong className="text-ink">R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong> ultrapassa o limite mensal médio permitido de <strong className="text-ink">R$ 6.750,00</strong> para o MEI em 2026. 
+                      O faturamento simulado de <strong className="text-ink">R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mês</strong> (ou faturamento anual informado) ultrapassa o limite de <strong className="text-ink">R$ 81.000,00</strong> anuais permitido para o MEI em 2026 (verificação simplificada baseada no teto anual). 
                       Para que sua comparação seja realista e legal, recalculamos os impostos e o valor líquido abaixo automaticamente com base nas regras do <strong className="text-ink">Simples Nacional Anexo III (Fator R)</strong>.
                     </p>
                   </div>

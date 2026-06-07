@@ -15,13 +15,13 @@ export const calculateINSS = (sal) => {
   return inss;
 };
 
-export function aplicarRedutorLei15270(baseCalculo, irTradicional) {
-  if (baseCalculo <= 5000.00) {
+export function aplicarRedutorLei15270(rendimentoTributavel, irTradicional) {
+  if (rendimentoTributavel <= 5000.00) {
     return 0;
   }
-  if (baseCalculo <= 7350.00) {
-    // Formula oficial Lei 15.270/2025: Redução = R$ 978,62 - (0,133145 × baseCalculo)
-    const reducao = 978.62 - (0.133145 * baseCalculo);
+  if (rendimentoTributavel <= 7350.00) {
+    // Formula oficial Lei 15.270/2025: Redução = R$ 978,62 - (0,133145 × rendimentoTributavel)
+    const reducao = 978.62 - (0.133145 * rendimentoTributavel);
     const impostoFinal = irTradicional - Math.max(0, reducao);
     return Math.max(0, impostoFinal);
   }
@@ -110,15 +110,16 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
   let inssPatronal = 0;
 
   if (regime === 'mei') {
-    if (monthlyGross > 6750.00) isInvalidMEI = true;
+    const faturamentoAnualMEI = Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12;
+    if (faturamentoAnualMEI > 81000.00) isInvalidMEI = true;
     pjTax = 86.05;
     taxName = 'DAS MEI (Fixo)';
     proLabore = 0;
   } else if (regime === 'presumido') {
-    // Lucro Presumido TI/Serviços 2026: Base exata = 14,33% (IRPJ 4.8%, CSLL 2.88%, PIS 0.65%, COFINS 3%, ISS 3%)
+    // Lucro Presumido TI/Serviços 2026: Carga base estimada = 14,33% (IRPJ 4.8%, CSLL 2.88%, PIS 0.65%, COFINS 3%, ISS 3%)
     const basePjTax = monthlyGross * 0.1433;
     
-    // Adicional de IRPJ: 10% sobre a parcela do lucro presumido (32%) que excede R$ 20.000 mensais
+    // Adicional de IRPJ (Aproximação para serviços de TI): 10% sobre a parcela do lucro presumido (32%) que excede R$ 20.000 mensais
     const lucroPresumido = monthlyGross * 0.32;
     let adicionalIRPJ = 0;
     if (lucroPresumido > 20000) {
@@ -163,7 +164,7 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamen
   // Fluxo de caixa e Dividendos
   const dividendGross = monthlyGross - pjTax - inssPatronal - proLabore;
   let dividendTax = 0;
-  // Lei 15.270/2025: 10% de IRRF sobre distribuições mensais de lucro > 50k
+  // Simplificação comparativa da Lei 15.270/2025: 10% de IRRF sobre a totalidade caso as distribuições mensais de lucro superem R$ 50.000
   if (dividendGross > 50000) {
     dividendTax = dividendGross * 0.10;
   }
