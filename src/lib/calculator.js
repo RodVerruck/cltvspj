@@ -82,7 +82,7 @@ export const calculatePLR = (plrAmount) => {
 
 export const calculateCLT = (salary, benefits, dependentes = 0, pensaoAlimenticia = 0, plrAnual = 0) => {
   const sal = parseFloat(salary) || 0;
-  if (sal === 0) return { gross: 0, net: 0, benefits: 0, inss: 0, irpf: 0, fgts: 0, decimoTerceiro: 0, ferias: 0, plr: 0, totalPackage: 0 };
+  if (sal === 0) return { gross: 0, net: 0, benefits: 0, inss: 0, irpf: 0, fgts: 0, decimoTerceiro: 0, ferias: 0, plr: 0, totalPackage: 0, inssAnualCLT: 0 };
 
   const totalBenefits = Object.values(benefits).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
 
@@ -111,6 +111,9 @@ export const calculateCLT = (salary, benefits, dependentes = 0, pensaoAlimentici
   const plrCalculada = calculatePLR(plrAnual);
   const plrMensal = plrCalculada.net / 12;
 
+  // Contribuição previdenciária anual CLT
+  const inssAnualCLT = (inss * 12) + inss13 + inssFerias;
+
   return {
     gross: sal,
     net: netSalary + totalBenefits,
@@ -121,7 +124,8 @@ export const calculateCLT = (salary, benefits, dependentes = 0, pensaoAlimentici
     decimoTerceiro: decimoTerceiroMensal,
     ferias: feriasMensal,
     plr: plrMensal,
-    totalPackage: netSalary + totalBenefits + fgts + decimoTerceiroMensal + feriasMensal + plrMensal
+    totalPackage: netSalary + totalBenefits + fgts + decimoTerceiroMensal + feriasMensal + plrMensal,
+    inssAnualCLT
   };
 };
 
@@ -134,7 +138,9 @@ export const calculatePJ = (
   folha12Meses = 0, 
   issRate = 3,
   dependentes = 0,
-  pensaoAlimenticia = 0
+  pensaoAlimenticia = 0,
+  mensalidadeContador = 0,
+  isOtimizacaoSimulada = false
 ) => {
   const rate = parseFloat(pjRate) || 0;
   const hours = parseFloat(hoursPerMonth) || 0;
@@ -253,21 +259,215 @@ export const calculatePJ = (
   let irpfSocio = 0;
   if (proLabore > 0) {
     inssSocio = Math.min(proLabore, TAX_RULES.inss.ceiling) * 0.11;
-    // O IRPF sobre o pró-labore herda os dependentes e a pensão judicial
     irpfSocio = calculateIRPF(proLabore, dependentes, pensaoAlimenticia);
   }
 
   // Fluxo de caixa e Dividendos
   const dividendGross = monthlyGross - pjTax - inssPatronal - proLabore;
-  const dividendTax = 0; // Isenção de dividendos integral sob as regras do ano vigente
+  const dividendTax = 0; 
   const dividendNet = dividendGross - dividendTax;
   const proLaboreNet = proLabore - inssSocio - irpfSocio;
   const netMonthly = dividendNet + proLaboreNet;
+  
+  // Líquido pós-custos operacionais (sem afetar o rendimento líquido principal de comparação tributária)
+  const netMonthlyPosCustos = netMonthly - parseFloat(mensalidadeContador || 0);
+
   const totalTaxes = pjTax + inssPatronal + inssSocio + irpfSocio + dividendTax;
+
+  // Previdência Anual PJ
+  const inssAnualPJ = inssSocio * 12;
+
+  // Metadados do Fator R e cenário otimizado
+  let fatorR = 0;
+  let fatorRPercent = 0;
+  let isFatorREstimado = false;
+  let anexo = 'III';
+  let motivoEnquadramento = '';
+  let rbt12Utilizado = monthlyGross * 12;
+  let folhaUtilizada = proLabore * 12;
+  let fatorROptimization = null;
+
+  if (regime === 'simples') {
+    const rbt12 = Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12;
+    const folha12 = Number(folha12Meses) > 0 ? Number(folha12Meses) : proLabore * 12;
+    fatorR = rbt12 > 0 ? (folha12 / rbt12) : 0;
+    fatorRPercent = fatorR * 100;
+    isFatorREstimado = !folha12Meses;
+    anexo = fatorR >= 0.28 ? 'III' : 'V';
+    rbt12Utilizado = rbt12;
+    folhaUtilizada = folha12;
+
+    if (isFatorREstimado) {
+      motivoEnquadramento = `Fator R estimado com base no pró-labore selecionado. Para maior precisão, informe o histórico real.`;
+    } else if (fatorR >= 0.28) {
+      motivoEnquadramento = `Folha de pagamento acumulada representa ${fatorRPercent.toFixed(2).replace('.', ',')}% do faturamento acumulado (RBT12), acima do mínimo de 28% exigido para o Anexo III.`;
+    } else {
+      motivoEnquadramento = `Folha de pagamento acumulada representa apenas ${fatorRPercent.toFixed(2).replace('.', ',')}% do faturamento acumulado (RBT12), abaixo do mínimo de 28% exigido para o Anexo III.`;
+    }
+
+    if (fatorR < 0.28 && !isOtimizacaoSimulada) {
+      const folhaIdeal12m = rbt12 * 0.28;
+      const folhaFaltante12m = Math.max(0, folhaIdeal12m - folha12);
+      const folhaFaltanteMensal = folhaFaltante12m / 12;
+      const novoProLaboreSimulado = proLabore + folhaFaltanteMensal;
+
+      // Executa o cenário otimizado para Simples Nacional
+      const resultadoOtimizado = calculatePJ(
+        pjRate,
+        hoursPerMonth,
+        'simples',
+        faturamento12Meses,
+        novoProLaboreSimulado.toString(),
+        folhaIdeal12m,
+        issRate,
+        dependentes,
+        pensaoAlimenticia,
+        mensalidadeContador,
+        true // isOtimizacaoSimulada
+      );
+
+      fatorROptimization = {
+        folhaIdeal12m,
+        folhaFaltante12m,
+        folhaFaltanteMensal,
+        novoProLabore: novoProLaboreSimulado,
+        pontosPercentuaisFaltantes: 28 - fatorRPercent,
+        dasOtimizado: resultadoOtimizado.simplesDAS,
+        inssOtimizado: resultadoOtimizado.inssProLabore,
+        irpfOtimizado: resultadoOtimizado.irpfProLabore,
+        netOtimizado: resultadoOtimizado.net,
+        economiaDas: pjTax - resultadoOtimizado.simplesDAS,
+        inssAdicional: resultadoOtimizado.inssProLabore - inssSocio,
+        irpfAdicional: resultadoOtimizado.irpfProLabore - irpfSocio,
+        ganhoLiquidoReal: resultadoOtimizado.net - netMonthly
+      };
+    }
+  }
+
+  // Lógica dos metadados de consultoria contábil e pré-diagnóstico tributário
+  const rbt12 = regime === 'mei' 
+    ? (Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12)
+    : (regime === 'presumido' ? monthlyGross * 12 : rbt12Utilizado);
+
+  // 1. Qualidade dos Dados
+  let dadosQualidade = 'estimados';
+  let dadosQualidadeLabel = 'Dados parcialmente estimados';
+  let dadosQualidadeMsg = 'Alguns valores foram estimados. Os resultados servem como referência inicial e podem variar na prática.';
+
+  if (regime === 'simples') {
+    const isFronteira = (fatorRPercent >= 26 && fatorRPercent <= 30);
+    const hasInputs = Number(faturamento12Meses) > 0 && Number(folha12Meses) > 0;
+    
+    if (isFronteira || monthlyGross > 30000) {
+      dadosQualidade = 'revisao_especializada';
+      dadosQualidadeLabel = 'Revisão especializada recomendada';
+      dadosQualidadeMsg = 'Pequenas alterações no pró-labore, folha ou enquadramento tributário podem alterar significativamente o resultado. Recomenda-se revisão contábil especializada.';
+    } else if (hasInputs) {
+      dadosQualidade = 'completos';
+      dadosQualidadeLabel = 'Dados completos';
+      dadosQualidadeMsg = 'Simulação baseada em dados reais de faturamento e folha informados pelo usuário.';
+    }
+  } else if (regime === 'presumido') {
+    dadosQualidade = 'revisao_especializada';
+    dadosQualidadeLabel = 'Revisão especializada recomendada';
+    dadosQualidadeMsg = 'O regime de Lucro Presumido possui particularidades tributárias complexas. Recomenda-se revisão especializada.';
+  }
+
+  // 2. Nível de Confiança do Fator R (Apenas Simples)
+  let nivelConfiancaFatorR = 'baixa';
+  if (regime === 'simples') {
+    if (Number(faturamento12Meses) > 0 && Number(folha12Meses) > 0) {
+      nivelConfiancaFatorR = 'alta';
+    } else if (Number(faturamento12Meses) > 0) {
+      nivelConfiancaFatorR = 'media';
+    }
+  }
+
+  // 3. Potencial de Planejamento Tributário
+  let potencialPlanejamento = 'baixo';
+  let potencialPlanejamentoLabel = 'Baixo potencial';
+  let potencialPlanejamentoMsg = 'Sua estrutura tributária atual está próxima do ideal matemático simulado.';
+
+  const isFronteiraFatorR = (regime === 'simples' && fatorRPercent >= 26 && fatorRPercent <= 30);
+  if ((regime === 'simples' && fatorR < 0.28) || regime === 'presumido' || isFronteiraFatorR) {
+    potencialPlanejamento = 'alto';
+    potencialPlanejamentoLabel = 'Alto potencial';
+    potencialPlanejamentoMsg = 'Seu enquadramento ou limite sugere que existem oportunidades reais de revisão da estrutura tributária.';
+  } else if (regime === 'simples' && isFatorREstimado) {
+    potencialPlanejamento = 'medio';
+    potencialPlanejamentoLabel = 'Médio potencial';
+    potencialPlanejamentoMsg = 'Existem dados estimados. Uma revisão contábil simples pode confirmar o enquadramento ideal.';
+  }
+
+  // 4. Checklist de Análise Contábil
+  const checklistContador = [];
+  if (regime === 'simples') {
+    if (fatorR < 0.28) {
+      checklistContador.push(`• Seu Fator R atual está em ${fatorRPercent.toFixed(2).replace('.', ',')}%`);
+      checklistContador.push(`• Sua empresa está tributada pelo Anexo V`);
+      checklistContador.push(`• O simulador identificou potencial de redução da carga tributária sujeito à validação contábil`);
+      checklistContador.push(`• Validar a composição da folha para fins de Fator R`);
+    } else {
+      checklistContador.push(`• Seu Fator R atual está em ${fatorRPercent.toFixed(2).replace('.', ',')}%`);
+      checklistContador.push(`• Sua empresa está enquadrada no Anexo III`);
+      checklistContador.push(`• A folha atual atende à meta de 28% do faturamento`);
+      checklistContador.push(`• Validar o histórico de 12 meses para garantir a conformidade contínua`);
+      checklistContador.push(`• Confirmar enquadramento do CNAE e estratégia ideal de distribuição de lucros`);
+    }
+  } else if (regime === 'presumido') {
+    checklistContador.push(`• Confirmar enquadramento da alíquota de ISS municipal`);
+    checklistContador.push(`• Avaliar conformidade do pró-labore e INSS Patronal (20%)`);
+    checklistContador.push(`• Analisar distribuição de dividendos isentos acima da presunção`);
+    checklistContador.push(`• Revisar se o Simples Nacional Anexo V/III é mais vantajoso`);
+  } else {
+    checklistContador.push(`• Monitorar limite de faturamento anual de R$ 81.000`);
+    checklistContador.push(`• Avaliar transição planejada para microempresa (ME)`);
+  }
+
+  // 5. Score de Oportunidade de Revisão (interno)
+  let oportunidadeScore = 0;
+  if (regime === 'simples' && fatorR < 0.28) oportunidadeScore += 4;
+  if (regime === 'presumido') oportunidadeScore += 3;
+  if (regime === 'simples' && fatorRPercent >= 26 && fatorRPercent <= 30) oportunidadeScore += 2;
+  if (rbt12 > 180000) oportunidadeScore += 1;
+  oportunidadeScore = Math.min(10, oportunidadeScore);
+
+  // 6. Gatilho de CTA Contextual
+  const ganhoFatorRReal = fatorROptimization ? fatorROptimization.ganhoLiquidoReal : 0;
+  const showContadorCTA = (oportunidadeScore >= 6 || ganhoFatorRReal > 100);
+
+  let ctaCaso = 'equilibrio';
+  let ctaTexto = '';
+  if (regime === 'simples' && fatorR < 0.28) {
+    ctaCaso = 'anexo_v';
+    ctaTexto = `Sua empresa está no Anexo V. O simulador identificou potencial de economia tributária caso o Fator R alcance 28%. Um contador pode avaliar se essa estratégia é viável no seu caso.`;
+  } else if (regime === 'presumido') {
+    ctaCaso = 'presumido';
+    ctaTexto = `O Lucro Presumido envolve regras de ISS municipal, pró-labore e distribuição de lucros que variam conforme a atividade. Uma revisão especializada pode confirmar se esse regime é realmente o mais vantajoso.`;
+  } else {
+    ctaCaso = 'equilibrio';
+    ctaTexto = `A diferença encontrada é estreita. Nessa situação, benefícios CLT, aposentadoria, estabilidade e estratégia empresarial podem ser tão relevantes quanto os impostos. Recomendamos falar com a equipe da Manassés.`;
+  }
+
+  const contabilidadeMetadata = {
+    dadosQualidade,
+    dadosQualidadeLabel,
+    dadosQualidadeMsg,
+    nivelConfiancaFatorR,
+    potencialPlanejamento,
+    potencialPlanejamentoLabel,
+    potencialPlanejamentoMsg,
+    checklistContador,
+    oportunidadeScore,
+    showContadorCTA,
+    ctaCaso,
+    ctaTexto
+  };
 
   return {
     gross: monthlyGross,
     net: netMonthly,
+    netMonthlyPosCustos,
     simplesDAS: pjTax,
     inssProLabore: inssSocio,
     irpfProLabore: irpfSocio,
@@ -277,7 +477,16 @@ export const calculatePJ = (
     taxName,
     isInvalidMEI,
     proLabore,
-    // Variáveis detalhadas do Lucro Presumido
+    inssAnualPJ,
+    fatorR,
+    fatorRPercent,
+    anexo,
+    isFatorREstimado,
+    motivoEnquadramento,
+    rbt12Utilizado,
+    folhaUtilizada,
+    fatorROptimization,
+    contabilidadeMetadata,
     lpIRPJ,
     lpCSLL,
     lpPIS,
