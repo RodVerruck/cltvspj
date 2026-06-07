@@ -28,17 +28,34 @@ export function aplicarRedutorLei15270(baseCalculo, irTradicional) {
   return irTradicional;
 }
 
+const calculateIRPFForBase = (irpfBase, grossAmount) => {
+  let irpfTradicional = 0;
+  if (irpfBase > 4664.68) {
+    irpfTradicional = irpfBase * 0.275 - 908.73;
+  } else if (irpfBase > 3751.05) {
+    irpfTradicional = irpfBase * 0.225 - 675.49;
+  } else if (irpfBase > 2826.65) {
+    irpfTradicional = irpfBase * 0.15 - 394.16;
+  } else if (irpfBase > 2428.80) {
+    irpfTradicional = irpfBase * 0.075 - 182.16;
+  }
+  
+  return aplicarRedutorLei15270(grossAmount, Math.max(irpfTradicional, 0));
+};
+
 const calculateIRPF = (grossAmount) => {
   const inss = calculateINSS(grossAmount);
-  const descontoIrpf = Math.max(inss, 607.20);
-  const irpfBase = grossAmount - descontoIrpf;
-  let irpfTradicional = 0;
-  if (irpfBase > 4664.68) irpfTradicional = irpfBase * 0.275 - 896.00;
-  else if (irpfBase > 3751.05) irpfTradicional = irpfBase * 0.225 - 662.77;
-  else if (irpfBase > 2826.65) irpfTradicional = irpfBase * 0.15 - 381.44;
-  else if (irpfBase > 2259.20) irpfTradicional = irpfBase * 0.075 - 169.44;
   
-  return aplicarRedutorLei15270(irpfBase, Math.max(irpfTradicional, 0));
+  // Opção A: Deduções Legais (neste caso, apenas INSS do funcionário)
+  const baseDeducoesLegais = Math.max(0, grossAmount - inss);
+  const irpfDeducoesLegais = calculateIRPFForBase(baseDeducoesLegais, grossAmount);
+  
+  // Opção B: Desconto Simplificado (R$ 607,20 fixo)
+  const baseDescontoSimplificado = Math.max(0, grossAmount - 607.20);
+  const irpfDescontoSimplificado = calculateIRPFForBase(baseDescontoSimplificado, grossAmount);
+  
+  // O imposto retido é o menor e mais vantajoso para o contribuinte
+  return Math.min(irpfDeducoesLegais, irpfDescontoSimplificado);
 };
 
 export const calculateCLT = (salary, benefits) => {
@@ -81,7 +98,7 @@ export const calculateCLT = (salary, benefits) => {
   };
 };
 
-export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
+export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples', faturamento12Meses = 0) => {
   const rate = parseFloat(pjRate) || 0;
   const hours = parseFloat(hoursPerMonth) || 0;
   const monthlyGross = rate * hours;
@@ -114,7 +131,7 @@ export const calculatePJ = (pjRate, hoursPerMonth, regime = 'simples') => {
     taxName = `Impostos L. Presumido (14,33%${adicionalIRPJ > 0 ? ' + Adic. IRPJ' : ''})`;
   } else {
     // Simples Nacional Anexo III
-    const rbt12 = monthlyGross * 12;
+    const rbt12 = Number(faturamento12Meses) > 0 ? Number(faturamento12Meses) : monthlyGross * 12;
     let aliquotaNominal = 0;
     let deducao = 0;
     if (rbt12 <= 180000) { aliquotaNominal = 0.06; deducao = 0; }

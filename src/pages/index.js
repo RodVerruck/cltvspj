@@ -17,6 +17,7 @@ export default function Home() {
   });
   const [pjRate, setPjRate] = useState('100');
   const [hoursPerMonth, setHoursPerMonth] = useState('160');
+  const [faturamento12Meses, setFaturamento12Meses] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [regime, setRegime] = useState('simples');
   const [showingResults, setShowingResults] = useState(false);
@@ -26,12 +27,12 @@ export default function Home() {
   };
 
   const clt = calculateCLT(salary, benefits);
-  let pj = calculatePJ(pjRate, hoursPerMonth, regime);
+  let pj = calculatePJ(pjRate, hoursPerMonth, regime, faturamento12Meses);
   let meiExcedido = false;
 
   if (regime === 'mei' && pj.isInvalidMEI) {
     meiExcedido = true;
-    pj = calculatePJ(pjRate, hoursPerMonth, 'simples');
+    pj = calculatePJ(pjRate, hoursPerMonth, 'simples', faturamento12Meses);
   }
 
   return (
@@ -206,6 +207,28 @@ export default function Home() {
                     <span className="text-xs text-ink-fade">horas</span>
                   </div>
                 </div>
+
+                {regime === 'simples' && (
+                  <div className="mb-6 animate-fade-in">
+                    <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                      Faturamento acumulado 12 meses
+                      <span className="text-[10px] bg-rule/50 px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
+                    </label>
+                    <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                      <span className="font-mono text-lg text-ink-fade">R$</span>
+                      <input
+                        type="text"
+                        value={faturamento12Meses}
+                        onChange={(e) => setFaturamento12Meses(e.target.value)}
+                        placeholder="Estimar pelo faturamento atual"
+                        className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1 placeholder:text-ink-fade/40"
+                      />
+                    </div>
+                    <p className="text-[10px] text-ink-fade mt-1 leading-normal font-sans">
+                      Informe a soma dos últimos 12 meses de faturamento retroativo. Se deixado em branco, estimamos o RBT12 com base no faturamento mensal atual.
+                    </p>
+                  </div>
+                )}
 
                 <div className="bg-money-light rounded p-5 mb-5">
                   <h4 className="font-display text-lg text-ink mb-2">Faturamento Mensal</h4>

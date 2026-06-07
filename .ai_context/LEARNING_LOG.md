@@ -2,6 +2,18 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-07] Auditoria #10: Correção e Alinhamento Legal IRPF, INSS Pró-labore e RBT12 Real
+**Contexto**: O usuário identificou que a aplicação do redutor de IRPF da Lei 15.270/2025 necessitava ser parametrizada sobre o rendimento tributável bruto, e não sobre a base líquida deduzida, e que a tabela de IRPF 2026 básica devia ser atualizada. Também observou que a tabela progressiva previdenciária não se aplica ao pró-labore do sócio (contribuinte individual), sendo o correto manter a alíquota fixa de 11% retida na fonte, e que usar estimativa linear para o cálculo do Simples Nacional omitia a variação do faturamento histórico real nos últimos 12 meses (RBT12).
+**Problema**:
+- O redutor estava operando sobre uma base de cálculo deduzida erroneamente e a tabela básica progressiva do IRPF continha limites desatualizados.
+- A alteração do INSS do pró-labore para progressivo estava incorreta juridicamente, pois contribuintes individuais recolhem taxa fixa de 11%.
+- O motor de cálculo assumia faturamento constante (`monthlyGross * 12`) para calcular a alíquota efetiva do Simples Nacional, criando erros de simulação estruturais em regimes progressivos.
+**Correção**:
+- Atualizamos as faixas básicas de IRPF vigentes para 2026 no `calculateIRPFForBase` (isenção básica de R$ 2.428,80 e respectivas parcelas a deduzir) e alteramos a chamada do redutor para receber o `grossAmount`.
+- Refatoramos a determinação do IRPF comparando a base tradicional legal com o desconto simplificado e retendo o menor imposto de forma separada no código.
+- Revertemos o INSS pró-labore do sócio para a alíquota fixa de 11% limitada ao teto do INSS e restauramos o rótulo de 11% na interface do usuário.
+- Adicionamos o parâmetro opcional `faturamento12Meses` à calculadora PJ e um campo correspondente na interface do usuário para que a alíquota efetiva do Simples Nacional seja calculada com base no faturamento real acumulado dos últimos 12 meses (RBT12 Real), com fallback para a estimativa mensal atual caso não preenchido.
+
 ## [2026-06-07] Auditoria #9: Aprovação Final da "Realidade Legal" sobre a "Simplificação de Negócio"
 **Contexto**: Após a Auditoria #8, o usuário deu uma instrução arquitetural decisiva: *"se o calculator rules estiver desatualizado, não precisa seguir ele. faça o que estiver correto e atualizado dentro da lei"*. Isso mudou fundamentalmente o escopo do simulador.
 **Problema**: As regras do projeto (`CALCULATOR_RULES.md`) mandavam ignorar impostos corporativos (como o INSS Patronal) no cálculo do líquido do sócio e fixavam o pró-labore em 1 salário mínimo, o que não reflete a otimização legal moderna e ignora os custos reais de fluxo de caixa que reduzem os dividendos.
