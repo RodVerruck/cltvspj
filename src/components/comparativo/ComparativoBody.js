@@ -14,6 +14,7 @@ export default function ComparativoBody({ scenario }) {
     diffAnnual,
     winner,
     contextNotes,
+    richContent,
     related,
   } = scenario;
 
@@ -38,12 +39,21 @@ export default function ComparativoBody({ scenario }) {
       </div>
 
       <h2>Cenário simulado</h2>
+      <p>{richContent?.intro}</p>
       <p>
         Comparamos <strong>CLT de R$ {formatBRLShort(cltGross)} bruto</strong> (com VR, VT, plano de saúde e seguro padrão)
         contra <strong>PJ faturando R$ {formatBRLShort(pjMonthlyGross)}/mês</strong>
         {pjRate ? ` (R$ ${formatBRL(pjRate)}/hora × ${hoursPerMonth}h)` : ''} no Simples Nacional,
         pró-labore mínimo e mensalidade de contador de R$ 350.
       </p>
+
+      <h2>Como calculamos</h2>
+      <p>Usamos a mesma engine da <Link href="/">calculadora CLT vs PJ 2026</Link>, com regras fiscais vigentes:</p>
+      <ol>
+        {richContent?.calculationSteps?.map((step) => (
+          <li key={step}>{step}</li>
+        ))}
+      </ol>
 
       <h2>Números lado a lado</h2>
       <table>
@@ -59,6 +69,16 @@ export default function ComparativoBody({ scenario }) {
             <td>Bruto / faturamento</td>
             <td>R$ {formatBRL(clt.gross)}</td>
             <td>R$ {formatBRL(pj.gross)}</td>
+          </tr>
+          <tr>
+            <td>INSS / previdência</td>
+            <td>R$ {formatBRL(clt.inss)}</td>
+            <td>R$ {formatBRL(pj.inssProLabore)} (pró-labore)</td>
+          </tr>
+          <tr>
+            <td>IRPF</td>
+            <td>R$ {formatBRL(clt.irpf)}</td>
+            <td>R$ {formatBRL(pj.irpfProLabore || 0)}</td>
           </tr>
           <tr>
             <td>Líquido mensal</td>
@@ -84,24 +104,45 @@ export default function ComparativoBody({ scenario }) {
       </table>
       <p><em>* Pacote total = líquido + FGTS + 13º + férias (provisões líquidas) + benefícios informados.</em></p>
 
+      <h2>Vantagens da CLT nesta faixa</h2>
+      <ul>
+        {richContent?.cltAdvantages?.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+
+      <h2>Vantagens da PJ nesta faixa</h2>
+      <ul>
+        {richContent?.pjAdvantages?.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+
       <h2>O que isso significa</h2>
       {contextNotes.map((note) => (
         <p key={note}>{note}</p>
       ))}
-      <p>
-        Esta página usa a <strong>mesma engine de cálculo</strong> da calculadora do site.
-        Seus benefícios, dependentes, Fator R real ou regime MEI/Presumido podem mudar o resultado —
-        por isso o passo seguinte é simular com <strong>seus dados reais</strong>.
-      </p>
 
-      <h2>Próximo passo</h2>
+      <h2>Conclusão</h2>
+      <p>{richContent?.conclusion}</p>
+
+      <h2>Perguntas frequentes</h2>
+      {richContent?.faq?.map((item) => (
+        <div key={item.q}>
+          <h3>{item.q}</h3>
+          <p>{item.a}</p>
+        </div>
+      ))}
+
+      <h2>Simule com seus dados</h2>
       <p>
         Abra a{' '}
         <Link href="/" className="text-money font-semibold hover:underline">
           calculadora CLT vs PJ 2026
         </Link>
         {' '}e informe salário CLT de R$ {formatBRLShort(cltGross)}
-        {pjRate ? ` e valor/hora PJ de R$ ${formatBRL(pjRate)}` : ''}.
+        {pjRate ? ` e valor/hora PJ de R$ ${formatBRL(pjRate)}` : ''}. Dependentes, PLR, Fator R real e regime MEI/Presumido
+        podem alterar o resultado.
       </p>
 
       {related?.length > 0 && (

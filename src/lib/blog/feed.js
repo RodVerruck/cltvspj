@@ -23,7 +23,7 @@ export function buildBlogFeed(mdxPosts) {
     title: item.title,
     description: item.description,
     date: item.date,
-    readingTime: item.readingTime || '4 min',
+    readingTime: item.readingTime || '7 min',
     tags: item.tags || [],
     kind: 'comparativo',
     badge: item.seriesLabel || 'Comparativo',

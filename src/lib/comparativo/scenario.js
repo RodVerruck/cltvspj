@@ -1,5 +1,6 @@
 import { calculateCLT, calculatePJ } from '../calculator';
 import { formatBRL, formatBRLShort } from './format';
+import { getRichComparativoContent } from './content';
 
 const DEFAULT_BENEFITS = {
   vr: '600',
@@ -42,6 +43,7 @@ export function buildComparativoScenario(config) {
     hoursPerMonth = 160,
     slug,
     type,
+    role,
   } = config;
 
   const pjMonthlyGross = fixedPjGross ?? Math.round(cltGross * pjMultiplier);
@@ -76,11 +78,29 @@ export function buildComparativoScenario(config) {
     seriesLabel = 'Estudo de caso';
     title = `CLT R$ ${cltLabel} vs PJ R$ ${pjLabel}: Simulação 2026`;
     description = `Compare CLT de R$ ${cltLabel} com PJ de R$ ${pjLabel}/mês. Líquido CLT (pacote total): R$ ${formatBRL(clt.totalPackage)}. Líquido PJ: R$ ${formatBRL(pj.net)}. Diferença: R$ ${formatBRL(Math.abs(diffMonthly))}/mês a favor ${winner === 'pj' ? 'da PJ' : 'da CLT'}.`;
+  } else if (type === 'profession') {
+    seriesLabel = role || 'Profissão';
+    title = `CLT ou PJ para ${role}: Simulação 2026`;
+    description = `${role} com CLT R$ ${cltLabel} vs PJ ~R$ ${pjLabel}/mês. Pacote CLT R$ ${formatBRL(clt.totalPackage)} vs líquido PJ R$ ${formatBRL(pj.net)}. Veja qual regime compensa.`;
   } else {
     seriesLabel = 'Faixa salarial';
     title = `CLT R$ ${cltLabel} ou PJ: Qual Vale Mais em 2026?`;
     description = `CLT R$ ${cltLabel} vs PJ equivalente (~R$ ${pjLabel}/mês). Simulação com impostos 2026: pacote CLT R$ ${formatBRL(clt.totalPackage)} vs líquido PJ R$ ${formatBRL(pj.net)}. Veja qual compensa no seu caso.`;
   }
+
+  const richContent = getRichComparativoContent({
+    cltGross,
+    pjMonthlyGross,
+    pjRate,
+    hoursPerMonth,
+    clt,
+    pj,
+    winner,
+    diffMonthly,
+    diffAnnual,
+    type,
+    role: config.role,
+  });
 
   return {
     slug,
@@ -100,7 +120,8 @@ export function buildComparativoScenario(config) {
     diffAnnual,
     winner,
     contextNotes: getContextNotes(cltGross, pjMonthlyGross),
-    readingTime: '4 min',
+    richContent,
+    readingTime: richContent.readingTime,
     author: 'Equipe CLT ou PJ',
   };
 }

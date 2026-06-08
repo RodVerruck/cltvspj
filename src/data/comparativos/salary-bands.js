@@ -1,7 +1,10 @@
-/** Faixas salariais CLT — cauda longa. PJ = CLT × multiplier (proposta típica TI). */
-const AMOUNTS = [3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000];
+/** Faixas CLT com saltos inteligentes — evita páginas a cada R$ 100 (thin content). */
+export const CLT_SALARY_STEPS = [
+  3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000,
+  9000, 10000, 11000, 12000, 15000, 18000, 20000, 22000, 25000, 28000, 30000,
+];
 
-export const SALARY_BANDS = AMOUNTS.map((cltGross) => ({
+export const SALARY_BANDS = CLT_SALARY_STEPS.map((cltGross) => ({
   slug: `clt-${cltGross}-vs-pj`,
   type: 'salary-band',
   cltGross,

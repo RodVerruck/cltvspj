@@ -1,8 +1,9 @@
 import { SALARY_BANDS } from '../../data/comparativos/salary-bands';
 import { CASE_STUDIES } from '../../data/comparativos/case-studies';
+import { PROFESSIONS } from '../../data/comparativos/professions';
 import { buildComparativoScenario } from './scenario';
 
-const RAW_CATALOG = [...SALARY_BANDS, ...CASE_STUDIES];
+const RAW_CATALOG = [...SALARY_BANDS, ...CASE_STUDIES, ...PROFESSIONS];
 
 export function getAllComparativoConfigs() {
   return RAW_CATALOG;
