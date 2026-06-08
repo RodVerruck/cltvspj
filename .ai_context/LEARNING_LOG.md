@@ -2,6 +2,23 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-08] Atualização do Link de Afiliado — Manassés Contabilidade
+
+**Contexto**: Anderson Moreira (Manassés Contabilidade) enviou o link de afiliado oficial do programa de parceria.
+
+**Decisão**:
+- Atualizado o link de destino do `/go/manasses` de `https://wa.me/5511942150872...` (WhatsApp temporário) para a URL de afiliado oficial: `https://manassescontabilidade.com.br/orcamento/?ref=e150bfec6701708e9e17fdc38a6fc261`
+- Removidos todos os outros links de afiliados inativos do arquivo `src/pages/go/[slug].js` (contabilizei, agilize, contasign, conube). A Manassés é agora o único parceiro ativo.
+- Atualizado `MONETIZACAO.md` para refletir apenas a Manassés como parceiro ativo.
+- A rota `/go/manasses` continua disparando o evento `affiliate_click` no GA4 para rastreamento.
+
+**Operacional**:
+- Repasse de comissão: mensal ou semestral acumulado (a confirmar com Vinícius, responsável pelos repasses)
+- Token de afiliado: `e150bfec6701708e9e17fdc38a6fc261`
+
+**Regra**:
+- O único afiliado ativo é a Manassés. Nunca adicionar novos parceiros sem atualizar `MONETIZACAO.md` e o `LEARNING_LOG.md` com os termos acordados.
+
 ## [2026-06-07] Implementação do Dashboard de Analytics Admin (`/admin`)
 
 **Contexto**: Usuário queria visualizar métricas de acessos do site diretamente, sem ter que abrir o Google Analytics. Optou por um dashboard customizado integrado ao GA4 Data API via Service Account.
