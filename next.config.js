@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
+const siteBuildDate = new Date().toISOString().split('T')[0];
+
 const nextConfig = {
+  env: {
+    // Data do build/deploy — usada no lastmod da home (Vercel não expõe src/ em runtime)
+    SITE_BUILD_DATE: siteBuildDate,
+  },
   reactStrictMode: true,
   experimental: {
     mdxRs: true,

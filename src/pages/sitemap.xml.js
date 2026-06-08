@@ -7,25 +7,28 @@ function toSitemapDate(value) {
   return new Date(value).toISOString().split('T')[0];
 }
 
-/** Data mais recente entre posts e arquivos da home/calculadora. */
+const postsDirectory = path.join(process.cwd(), 'posts');
+
+/** Data mais recente entre posts, deploy e alterações de conteúdo. */
 function getHomeLastMod(posts) {
   const dates = [];
 
-  if (posts[0]?.date) {
-    dates.push(new Date(posts[0].date));
+  for (const post of posts) {
+    if (post.date) {
+      dates.push(new Date(post.date));
+    }
   }
 
-  const homeFiles = [
-    'src/pages/index.js',
-    'src/lib/calculator.js',
-    'src/lib/schema/calculator.js',
-  ];
-
-  for (const relativePath of homeFiles) {
-    const fullPath = path.join(process.cwd(), relativePath);
-    if (fs.existsSync(fullPath)) {
-      dates.push(fs.statSync(fullPath).mtime);
+  // MDX em posts/ existe no runtime da Vercel (src/ compilado não)
+  if (fs.existsSync(postsDirectory)) {
+    for (const fileName of fs.readdirSync(postsDirectory)) {
+      if (!fileName.endsWith('.mdx') && !fileName.endsWith('.md')) continue;
+      dates.push(fs.statSync(path.join(postsDirectory, fileName)).mtime);
     }
+  }
+
+  if (process.env.SITE_BUILD_DATE) {
+    dates.push(new Date(process.env.SITE_BUILD_DATE));
   }
 
   if (dates.length === 0) {
