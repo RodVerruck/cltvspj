@@ -6,6 +6,9 @@ import Footer from '../components/Footer';
 import AdSense from '../components/AdSense';
 import { SITE_URL } from '../lib/config';
 import { calculateCLT, calculatePJ } from '../lib/calculator';
+import { getCalculatorSchemaJsonLd } from '../lib/schema/calculator';
+
+const calculatorSchemaJsonLd = getCalculatorSchemaJsonLd();
 
 export default function Home() {
   const [salary, setSalary] = useState('8000');
@@ -136,6 +139,14 @@ export default function Home() {
 
         {/* Canonical */}
         <link rel="canonical" href={SITE_URL} />
+
+        {/* Schema.org JSON-LD — calculadora como WebApplication */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(calculatorSchemaJsonLd),
+          }}
+        />
       </Head>
 
       <div className="page-root">
