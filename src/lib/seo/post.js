@@ -6,8 +6,15 @@ import {
   DEFAULT_OG_IMAGE,
 } from './constants';
 
-export function getPostUrl(slug) {
+export function getPostUrl(slug, section = 'blog') {
+  if (section === 'comparativo') {
+    return `${SITE_URL}/blog/comparativo/${slug}`;
+  }
   return `${SITE_URL}/blog/${slug}`;
+}
+
+export function getComparativosHubUrl() {
+  return `${SITE_URL}/blog/comparativos`;
 }
 
 export function getPostPageTitle(title) {
@@ -32,11 +39,49 @@ function toIsoDateTime(dateStr) {
  * Schema.org JSON-LD para posts do blog.
  * BlogPosting + BreadcrumbList + Organization (referência @id).
  */
-export function getPostSchemaJsonLd(post) {
-  const url = getPostUrl(post.slug);
+export function getPostSchemaJsonLd(post, options = {}) {
+  const { section = 'blog' } = options;
+  const url = getPostUrl(post.slug, section);
   const datePublished = toIsoDate(post.date);
   const dateModified = toIsoDate(post.updatedDate || post.date);
   const authorName = post.author || 'Equipe CLT ou PJ';
+
+  const breadcrumbItems = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: SITE_NAME,
+      item: SITE_URL,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Blog',
+      item: `${SITE_URL}/blog`,
+    },
+  ];
+
+  if (section === 'comparativo') {
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: 3,
+      name: 'Comparativos',
+      item: getComparativosHubUrl(),
+    });
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: 4,
+      name: post.title,
+      item: url,
+    });
+  } else {
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: 3,
+      name: post.title,
+      item: url,
+    });
+  }
 
   return {
     '@context': 'https://schema.org',
@@ -86,26 +131,7 @@ export function getPostSchemaJsonLd(post) {
       {
         '@type': 'BreadcrumbList',
         '@id': `${url}/#breadcrumb`,
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: SITE_NAME,
-            item: SITE_URL,
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: 'Blog',
-            item: `${SITE_URL}/blog`,
-          },
-          {
-            '@type': 'ListItem',
-            position: 3,
-            name: post.title,
-            item: url,
-          },
-        ],
+        itemListElement: breadcrumbItems,
       },
     ],
   };

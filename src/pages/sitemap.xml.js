@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { getAllPosts } from '../lib/posts';
+import { getAllComparativoConfigs } from '../lib/comparativo/catalog';
 import { SITE_URL } from '../lib/config';
 
 function toSitemapDate(value) {
@@ -39,8 +40,9 @@ function getHomeLastMod(posts) {
   return toSitemapDate(latest);
 }
 
-function generateSiteMap(posts) {
+function generateSiteMap(posts, comparativos) {
   const homeLastMod = getHomeLastMod(posts);
+  const comparativoDate = process.env.SITE_BUILD_DATE || toSitemapDate(new Date());
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -55,6 +57,12 @@ function generateSiteMap(posts) {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>${SITE_URL}/blog/comparativos</loc>
+    <lastmod>${comparativoDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
   ${posts
     .map(({ slug, date }) => {
       return `
@@ -63,6 +71,17 @@ function generateSiteMap(posts) {
     <lastmod>${toSitemapDate(date)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>`;
+    })
+    .join('')}
+  ${comparativos
+    .map(({ slug }) => {
+      return `
+  <url>
+    <loc>${SITE_URL}/blog/comparativo/${slug}</loc>
+    <lastmod>${comparativoDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>`;
     })
     .join('')}
@@ -75,7 +94,8 @@ export default function SiteMap() {
 
 export async function getServerSideProps({ res }) {
   const posts = await getAllPosts();
-  const sitemap = generateSiteMap(posts);
+  const comparativos = getAllComparativoConfigs();
+  const sitemap = generateSiteMap(posts, comparativos);
 
   res.setHeader('Content-Type', 'text/xml');
   res.write(sitemap);

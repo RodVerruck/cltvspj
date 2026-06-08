@@ -17,10 +17,10 @@ import {
  * Meta tags, Open Graph, Twitter Card e JSON-LD centralizados para posts do blog.
  * Basta preencher o frontmatter do .mdx — o template aplica o resto.
  */
-export default function PostSEO({ post }) {
-  const url = getPostUrl(post.slug);
+export default function PostSEO({ post, section = 'blog' }) {
+  const url = getPostUrl(post.slug, section);
   const pageTitle = getPostPageTitle(post.title);
-  const schema = getPostSchemaJsonLd(post);
+  const schema = getPostSchemaJsonLd(post, { section });
   const keywords = post.tags?.join(', ') || '';
   const author = post.author || 'Equipe CLT ou PJ';
   const publishedTime = toIsoDateTime(post.date);

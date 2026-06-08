@@ -1,41 +1,51 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { getAllPosts, getPostBySlug } from '../../../lib/posts';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
-import AffiliateCTA from '../../../components/AffiliateCTA';
-import PostContent from '../../../components/posts/PostContent';
 import PostSEO from '../../../components/seo/PostSEO';
+import ComparativoBody from '../../../components/comparativo/ComparativoBody';
 import RelatedCards from '../../../components/blog/RelatedCards';
+import {
+  getAllComparativoConfigs,
+  getComparativoBySlug,
+  getRelatedComparativos,
+} from '../../../lib/comparativo/catalog';
 
-/* ─────────────────────────────────────────
-   PÁGINA PRINCIPAL
-   Refatorada para ser 100% genérica via MDX
-   ───────────────────────────────────────── */
-export default function Post({ post, relatedPosts }) {
+export default function ComparativoPage({ scenario, related }) {
+  const {
+    title,
+    description,
+    slug,
+    date,
+    tags,
+    author,
+    readingTime,
+    seriesLabel,
+  } = scenario;
+
   const [readingProgress, setReadingProgress] = useState(0);
   const [activeSection, setActiveSection] = useState('');
   const [tableOfContents, setTableOfContents] = useState([]);
 
+  const seoPost = { slug, title, description, date, tags, author };
+
   useEffect(() => {
-    // Client-side TOC generation: works for Markdown and embedded React components
     const h2Elements = document.querySelectorAll('.post-content h2');
     const toc = [];
-    
+
     h2Elements.forEach((h2) => {
       if (!h2.id) {
         h2.id = h2.innerText
           .toLowerCase()
-          .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)+/g, '');
       }
       toc.push({ id: h2.id, title: h2.innerText });
     });
-    
+
     setTableOfContents(toc);
 
-    // Scroll progress & active section tracking
     const onScroll = () => {
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       setReadingProgress(Math.min((window.scrollY / docH) * 100, 100));
@@ -57,76 +67,81 @@ export default function Post({ post, relatedPosts }) {
     window.addEventListener('scroll', onScroll);
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
-  }, [post.slug]);
+  }, [slug]);
 
-  const scrollTo = id => {
+  const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const relatedCards = related.map((item) => ({
+    slug: item.slug,
+    title: item.title,
+    description: item.description,
+    date: item.date,
+    tags: item.tags,
+    badge: item.seriesLabel || 'Comparativo',
+    kind: 'comparativo',
+    href: `/blog/comparativo/${item.slug}`,
+  }));
+
   return (
     <>
-      <PostSEO post={post} />
+      <PostSEO post={seoPost} section="comparativo" />
 
-      {/* 1. Progress Bar - Fix Z-index and Visibility */}
       <div className="reading-progress-bar" style={{ width: `${readingProgress}%` }} />
 
       <Header />
 
       <main className="bg-paper min-h-screen">
-        {/* 2. Hero Section - Fix H1 width and line-height */}
         <div className="border-b border-rule pt-28 pb-20 md:pt-36 md:pb-24 relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-pattern" />
           <div className="max-w-5xl mx-auto px-6 md:px-8 relative">
-
-            {/* Breadcrumb & Meta */}
             <div className="flex flex-col items-center gap-6 mb-10">
-              <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-money font-black flex items-center gap-3">
+              <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-money font-black flex items-center gap-3 flex-wrap justify-center">
                 <Link href="/blog" className="hover:underline underline-offset-4">Blog</Link>
                 <span className="w-1.5 h-1.5 rounded-full bg-money/20" />
-                <span>{post.tags?.[0] || 'Artigo'}</span>
+                <Link href="/blog/comparativos" className="hover:underline underline-offset-4">Comparativos</Link>
+                <span className="w-1.5 h-1.5 rounded-full bg-money/20" />
+                <span>{seriesLabel}</span>
               </div>
             </div>
 
-            {/* Título de Impacto - Limit width and center with clear typography */}
-            <h1 className="font-display leading-[1.15] tracking-editorial text-ink text-center mb-10 font-bold mx-auto max-w-[850px]"
-              style={{ fontSize: 'clamp(2.3rem, 6.5vw, 3.8rem)' }}>
-              {post.title}
+            <h1
+              className="font-display leading-[1.15] tracking-editorial text-ink text-center mb-10 font-bold mx-auto max-w-[850px]"
+              style={{ fontSize: 'clamp(2.3rem, 6.5vw, 3.8rem)' }}
+            >
+              {title}
             </h1>
 
-            {/* Linha de Impacto (Lead) */}
             <div className="max-w-2xl mx-auto mb-12 text-center">
               <p className="text-xl md:text-2xl text-ink-muted leading-relaxed font-serif italic">
-                {post.description}
+                {description}
               </p>
             </div>
 
-            {/* Meta informações reformuladas */}
-            <div className="flex items-center justify-center gap-10 pt-10 border-t border-rule/60
-                            font-mono text-[10px] uppercase tracking-[0.2em] text-ink-fade">
+            <div className="flex items-center justify-center gap-10 pt-10 border-t border-rule/60 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-fade">
               <div className="flex items-center gap-2">
                 <span>Publicado em</span>
-                <span className="text-ink font-bold">{post.date}</span>
+                <span className="text-ink font-bold">{date}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span>Leitura</span>
-                <span className="text-ink font-bold">{post.readingTime || '5 min'}</span>
+                <span className="text-ink font-bold">{readingTime}</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 3. Layout com TOC Sidebar */}
         <div className="pb-32 pt-20">
           <div className="max-w-[1400px] mx-auto px-6 md:px-8 blog-layout-grid">
-
-            {/* Sidebar Esquerda: TOC Sticky */}
             <aside className="blog-toc-column">
               <div className="toc-sidebar">
                 <span className="toc-title">Neste artigo</span>
                 <nav className="flex flex-col gap-0">
-                  {tableOfContents.map(section => (
+                  {tableOfContents.map((section) => (
                     <button
                       key={section.id}
+                      type="button"
                       onClick={() => scrollTo(section.id)}
                       className={`toc-link ${activeSection === section.id ? 'toc-link--active' : ''}`}
                     >
@@ -137,34 +152,15 @@ export default function Post({ post, relatedPosts }) {
               </div>
             </aside>
 
-            {/* Coluna Central: Conteúdo (max-width rigoroso) */}
             <article className="post-content w-full mx-auto blog-content-column">
-              <PostContent content={post.mdxSource} />
-
-              <div className="mt-24">
-                <AffiliateCTA
-                  partner="manasses"
-                  title="Planejamento contábil especializado para TI."
-                  description="A Manassés Contabilidade cuida da contabilidade mensal da sua empresa com suporte humanizado e 50% de desconto na primeira mensalidade."
-                  buttonText="Conhecer a Manassés"
-                />
-              </div>
+              <ComparativoBody scenario={{ ...scenario, related }} />
             </article>
 
-            {/* Sidebar Direita: Vazio (para equilibrar visualmente) */}
             <aside className="blog-empty-column" />
-
           </div>
         </div>
 
-        <RelatedCards
-          items={relatedPosts.map((p) => ({
-            ...p,
-            kind: 'article',
-            badge: p.tags?.[0] || 'Artigo',
-            href: `/blog/${p.slug}`,
-          }))}
-        />
+        <RelatedCards items={relatedCards} hubHref="/blog/comparativos" />
       </main>
 
       <Footer />
@@ -173,30 +169,23 @@ export default function Post({ post, relatedPosts }) {
 }
 
 export async function getStaticPaths() {
-  const posts = await getAllPosts();
+  const configs = getAllComparativoConfigs();
   return {
-    paths: posts.map(post => ({ params: { slug: post.slug } })),
+    paths: configs.map((item) => ({ params: { slug: item.slug } })),
     fallback: false,
   };
 }
 
 export async function getStaticProps({ params }) {
-  const post = await getPostBySlug(params.slug);
-  const allPosts = await getAllPosts();
+  const scenario = getComparativoBySlug(params.slug);
+  if (!scenario) return { notFound: true };
 
-  let relatedPosts = [];
-  if (post?.tags?.length) {
-    const withSharedTags = allPosts.filter(p =>
-      p.slug !== params.slug &&
-      p.tags?.some(tag => post.tags.includes(tag))
-    );
-    relatedPosts = withSharedTags.slice(0, 3);
-  }
+  const related = getRelatedComparativos(params.slug, 4);
 
-  if (relatedPosts.length === 0) {
-    relatedPosts = allPosts.filter(p => p.slug !== params.slug).slice(0, 3);
-  }
-
-  if (!post) return { notFound: true };
-  return { props: { post, relatedPosts } };
+  return {
+    props: {
+      scenario,
+      related,
+    },
+  };
 }
