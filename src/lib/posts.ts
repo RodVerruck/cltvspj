@@ -15,6 +15,7 @@ export interface PostMeta {
   title: string
   description: string
   date: string
+  updatedDate?: string
   author: string
   tags: string[]
   readingTime: string
@@ -30,7 +31,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
   const fileNames = fs.readdirSync(postsDirectory)
 
   const posts = fileNames
-    .filter((name) => name.endsWith('.mdx') || name.endsWith('.md'))
+    .filter((name) => (name.endsWith('.mdx') || name.endsWith('.md')) && !name.startsWith('_'))
     .map((fileName) => {
       const slug = fileName.replace(/\.mdx?$/, '')
       const fullPath = path.join(postsDirectory, fileName)
@@ -43,6 +44,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
         title: data.title || '',
         description: data.description || '',
         date: data.date || '',
+        updatedDate: data.updatedDate || '',
         author: data.author || null,
         tags: data.tags || [],
         readingTime: data.readingTime || '5 min',
@@ -83,6 +85,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       title: data.title || '',
       description: data.description || '',
       date: data.date || '',
+      updatedDate: data.updatedDate || '',
       author: data.author || null,
       tags: data.tags || [],
       readingTime: data.readingTime || '5 min',

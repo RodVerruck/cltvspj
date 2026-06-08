@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { getAllPosts, getPostBySlug } from '../../../lib/posts';
@@ -6,6 +5,7 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import AffiliateCTA from '../../../components/AffiliateCTA';
 import PostContent from '../../../components/posts/PostContent';
+import PostSEO from '../../../components/seo/PostSEO';
 
 /* ─────────────────────────────────────────
    PÁGINA PRINCIPAL
@@ -64,10 +64,7 @@ export default function Post({ post, relatedPosts }) {
 
   return (
     <>
-      <Head>
-        <title>{post.title} | CLT vs PJ</title>
-        <meta name="description" content={post.description} />
-      </Head>
+      <PostSEO post={post} />
 
       {/* 1. Progress Bar - Fix Z-index and Visibility */}
       <div className="reading-progress-bar" style={{ width: `${readingProgress}%` }} />
