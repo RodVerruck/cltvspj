@@ -35,9 +35,16 @@ import {
   WifiOff,
   Search,
   FileText,
-  Target,
   Hash,
+  Lightbulb,
+  Crosshair,
+  Layers,
+  Zap,
 } from 'lucide-react';
+import {
+  getPositionTier,
+  categorizePage,
+} from '../../lib/search-console/transform';
 
 ChartJS.register(
   CategoryScale,
@@ -85,9 +92,17 @@ function deltaPercent(current, previous) {
 }
 
 function positionBadge(pos) {
-  if (pos <= 3) return { bg: '#4ade8022', color: '#4ade80', label: `#${pos.toFixed(0)}` };
-  if (pos <= 10) return { bg: '#fbbf2422', color: '#fbbf24', label: `#${pos.toFixed(0)}` };
-  return { bg: '#f8717122', color: '#f87171', label: `#${pos.toFixed(0)}` };
+  const t = getPositionTier(pos);
+  return { bg: t.bg, color: t.color, label: `#${Number(pos).toFixed(0)}`, tier: t.short, hint: t.label };
+}
+
+function formatPeriodRange(period) {
+  if (!period?.start || !period?.end) return 'Últimos 28 dias';
+  const fmt = (iso) => {
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+  };
+  return `${fmt(period.start)} — ${fmt(period.end)}`;
 }
 
 // ─── Tela de Login ────────────────────────────────────────────────────────────
@@ -228,6 +243,37 @@ function Skeleton({ width = '100%', height = 20, style = {} }) {
 }
 
 // ─── Tabela de SEO ────────────────────────────────────────────────────────────
+
+function PositionBadge({ position, showTier = false }) {
+  const b = positionBadge(position);
+  return (
+    <span title={b.hint} style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+      <span style={{ background: b.bg, color: b.color, padding: '2px 8px', borderRadius: 6, fontSize: 12, fontWeight: 700 }}>
+        {b.label}
+      </span>
+      {showTier && (
+        <span style={{ fontSize: 10, color: '#6b7280' }}>{b.tier}</span>
+      )}
+    </span>
+  );
+}
+
+function SeoInsightCard({ insight }) {
+  return (
+    <div style={{
+      background: '#151824', border: `1px solid ${insight.color}33`, borderLeft: `3px solid ${insight.color}`,
+      borderRadius: 10, padding: '14px 16px', flex: 1, minWidth: 220,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+        <Lightbulb size={14} color={insight.color} />
+        <span style={{ color: insight.color, fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          {insight.title}
+        </span>
+      </div>
+      <p style={{ color: '#d1d5db', fontSize: 13, lineHeight: 1.65, margin: 0 }}>{insight.body}</p>
+    </div>
+  );
+}
 
 function SeoTable({ rows, columns, loading, skeletonRows = 8 }) {
   if (loading) {
@@ -489,21 +535,111 @@ function Dashboard({ token, onLogout }) {
     interaction: { mode: 'index', intersect: false },
     plugins: {
       legend: { labels: { color: '#9ca3af', font: { size: 12 } } },
-      tooltip: { backgroundColor: '#1f2335', titleColor: '#e2e8f0', bodyColor: '#9ca3af', borderColor: '#374151', borderWidth: 1 },
+      tooltip: {
+        backgroundColor: '#1f2335', titleColor: '#e2e8f0', bodyColor: '#9ca3af', borderColor: '#374151', borderWidth: 1,
+        callbacks: {
+          afterBody: (items) => {
+            const idx = items[0]?.dataIndex;
+            const day = gscData?.daily?.[idx];
+            if (!day?.position) return '';
+            return `Posição média: #${day.position}`;
+          },
+        },
+      },
     },
     scales: {
-      x: { ticks: { color: '#6b7280', font: { size: 11 } }, grid: { color: '#1f2335' } },
+      x: { ticks: { color: '#6b7280', font: { size: 11 }, maxRotation: 0 }, grid: { color: '#1f2335' } },
       y: {
         type: 'linear', position: 'left',
-        ticks: { color: '#4ade80', font: { size: 11 } },
+        ticks: { color: '#4ade80', font: { size: 11 }, precision: 0 },
         grid: { color: '#1a1d2e' },
         title: { display: true, text: 'Cliques', color: '#4ade80', font: { size: 11 } },
       },
       y1: {
         type: 'linear', position: 'right',
-        ticks: { color: '#60a5fa', font: { size: 11 } },
+        ticks: { color: '#60a5fa', font: { size: 11 }, precision: 0 },
         grid: { drawOnChartArea: false },
         title: { display: true, text: 'Impressões', color: '#60a5fa', font: { size: 11 } },
+      },
+    },
+  };
+
+  const gscPositionBarData = gscData?.positionDistribution?.length
+    ? {
+        labels: gscData.positionDistribution.map((b) => b.label),
+        datasets: [{
+          label: 'Queries',
+          data: gscData.positionDistribution.map((b) => b.count),
+          backgroundColor: gscData.positionDistribution.map((b) => b.color + 'cc'),
+          borderColor: gscData.positionDistribution.map((b) => b.color),
+          borderWidth: 1,
+          borderRadius: 6,
+        }],
+      }
+    : null;
+
+  const gscPositionBarOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1f2335', titleColor: '#e2e8f0', bodyColor: '#9ca3af', borderColor: '#374151', borderWidth: 1,
+        callbacks: {
+          afterLabel: (ctx) => {
+            const bucket = gscData.positionDistribution[ctx.dataIndex];
+            return `${bucket.impressions} impressões`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: { ticks: { color: '#9ca3af', font: { size: 11 } }, grid: { display: false } },
+      y: { ticks: { color: '#6b7280', font: { size: 11 }, precision: 0 }, grid: { color: '#1a1d2e' } },
+    },
+  };
+
+  const gscDeviceDonutData = gscData?.devices?.length
+    ? {
+        labels: gscData.devices.map((d) => d.label),
+        datasets: [{
+          data: gscData.devices.map((d) => d.impressions),
+          backgroundColor: ['#60a5fa', '#4ade80', '#fbbf24'],
+          borderColor: '#0f1117',
+          borderWidth: 3,
+          hoverOffset: 6,
+        }],
+      }
+    : null;
+
+  const gscPageTypeDonutData = gscData?.pageTypes?.length
+    ? {
+        labels: gscData.pageTypes.map((t) => t.label),
+        datasets: [{
+          data: gscData.pageTypes.map((t) => t.impressions),
+          backgroundColor: gscData.pageTypes.map((t) => t.color + 'cc'),
+          borderColor: gscData.pageTypes.map((t) => t.color),
+          borderWidth: 2,
+          hoverOffset: 6,
+        }],
+      }
+    : null;
+
+  const gscDonutOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '62%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#9ca3af', font: { size: 11 }, padding: 12 } },
+      tooltip: {
+        backgroundColor: '#1f2335', titleColor: '#e2e8f0', bodyColor: '#9ca3af', borderColor: '#374151', borderWidth: 1,
+        callbacks: {
+          label: (ctx) => {
+            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+            const pct = total ? ((ctx.raw / total) * 100).toFixed(1) : 0;
+            return ` ${ctx.label}: ${formatNumber(ctx.raw)} imp. (${pct}%)`;
+          },
+        },
       },
     },
   };
@@ -520,62 +656,78 @@ function Dashboard({ token, onLogout }) {
       render: (v) => <span style={{ color: '#e2e8f0', fontSize: 13, fontWeight: 500 }}>{v}</span>,
     },
     {
-      key: 'clicks', label: 'Cliques', align: 'right', width: 80,
-      render: (v) => <span style={{ color: '#4ade80', fontWeight: 600, fontFamily: 'monospace' }}>{v}</span>,
+      key: 'impressions', label: 'Impressões', align: 'right', width: 90,
+      render: (v) => <span style={{ color: '#60a5fa', fontWeight: 600, fontFamily: 'monospace' }}>{formatNumber(v)}</span>,
     },
     {
-      key: 'impressions', label: 'Impressões', align: 'right', width: 100,
-      render: (v) => <span style={{ color: '#60a5fa', fontFamily: 'monospace' }}>{formatNumber(v)}</span>,
+      key: 'clicks', label: 'Cliques', align: 'right', width: 70,
+      render: (v) => <span style={{ color: v > 0 ? '#4ade80' : '#4b5563', fontWeight: 600, fontFamily: 'monospace' }}>{v}</span>,
     },
     {
-      key: 'ctr', label: 'CTR', align: 'right', width: 70,
+      key: 'ctr', label: 'CTR', align: 'right', width: 65,
       render: (v) => <span style={{ color: '#a78bfa', fontFamily: 'monospace' }}>{v}%</span>,
     },
     {
-      key: 'position', label: 'Posição', align: 'right', width: 80,
-      render: (v) => {
-        const b = positionBadge(v);
-        return (
-          <span style={{ background: b.bg, color: b.color, padding: '2px 8px', borderRadius: 6, fontSize: 12, fontWeight: 700 }}>
-            {b.label}
-          </span>
-        );
-      },
+      key: 'position', label: 'Posição', align: 'right', width: 90,
+      render: (v) => <PositionBadge position={v} showTier />,
     },
   ];
 
-  // Colunas da tabela de páginas
+  const opportunityColumns = [
+    {
+      key: 'query', label: 'Query · zona 11–30',
+      render: (v) => <span style={{ color: '#e2e8f0', fontSize: 13, fontWeight: 500 }}>{v}</span>,
+    },
+    {
+      key: 'impressions', label: 'Impressões', align: 'right', width: 90,
+      render: (v) => <span style={{ color: '#60a5fa', fontWeight: 600, fontFamily: 'monospace' }}>{formatNumber(v)}</span>,
+    },
+    {
+      key: 'position', label: 'Posição', align: 'right', width: 90,
+      render: (v) => <PositionBadge position={v} showTier />,
+    },
+    {
+      key: 'action', label: 'Ação sugerida',
+      render: (v) => <span style={{ color: '#9ca3af', fontSize: 12, lineHeight: 1.5 }}>{v}</span>,
+    },
+  ];
+
   const pageColumns = [
     {
       key: 'page', label: 'Página',
-      render: (v) => (
-        <span style={{ color: '#e2e8f0', fontSize: 12, fontFamily: 'monospace', opacity: 0.9 }}>
-          {v.length > 40 ? v.slice(0, 40) + '…' : v}
-        </span>
-      ),
+      render: (v, row) => {
+        const cat = categorizePage(v);
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ color: '#e2e8f0', fontSize: 12, fontFamily: 'monospace' }}>
+              {v.length > 36 ? v.slice(0, 36) + '…' : v}
+            </span>
+            <span style={{
+              alignSelf: 'flex-start', fontSize: 10, fontWeight: 700, textTransform: 'uppercase',
+              letterSpacing: '0.05em', padding: '2px 6px', borderRadius: 4,
+              background: cat.color + '22', color: cat.color,
+            }}>
+              {cat.label}
+            </span>
+          </div>
+        );
+      },
     },
     {
-      key: 'clicks', label: 'Cliques', align: 'right', width: 80,
-      render: (v) => <span style={{ color: '#4ade80', fontWeight: 600, fontFamily: 'monospace' }}>{v}</span>,
+      key: 'impressions', label: 'Impressões', align: 'right', width: 90,
+      render: (v) => <span style={{ color: '#60a5fa', fontWeight: 600, fontFamily: 'monospace' }}>{formatNumber(v)}</span>,
     },
     {
-      key: 'impressions', label: 'Impressões', align: 'right', width: 100,
-      render: (v) => <span style={{ color: '#60a5fa', fontFamily: 'monospace' }}>{formatNumber(v)}</span>,
+      key: 'clicks', label: 'Cliques', align: 'right', width: 70,
+      render: (v) => <span style={{ color: v > 0 ? '#4ade80' : '#4b5563', fontWeight: 600, fontFamily: 'monospace' }}>{v}</span>,
     },
     {
-      key: 'ctr', label: 'CTR', align: 'right', width: 70,
+      key: 'ctr', label: 'CTR', align: 'right', width: 65,
       render: (v) => <span style={{ color: '#a78bfa', fontFamily: 'monospace' }}>{v}%</span>,
     },
     {
-      key: 'position', label: 'Posição', align: 'right', width: 80,
-      render: (v) => {
-        const b = positionBadge(v);
-        return (
-          <span style={{ background: b.bg, color: b.color, padding: '2px 8px', borderRadius: 6, fontSize: 12, fontWeight: 700 }}>
-            {b.label}
-          </span>
-        );
-      },
+      key: 'position', label: 'Posição', align: 'right', width: 90,
+      render: (v) => <PositionBadge position={v} showTier />,
     },
   ];
 
@@ -833,12 +985,12 @@ function Dashboard({ token, onLogout }) {
         ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'seo' && (
           <>
-            {/* Header */}
             <div style={styles.pageHeader}>
               <div>
                 <h1 style={styles.pageTitle}>SEO · Google Search Console</h1>
                 <p style={styles.pageSubtitle}>
-                  Últimos 28 dias · {gscData?.siteUrl || 'calculadora-cltvspj.vercel.app'}
+                  {formatPeriodRange(gscData?.period)} · {gscData?.siteHost || 'calculadora-cltvspj.vercel.app'}
+                  {gscData?.period?.lagDays ? ` · dados com ${gscData.period.lagDays}d de atraso (normal no GSC)` : ''}
                 </p>
               </div>
               <div style={styles.headerStatus}>
@@ -848,13 +1000,12 @@ function Dashboard({ token, onLogout }) {
                   </div>
                 ) : gscData?.configured ? (
                   <div style={{ ...styles.statusBadge, background: '#60a5fa22', color: '#60a5fa' }}>
-                    <Search size={14} /> Google Search Console
+                    <Search size={14} /> Conectado
                   </div>
                 ) : null}
               </div>
             </div>
 
-            {/* Banner: não configurado */}
             {gscData?.configured === false && (
               <div style={{ ...styles.warningBanner, borderColor: '#fbbf2433', background: '#fbbf2411', marginBottom: 24 }}>
                 <AlertCircle size={18} color="#fbbf24" />
@@ -866,20 +1017,10 @@ function Dashboard({ token, onLogout }) {
                       node scripts/setup-gsc.mjs
                     </code>
                   </p>
-                  <p style={{ color: '#9ca3af', marginTop: 10, fontSize: 12, lineHeight: 1.6 }}>
-                    Antes disso, crie credenciais OAuth 2.0 (tipo &quot;Desktop app&quot;) em{' '}
-                    <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noreferrer"
-                      style={{ color: '#60a5fa' }}>
-                      console.cloud.google.com/apis/credentials
-                    </a>{' '}
-                    e adicione <code style={{ background: '#0f1117', padding: '1px 6px', borderRadius: 4, fontSize: 11 }}>GOOGLE_CLIENT_ID</code> e{' '}
-                    <code style={{ background: '#0f1117', padding: '1px 6px', borderRadius: 4, fontSize: 11 }}>GOOGLE_CLIENT_SECRET</code> no .env.local.
-                  </p>
                 </div>
               </div>
             )}
 
-            {/* Erro GSC */}
             {gscError && (
               <div style={{ ...styles.warningBanner, borderColor: '#f8717166', background: '#f8717111' }}>
                 <AlertCircle size={18} color="#f87171" />
@@ -890,7 +1031,7 @@ function Dashboard({ token, onLogout }) {
               </div>
             )}
 
-            {/* KPIs GSC */}
+            {/* KPIs principais */}
             <div style={{ ...styles.kpiGrid, gridTemplateColumns: 'repeat(4, 1fr)' }}>
               {gscLoading ? (
                 Array.from({ length: 4 }).map((_, i) => (
@@ -902,84 +1043,173 @@ function Dashboard({ token, onLogout }) {
                 ))
               ) : gscData?.configured && gscData.kpis ? (
                 <>
-                  <KpiCard icon={MousePointerClick} label="Cliques Orgânicos" value={gscData.kpis.clicks}
-                    delta={gc ? deltaPercent(gc.clicks.current, gc.clicks.previous) : null}
-                    color="#4ade80" />
                   <KpiCard icon={Eye} label="Impressões" value={gscData.kpis.impressions}
                     delta={gc ? deltaPercent(gc.impressions.current, gc.impressions.previous) : null}
                     color="#60a5fa" />
-                  <KpiCard icon={Target} label="CTR Médio" value={gscData.kpis.ctr}
-                    delta={gc ? deltaPercent(gc.ctr.current, gc.ctr.previous) : null}
-                    color="#a78bfa" formatter={(v) => `${v}%`} />
+                  <KpiCard icon={MousePointerClick} label="Cliques Orgânicos" value={gscData.kpis.clicks}
+                    delta={gc ? deltaPercent(gc.clicks.current, gc.clicks.previous) : null}
+                    color="#4ade80" />
+                  <KpiCard icon={Crosshair} label="Oportunidades 11–30" value={gscData.meta?.strikingCount ?? 0}
+                    color="#fbbf24" formatter={(v) => v.toString()} />
                   <KpiCard icon={Hash} label="Posição Média" value={gscData.kpis.position}
                     delta={gc ? deltaPercent(gc.position.current, gc.position.previous) : null}
-                    color="#fbbf24" formatter={(v) => `#${v}`} invertDelta />
+                    color="#9ca3af" formatter={(v) => `#${v}`} invertDelta />
                 </>
-              ) : gscData?.configured === false ? null : (
-                Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} style={{ ...styles.kpiCard, borderTopColor: '#374151', opacity: 0.4 }}>
-                    <div style={styles.kpiValue}>—</div>
-                    <div style={styles.kpiLabel}>Aguardando configuração</div>
-                  </div>
-                ))
-              )}
+              ) : null}
             </div>
 
-            {/* Gráfico GSC */}
+            {/* Nota sobre posição média */}
+            {gscData?.configured && gscData.kpis && (
+              <div style={{
+                background: '#1a1d2e', border: '1px solid #1f2335', borderRadius: 10,
+                padding: '12px 16px', marginBottom: 20, fontSize: 12, color: '#9ca3af', lineHeight: 1.6,
+              }}>
+                <strong style={{ color: '#d1d5db' }}>Como ler estes números:</strong>{' '}
+                Impressões = Google já mostra seu site. Posição média (#{gscData.kpis.position}) é puxada por queries genéricas —
+                foque nas queries individuais na faixa <span style={{ color: '#fbbf24' }}>11–30</span> (tabela abaixo), não na média do site.
+                CTR {gscData.kpis.ctr}% com {gscData.kpis.clicks} cliques = fase de descoberta, típico em domínio novo.
+              </div>
+            )}
+
+            {/* Insights automáticos */}
+            {gscData?.insights?.length > 0 && (
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <Lightbulb size={16} color="#fbbf24" />
+                  <h2 style={{ ...styles.chartTitle, margin: 0 }}>Diagnóstico automático</h2>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+                  {gscData.insights.map((insight) => (
+                    <SeoInsightCard key={insight.title} insight={insight} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Ações recomendadas */}
+            {gscData?.actions?.length > 0 && (
+              <div style={{
+                background: '#151824', border: '1px solid rgba(74,222,128,0.2)', borderRadius: 12,
+                padding: '16px 20px', marginBottom: 20,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <Zap size={16} color="#4ade80" />
+                  <span style={{ color: '#4ade80', fontWeight: 700, fontSize: 13 }}>Próximas ações sugeridas</span>
+                </div>
+                <ul style={{ margin: 0, paddingLeft: 18, color: '#d1d5db', fontSize: 13, lineHeight: 1.8 }}>
+                  {gscData.actions.map((action) => (
+                    <li key={action}>{action}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Gráfico tendência */}
             <div style={styles.chartCard}>
               <div style={styles.chartHeader}>
-                <h2 style={styles.chartTitle}>Cliques e Impressões por Dia</h2>
-                <span style={styles.chartSubtitle}>Últimos 28 dias · Google Search</span>
+                <h2 style={styles.chartTitle}>Tendência diária</h2>
+                <span style={styles.chartSubtitle}>Cliques (esq.) · Impressões (dir.) · hover mostra posição média do dia</span>
               </div>
               <div style={{ height: 280 }}>
                 {gscLoading ? <Skeleton height={280} />
                   : gscLineData ? <Line data={gscLineData} options={gscLineOptions} />
-                  : <div style={styles.noData}>
-                      {gscData?.configured === false ? 'Configure o Search Console para ver este gráfico' : 'Sem dados disponíveis'}
-                    </div>}
+                  : <div style={styles.noData}>Sem dados disponíveis</div>}
               </div>
             </div>
 
-            {/* Tabelas: Queries + Páginas */}
+            {/* Distribuição + dispositivos */}
+            <div style={styles.gridTwo}>
+              <div style={styles.chartCard}>
+                <div style={styles.chartHeader}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Layers size={16} color="#fbbf24" />
+                    <h2 style={styles.chartTitle}>Queries por faixa de posição</h2>
+                  </div>
+                  <span style={styles.chartSubtitle}>Quantas keywords em cada página do Google</span>
+                </div>
+                <div style={{ height: 240 }}>
+                  {gscLoading ? <Skeleton height={240} />
+                    : gscPositionBarData ? <Bar data={gscPositionBarData} options={gscPositionBarOptions} />
+                    : <div style={styles.noData}>Sem dados</div>}
+                </div>
+              </div>
+
+              <div style={styles.chartCard}>
+                <div style={styles.chartHeader}>
+                  <h2 style={styles.chartTitle}>Impressões por tipo de página</h2>
+                  <span style={styles.chartSubtitle}>Onde o Google está mostrando o site</span>
+                </div>
+                <div style={{ height: 240 }}>
+                  {gscLoading ? <Skeleton height={240} />
+                    : gscPageTypeDonutData ? <Doughnut data={gscPageTypeDonutData} options={gscDonutOptions} />
+                    : gscDeviceDonutData ? <Doughnut data={gscDeviceDonutData} options={gscDonutOptions} />
+                    : <div style={styles.noData}>Sem dados</div>}
+                </div>
+              </div>
+            </div>
+
+            {/* Oportunidades — minas de ouro */}
+            <div style={{ ...styles.chartCard, borderColor: 'rgba(251,191,36,0.25)' }}>
+              <div style={styles.chartHeader}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <Crosshair size={16} color="#fbbf24" />
+                  <h2 style={styles.chartTitle}>Oportunidades · posição 11–30</h2>
+                </div>
+                <span style={styles.chartSubtitle}>
+                  Minas de ouro — mais fácil subir da posição 24 para 8 do que de 90 para 8
+                </span>
+              </div>
+              <SeoTable
+                rows={gscData?.strikingDistance}
+                columns={opportunityColumns}
+                loading={gscLoading}
+                skeletonRows={5}
+              />
+              {!gscLoading && gscData?.configured && (!gscData.strikingDistance || gscData.strikingDistance.length === 0) && (
+                <p style={{ color: '#6b7280', fontSize: 13, marginTop: 12, fontStyle: 'italic' }}>
+                  Nenhuma query na faixa 11–30 com impressões ainda. Continue indexando e aguarde 2–4 semanas.
+                </p>
+              )}
+            </div>
+
+            {/* Tabelas queries + páginas */}
             <div style={styles.gridTwo}>
               <div style={styles.chartCard}>
                 <div style={styles.chartHeader}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <Search size={16} color="#4ade80" />
-                    <h2 style={styles.chartTitle}>Top Palavras-chave</h2>
+                    <h2 style={styles.chartTitle}>Top palavras-chave</h2>
                   </div>
-                  <span style={styles.chartSubtitle}>Por cliques orgânicos</span>
+                  <span style={styles.chartSubtitle}>Ordenado por impressões · até 50 queries</span>
                 </div>
-                <SeoTable
-                  rows={gscData?.queries}
-                  columns={queryColumns}
-                  loading={gscLoading}
-                />
+                <SeoTable rows={gscData?.queries?.slice(0, 15)} columns={queryColumns} loading={gscLoading} />
               </div>
 
               <div style={styles.chartCard}>
                 <div style={styles.chartHeader}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <FileText size={16} color="#60a5fa" />
-                    <h2 style={styles.chartTitle}>Top Páginas no Google</h2>
+                    <h2 style={styles.chartTitle}>Top páginas no Google</h2>
                   </div>
-                  <span style={styles.chartSubtitle}>Por cliques orgânicos</span>
+                  <span style={styles.chartSubtitle}>
+                    {gscData?.meta?.pagesWithImpressions ?? 0} URL(s) com impressões no período
+                  </span>
                 </div>
-                <SeoTable
-                  rows={gscData?.pages}
-                  columns={pageColumns}
-                  loading={gscLoading}
-                />
+                <SeoTable rows={gscData?.pages} columns={pageColumns} loading={gscLoading} />
               </div>
             </div>
 
-            {/* Legenda de posição */}
             {gscData?.configured && (
-              <div style={{ display: 'flex', gap: 16, marginBottom: 20, fontSize: 12, color: '#6b7280', alignItems: 'center' }}>
-                <span>Legenda de posição:</span>
-                <span style={{ background: '#4ade8022', color: '#4ade80', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>Top 3 🟢</span>
-                <span style={{ background: '#fbbf2422', color: '#fbbf24', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>4–10 🟡</span>
-                <span style={{ background: '#f8717122', color: '#f87171', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>+10 🔴</span>
+              <div style={{
+                display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 20, fontSize: 12, color: '#6b7280', alignItems: 'center',
+                padding: '12px 16px', background: '#151824', borderRadius: 10, border: '1px solid #1f2335',
+              }}>
+                <span style={{ fontWeight: 600, color: '#9ca3af' }}>Legenda de posição:</span>
+                <span style={{ background: '#4ade8022', color: '#4ade80', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>Top 3</span>
+                <span style={{ background: '#86efac22', color: '#86efac', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>Pág. 1 (4–10)</span>
+                <span style={{ background: '#fbbf2422', color: '#fbbf24', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>Pág. 2 · ouro (11–20)</span>
+                <span style={{ background: '#fb923c22', color: '#fb923c', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>Pág. 3 · atacável (21–30)</span>
+                <span style={{ background: '#f8717122', color: '#f87171', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>31+</span>
               </div>
             )}
           </>
@@ -1111,7 +1341,7 @@ const styles = {
   },
 
   // Main
-  mainContent: { flex: 1, padding: '28px 32px', overflowY: 'auto', maxWidth: 1200 },
+  mainContent: { flex: 1, padding: '28px 32px', overflowY: 'auto', maxWidth: 1320 },
   pageHeader: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 },
   pageTitle: { fontSize: 24, fontWeight: 700, color: '#f1f5f9', margin: 0 },
   pageSubtitle: { color: '#6b7280', fontSize: 13, marginTop: 6, margin: '6px 0 0' },
