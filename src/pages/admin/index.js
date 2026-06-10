@@ -129,6 +129,7 @@ function LoginScreen({ onLogin }) {
         setError(data.error || 'Senha incorreta');
       } else {
         sessionStorage.setItem('admin_token', data.token);
+        localStorage.setItem('disable_analytics', 'true');
         onLogin(data.token);
       }
     } catch {

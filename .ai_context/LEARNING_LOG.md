@@ -2,6 +2,23 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-10] Bloqueio Inteligente de Analytics do Desenvolvedor (Bypass Analytics)
+
+**Contexto**: O desenvolvedor/proprietário do site precisa testar o comportamento do site de produção e do ambiente de desenvolvimento local sem que seus próprios acessos poluam as estatísticas do Google Analytics 4 e Microsoft Clarity.
+
+**Decisão**:
+- **Ambiente Local**: No arquivo `src/pages/_app.js`, configurada uma validação baseada em estado no React que detecta o `hostname` de desenvolvimento (`localhost`, `127.0.0.1` ou IPs locais da sub-rede `192.168.`) e desativa condicionalmente a injeção dos componentes `<Script>` das ferramentas de rastreamento.
+- **Ambiente de Produção (LocalStorage + Bypass de URL)**:
+  - Adicionado no `useEffect` de `_app.js` um interceptador do parâmetro secreto `?admin=true` na URL. Se acessado por esse parâmetro, o site grava o registro persistente `disable_analytics = 'true'` no `localStorage` do navegador do usuário e limpa o parâmetro da URL da barra de endereços do navegador.
+  - Implementado o mesmo registro persistente `disable_analytics` ao fazer um login bem-sucedido no painel de administração (`src/pages/admin/index.js`).
+  - O código do `_app.js` lê essa chave permanentemente a cada visita e bloqueia a inicialização dos rastreamentos para aquele navegador.
+
+**Arquivos modificados**:
+- [_app.js](file:///c:/Projetos/cltvspj/src/pages/_app.js)
+- [index.js](file:///c:/Projetos/cltvspj/src/pages/admin/index.js)
+
+---
+
 ## [2026-06-08] Atualização do Link de Afiliado — Manassés Contabilidade
 
 **Contexto**: Anderson Moreira (Manassés Contabilidade) enviou o link de afiliado oficial do programa de parceria.
