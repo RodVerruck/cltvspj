@@ -2,6 +2,25 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-06-12] Diagnóstico do Sitemap.xml no Google Search Console
+
+**Contexto**: O sitemap.xml do site foi submetido como `/sitemap.xml` no Google Search Console, mas exibia a mensagem "Não foi possível buscar o sitemap" por vários dias, com a data de "Última leitura" em branco (-).
+
+**Análise**:
+- Testamos a rota em produção (`https://calculadora-cltvspj.vercel.app/sitemap.xml`) e ela está respondendo com `200 OK` e `Content-Type: text/xml`.
+- Simulamos o robô do Google (`Googlebot`) usando `curl.exe` e a resposta foi limpa e correta, descartando bloqueios de firewall da Vercel ou middlewares.
+- No GSC, o status "Não foi possível buscar o sitemap" (ou "Could not fetch") quando o campo "Última leitura" está como um traço `-` e as páginas encontradas em `0` significa apenas que o sitemap entrou na fila de espera do Google, mas o rastreador ainda não tentou lê-lo.
+- No entanto, a submissão contendo `/sitemap.xml` (com barra inicial) sob a URL da propriedade `https://calculadora-cltvspj.vercel.app/` (que já possui barra final) pode gerar uma URL de rastreamento malformada (`https://calculadora-cltvspj.vercel.app//sitemap.xml`), o que causa rejeição silenciosa pelo indexador do Google.
+
+**Ações Recomendadas**:
+1. Remover o sitemap `/sitemap.xml` atual do Search Console.
+2. Adicionar o novo sitemap digitando apenas `sitemap.xml` (sem a barra inicial).
+3. Testar a indexabilidade em tempo real usando a ferramenta "Inspecionar URL" no topo do painel.
+
+**Arquivos analisados**:
+- [sitemap.xml.js](file:///c:/Projetos/cltvspj/src/pages/sitemap.xml.js)
+- [robots.txt](file:///c:/Projetos/cltvspj/public/robots.txt)
+
 ## [2026-06-10] Bloqueio Inteligente de Analytics do Desenvolvedor (Bypass Analytics)
 
 **Contexto**: O desenvolvedor/proprietário do site precisa testar o comportamento do site de produção e do ambiente de desenvolvimento local sem que seus próprios acessos poluam as estatísticas do Google Analytics 4 e Microsoft Clarity.
