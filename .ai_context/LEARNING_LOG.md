@@ -2,6 +2,122 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-07-07] Auditoria do Sitemap.xml e Diagnóstico do Google Search Console
+
+**Contexto**: O usuário solicitou uma auditoria completa do sitemap do projeto para diagnosticar por que o Google Search Console exibe a mensagem "Não foi possível buscar o sitemap" (Could not fetch).
+
+**Análise & Diagnóstico**:
+1. **Geração Dinâmica**: O sitemap é gerado por SSR usando `getServerSideProps` em [sitemap.xml.js](file:///c:/Projetos/cltvspj/src/pages/sitemap.xml.js). Não há arquivo estático em `public/sitemap.xml`, eliminando conflitos.
+2. **Status & Rota**: A rota `/sitemap.xml` responde corretamente com HTTP 200 em produção (Vercel) e localmente.
+3. **Auditoria HTTP em Produção**:
+   - **Cabeçalhos**: Retorna `HTTP/1.1 200 OK`, `Cache-Control: public, max-age=0, must-revalidate`, `Age: 0`, `X-Vercel-Cache: MISS` e `X-Matched-Path: /sitemap.xml`.
+   - **Transfer-Encoding & Content-Length**: Responde usando `Transfer-Encoding: chunked` e omite `Content-Length`, o que é o padrão de streaming dinâmico para Serverless.
+   - **Compressão**: Suporta compressão Brotli nativa (`Content-Encoding: br`) pela Vercel, reduzindo o payload de 10.5KB para apenas 682 bytes.
+   - **Diferença de User-Agent**: Nenhuma. O comportamento e os headers de resposta HTTP são idênticos usando o User-Agent comum ou do `Googlebot`.
+   - **Sem Middleware / Redirecionamento**: Confirmamos que o endpoint `/sitemap.xml` responde diretamente sem qualquer redirect. Não há middleware (`middleware.js`) nem `vercel.json` no projeto. A regra em [next.config.js](file:///c:/Projetos/cltvspj/next.config.js) aplica `X-Robots-Tag: noindex, nofollow` exclusivamente ao path `/go/:slug*`, sem afetar o sitemap.
+4. **Validação de Conteúdo (XML)**:
+   - Geramos e analisamos o XML completo em [sitemap_actual.xml](file:///c:/Projetos/cltvspj/scripts/sitemap_actual.xml).
+   - O arquivo possui 51 URLs válidas e absolutas (iniciando com `https://`), sem duplicatas nem URLs vazias.
+   - O formato da tag `<lastmod>` (YYYY-MM-DD) e o namespace `<urlset>` seguem rigorosamente o protocolo oficial do Google.
+5. **Causas Raiz do GSC**:
+   - **Timeout por Cold Start**: A geração dinâmica por SSR pode sofrer latência no primeiro carregamento do contêiner Serverless na Vercel ao ler arquivos MDX do disco.
+   - **Atraso na Fila do GSC**: O status "Não foi possível buscar" com "Última leitura" em branco indica que a URL entrou na fila de leitura do Google, mas o crawler ainda não executou a busca física.
+   - **Barra dupla no GSC**: Submissão de `/sitemap.xml` no console do GSC pode gerar erros silenciosos de concatenação dependendo do validador.
+
+**Correção Recomendada**:
+- Ajustar o Content-Type para `application/xml; charset=utf-8`.
+- Implementar cache na borda (Edge Cache) no `getServerSideProps` via header `Cache-Control` (`s-maxage=3600, stale-while-revalidate=86400`) para evitar timeouts decorrentes de cold starts na Vercel.
+- Re-submeter o sitemap no GSC sem barra inicial (apenas `sitemap.xml`) e forçar a validação da URL ativa.
+
+**Arquivos analisados**:
+- [sitemap.xml.js](file:///c:/Projetos/cltvspj/src/pages/sitemap.xml.js)
+- [robots.txt](file:///c:/Projetos/cltvspj/public/robots.txt)
+- [package.json](file:///c:/Projetos/cltvspj/package.json)
+
+---
+
+## [2026-07-07] Auditoria de Reaproveitamento de Código para Novos Produtos
+
+**Contexto**: O usuário solicitou uma auditoria focada exclusivamente em reaproveitamento de código no repositório CLT vs PJ, identificando códigos que já estão entre 70% e 90% escritos para criar novos produtos ou funcionalidades rápidas de alto valor comercial, sem inventar novas ideias.
+
+**Decisões e Diagnósticos**:
+Mapeamos cinco grandes ativos latentes no projeto:
+1. **Guia Salarial Interativo de TI & Produto (85% pronto)**: Reaproveita os dados estáticos de [professions.js](file:///c:/Projetos/cltvspj/src/data/comparativos/professions.js), a engine de cálculo do [scenario.js](file:///c:/Projetos/cltvspj/src/lib/comparativo/scenario.js) e o layout de [ComparativoBody.js](file:///c:/Projetos/cltvspj/src/components/comparativo/ComparativoBody.js) para criar uma interface interativa de consulta rápida de cargos de TI.
+2. **Simulador de Fator R (90% pronto)**: Reaproveita o código de imposto de [calculator.js](file:///c:/Projetos/cltvspj/src/lib/calculator.js) e regras tributárias para criar uma calculadora direta de enquadramento do Simples Nacional para profissionais PJ.
+3. **Comparador Direto de Propostas Empregatícias (80% pronto)**: Transforma a engine matemática em uma ferramenta de comparação visual dupla lado a lado para propostas CLT vs PJ concorrentes.
+4. **Widget/API de Simulação para Terceiros (80% pronto)**: Expõe a engine matemática de [calculator.js](file:///c:/Projetos/cltvspj/src/lib/calculator.js) via iframe ou endpoint HTTP para blogs de recrutamento e vagas.
+5. **Painel de Analytics de Cauda Longa (75% pronto)**: Utiliza a API interna do Google Search Console para disponibilizar relatórios automáticos de auditoria de buscas para terceiros.
+
+**Arquivos analisados**:
+- [professions.js](file:///c:/Projetos/cltvspj/src/data/comparativos/professions.js)
+- [scenario.js](file:///c:/Projetos/cltvspj/src/lib/comparativo/scenario.js)
+- [ComparativoBody.js](file:///c:/Projetos/cltvspj/src/components/comparativo/ComparativoBody.js)
+- [calculator.js](file:///c:/Projetos/cltvspj/src/lib/calculator.js)
+- [search-console.js](file:///c:/Projetos/cltvspj/src/pages/api/search-console.js)
+- [auditoria_reaproveitamento.md](file:///C:/Users/RodrigoVerruck/.gemini/antigravity-ide/brain/44ad7088-fa7d-48eb-994c-3e3eb4be23aa/auditoria_reaproveitamento.md) (artefato com auditoria detalhada)
+
+---
+
+## [2026-07-07] Proposta de Arquitetura e Modelagem para Banco de Dados de Simulações
+
+**Contexto**: O usuário solicitou uma análise arquitetural de CTO para criar um banco de dados próprio para armazenar os dados de simulações, visando construir um ativo de inteligência de negócios compatível com a LGPD e de alta escalabilidade.
+
+**Decisões e Diagnósticos**:
+- **Banco de Dados Proposto**: PostgreSQL Serverless (via Neon ou Vercel Postgres) devido à compatibilidade serverless (sem estouro de conexões em ambiente Vercel), facilidade analítica (SQL para BI/IA) e plano gratuito generoso.
+- **Alternativa Crítica**: Proposta de utilização complementar de **GA4 + Google BigQuery** como MVP para coletar todos os eventos e parâmetros das simulações de forma barata e sem a sobrecarga inicial de desenvolvimento de banco de dados transacional próprio.
+- **LGPD**: Exclusão de gravação de dados sensíveis e pessoais (IPs brutos, nomes, e-mails, user-agents completos). Os IPs devem ser processados apenas para inferir o Estado (UF) e Cidade no backend antes de serem eliminados da memória.
+- **Integração**: Ingestão feita a partir da calculadora (`src/pages/index.js`) por meio de estados específicos do ciclo de vida da simulação (início, conclusão, engajamento com detalhamento técnico e conversão em CTA) consumindo o mesmo backend matemático de `src/lib/calculator.js` sem duplicar regras fiscais.
+
+**Arquivos analisados**:
+- [calculator.js](file:///c:/Projetos/cltvspj/src/lib/calculator.js) (regra de cálculo de CLT vs PJ)
+- [_app.js](file:///c:/Projetos/cltvspj/src/pages/_app.js) (bypass de logs de admin)
+- [arquitetura_banco_simulacoes.md](file:///C:/Users/RodrigoVerruck/.gemini/antigravity-ide/brain/44ad7088-fa7d-48eb-994c-3e3eb4be23aa/arquitetura_banco_simulacoes.md) (documento de arquitetura detalhado criado)
+
+---
+
+## [2026-07-07] Mapeamento do Funil de Conversão e Arquitetura de Eventos GA4
+
+**Contexto**: O usuário solicitou uma análise completa do projeto para desenhar o funil de conversão, identificar pontos de medição atuais e pontos cegos, além de propor a estrutura de eventos necessária no GA4 para mensurar taxas específicas (início, conclusão, detalhamento, Fator R, cliques em CTAs por origem e receita).
+
+**Decisões e Diagnósticos**:
+- **Pontos Cegos Críticos**:
+  - A rota `/go/manasses` centraliza todos os CTAs. O evento atual `affiliate_click` é disparado na rota e é genérico. Não é possível discernir a origem do clique (se foi o CTA Ancorado, o CTA de detalhamento, posts de blog ou comparativos).
+  - Ausência de eventos de início de preenchimento, conclusão de cálculo e abertura do detalhamento técnico (`showDetalhamento`).
+  - Sem rastreamento de receita estimada ou conversão real do WhatsApp (resolvido por proxy local e links com parâmetros UTM no afiliado).
+- **Proposta de Arquitetura de Rastreamento**:
+  - Desenho de 5 novos eventos customizados (`calculator_start`, `calculator_complete`, `detail_toggle`, `fator_r_view` e melhorias no `affiliate_click`).
+  - Disparo de `affiliate_click` client-side diretamente no clique do CTA com parâmetro `cta_position` e atribuição de receita estimada no parâmetro `value`.
+  - Mapeamento dinâmico de parâmetros UTM no link de afiliação da Manassés para fechamento de funil junto ao parceiro.
+
+**Arquivos analisados**:
+- [index.js](file:///c:/Projetos/cltvspj/src/pages/index.js) (calculadora e estados de detalhamento)
+- [[slug].js](file:///c:/Projetos/cltvspj/src/pages/go/[slug].js) (redirecionador de afiliados)
+- [AffiliateCTA.js](file:///c:/Projetos/cltvspj/src/components/AffiliateCTA.js) (componente comum de CTA)
+- [analise_funil_conversao_ga4.md](file:///C:/Users/RodrigoVerruck/.gemini/antigravity-ide/brain/d60573a1-3a11-40c8-a3a2-2c1f5908976e/analise_funil_conversao_ga4.md) (criado artefato com análise completa)
+
+---
+
+## [2026-07-07] Análise de Desempenho, Recoleta de SEO e Correção de Tracking do Admin
+
+**Contexto**: O usuário reconectou o Google Search Console e solicitou nova análise das métricas, incluindo verificação detalhada se os 16 minutos (1003s) de duração média da sessão do GA4 estão corretos.
+
+**Decisões e Diagnósticos**:
+- **Confirmação e Correção de Duração de Sessão (GA4)**:
+  - **Métrica Real vs. Inflação**: A API de fato retornou 1003 segundos (~16,7 minutos) para `averageSessionDuration`. No entanto, identificamos que a métrica está inflada artificialmente pelo auto-refresh a cada 5 minutos do `/admin` aliado à baixa amostragem do tráfego (27 sessões no total de 30 dias).
+  - **Ação**: Modificamos o arquivo `src/pages/_app.js` para bloquear explicitamente a injeção do script de rastreamento do GA4 e Clarity em qualquer URL que inicie com `/admin`. Isso blinda a estatística contra sessões de administração deixadas abertas e auto-refreshes.
+- **Estatísticas do Google Search Console (pós-reconexão)**:
+  - **Crescimento Orgânico**: O site saltou de 58 para 265 impressões orgânicas (+356.9%) nos últimos 30 dias em relação ao período anterior.
+  - **Palavras-chave**: O domínio está sendo exposto para pesquisas como `calculadora clt pj` (25 imp, pos 93.6), `pj x clt` (21 imp, pos 96.9) e `calculadora de clt para pj` (10 imp, pos 86.1). Destaque para os termos `calculadora pj` (posição 39) e `calculadora pj x clt` (posição 41), que já figuram no top 50 do Google.
+  - **Páginas**: Apenas a Home (`/`) indexou com impressões na pesquisa. Posts do blog ainda não aparecem na janela recente do GSC.
+
+**Arquivos modificados e analisados**:
+- [_app.js](file:///c:/Projetos/cltvspj/src/pages/_app.js) (modificado para ignorar tracking em `/admin`)
+- [temp_fetch_performance.mjs](file:///c:/Projetos/cltvspj/scripts/temp_fetch_performance.mjs) (criado e excluído após auditoria)
+- [.env.local](file:///c:/Projetos/cltvspj/.env.local) (atualizado pelo usuário com novo refresh token)
+- [relatorio_desempenho.md](file:///C:/Users/RodrigoVerruck/.gemini/antigravity-ide/brain/54dea91a-380d-4c97-bd57-0678ff895522/relatorio_desempenho.md) (criado/atualizado)
+
+---
+
 ## [2026-06-12] Diagnóstico do Sitemap.xml no Google Search Console
 
 **Contexto**: O sitemap.xml do site foi submetido como `/sitemap.xml` no Google Search Console, mas exibia a mensagem "Não foi possível buscar o sitemap" por vários dias, com a data de "Última leitura" em branco (-).

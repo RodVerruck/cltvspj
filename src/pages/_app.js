@@ -27,8 +27,11 @@ export default function App({ Component, pageProps }) {
       // 3. Verifica se existe o registro permanente no localStorage
       const isExcluded = localStorage.getItem('disable_analytics') === 'true';
       
-      // Só rastreia se não for local E não estiver marcado para exclusão
-      setShouldTrack(!isLocal && !isExcluded);
+      // 4. Bloqueia tracking em páginas do painel de administração (/admin)
+      const isAdminPage = window.location.pathname.startsWith('/admin');
+      
+      // Só rastreia se não for local, não estiver excluído e não for página administrativa
+      setShouldTrack(!isLocal && !isExcluded && !isAdminPage);
     }
   }, []);
 
