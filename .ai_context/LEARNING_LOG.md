@@ -2,6 +2,28 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-08-28] Diagnóstico de Acessos, Tráfego e Conexão Permanente com o Search Console
+
+**Contexto**: O usuário solicitou um panorama geral sobre os acessos e a relevância do projeto, e cadastrou a Service Account no Google Search Console para restaurar o monitoramento automático.
+
+**Dados e Diagnósticos Levantados (GA4 + GSC Oficial)**:
+1. **Integração GSC Ativada com Sucesso**:
+   - A Service Account (`cltvspj@cltvspj.iam.gserviceaccount.com`) foi adicionada e autenticada com sucesso, eliminando a dependência de tokens OAuth temporários. O endpoint `/api/search-console` foi atualizado para suportar a Service Account diretamente.
+2. **Relevância Orgânica Real (Google Search Console)**:
+   - **190 impressões nos últimos 28 dias** (e 274 impressões no período anterior de 28 dias) para a Home `/`.
+   - O Google já está testando o site em mais de **40 palavras-chave estratégicas** ("calculadora clt pj", "calculadora pj clt", "calculadora pj x clt", "calculo pj", "clt x pj", etc.).
+   - **Posição Média Atual**: Entre 77 e 98 (páginas 8 a 10 dos resultados). Como ainda não está na 1ª ou 2ª página, os cliques orgânicos ainda não começaram a converter (0 cliques).
+   - **Sitemap Processado com Sucesso**: O sitemap oficial (`https://calculadora-cltvspj.vercel.app/sitemap.xml`) foi reenviado via API autenticada e o Googlebot fez o download imediato (`lastDownloaded: 2026-08-28T22:19:20Z`), reconhecendo com sucesso **todas as 51 URLs** com **0 erros** e **0 avisos**.
+3. **Histórico de Tráfego (GA4)**:
+   - **Total Acumulado**: ~24 usuários únicos, 53 sessões e 169 visualizações de página.
+   - **Tempo de Retenção Médio na Calculadora**: **503 segundos (~8,3 minutos)** por usuário.
+   - **Conversão de Afiliados**: **18 cliques registrados em parceiros (`affiliate_click`)** com 4 usuários convertidos.
+4. **Próximos Passos de SEO**:
+   - Acompanhar a conversão das 51 URLs submetidas em URLs indexadas no Google nos próximos dias.
+   - Avaliar a migração para domínio customizado `.com.br` para alavancar os rankings das posições 80-90 para a 1ª página.
+
+---
+
 ## [2026-07-07] Auditoria do Sitemap.xml e Diagnóstico do Google Search Console
 
 **Contexto**: O usuário solicitou uma auditoria completa do sitemap do projeto para diagnosticar por que o Google Search Console exibe a mensagem "Não foi possível buscar o sitemap" (Could not fetch).

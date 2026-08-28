@@ -3,7 +3,7 @@
  * Busca dados de performance do Google Search Console via OAuth refresh token.
  */
 
-import { OAuth2Client } from 'google-auth-library';
+import { GoogleAuth, OAuth2Client } from 'google-auth-library';
 import { validateToken } from './admin-auth';
 import {
   mapGscRow,
@@ -14,6 +14,8 @@ import {
   formatSiteHostname,
 } from '../../lib/search-console/transform';
 
+const GA4_CLIENT_EMAIL = process.env.GA4_CLIENT_EMAIL;
+const GA4_PRIVATE_KEY = process.env.GA4_PRIVATE_KEY?.replace(/\\n/g, '\n');
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.GSC_REFRESH_TOKEN;
@@ -23,6 +25,19 @@ const SITE_URL = process.env.GSC_SITE_URL || 'https://calculadora-cltvspj.vercel
 const GSC_DATA_LAG_DAYS = 3;
 
 async function getAccessToken() {
+  if (GA4_CLIENT_EMAIL && GA4_PRIVATE_KEY) {
+    const auth = new GoogleAuth({
+      credentials: {
+        client_email: GA4_CLIENT_EMAIL,
+        private_key: GA4_PRIVATE_KEY,
+      },
+      scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
+    });
+    const client = await auth.getClient();
+    const tokenResponse = await client.getAccessToken();
+    return tokenResponse.token;
+  }
+
   const client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, 'http://localhost:3001/callback');
   client.setCredentials({ refresh_token: REFRESH_TOKEN });
   const { token } = await client.getAccessToken();
@@ -82,10 +97,13 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Não autorizado' });
   }
 
-  if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
+  const hasServiceAccount = Boolean(GA4_CLIENT_EMAIL && GA4_PRIVATE_KEY);
+  const hasOAuth = Boolean(CLIENT_ID && CLIENT_SECRET && REFRESH_TOKEN);
+
+  if (!hasServiceAccount && !hasOAuth) {
     return res.status(200).json({
       configured: false,
-      message: 'Search Console não configurado. Execute: node scripts/setup-gsc.mjs',
+      message: 'Search Console não configurado. Adicione as credenciais de Service Account ou execute: node scripts/setup-gsc.mjs',
     });
   }
 
