@@ -314,6 +314,16 @@ export default function SimplesAnexoContent() {
             </div>
           ))}
         </div>
+
+        <div style={{ marginTop: '2.5rem' }}>
+          <p style={{ fontSize: '1.05rem', color: 'var(--ink-muted)', marginBottom: '1rem' }}>
+            Quer simular o imposto do Simples Nacional com seu faturamento e pró-labore reais? Use a nossa{' '}
+            <Link href="/" style={{ color: 'var(--money)', fontWeight: 600, textDecoration: 'underline' }}>
+              calculadora CLT vs PJ 2026
+            </Link>
+            {' '}para calcular sua alíquota efetiva e o impacto do Fator R no bolso.
+          </p>
+        </div>
       </section>
 
       <div className="section-divider" />

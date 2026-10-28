@@ -7,9 +7,9 @@ import { SITE_URL } from '../config';
  */
 export function getCalculatorSchemaJsonLd() {
   const pageUrl = SITE_URL;
-  const pageName = 'Calculadora CLT x PJ 2026 | Veja Qual Compensa Mais';
+  const pageName = 'Calculadora CLT vs PJ 2026: Compare Salário Líquido e Benefícios';
   const pageDescription =
-    'Calculadora gratuita CLT x PJ. Compare quanto você ganha líquido como CLT vs PJ com todos os impostos. Resultado instantâneo!';
+    'Simule e compare o salário líquido entre CLT e PJ em 2026 com todos os impostos (INSS, IRPF, Simples Nacional), benefícios e custos de contador.';
 
   return {
     '@context': 'https://schema.org',

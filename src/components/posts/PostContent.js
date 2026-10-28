@@ -18,8 +18,10 @@ import InfoCallout from './InfoCallout';
 import ProfissaoExemplo from './ProfissaoExemplo';
 import StatHighlight from './StatHighlight';
 import SimplesAnexoContent from './SimplesAnexoContent';
+import CalculatorCallout from '../blog/CalculatorCallout';
 
 const components = {
+  CalculatorCallout,
   StatBand,
   QuoteBand,
   Callout,

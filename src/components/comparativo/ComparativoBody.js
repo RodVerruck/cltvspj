@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import AffiliateCTA from '../AffiliateCTA';
+import CalculatorCallout from '../blog/CalculatorCallout';
 import { formatBRL, formatBRLShort } from '../../lib/comparativo/format';
 
 export default function ComparativoBody({ scenario }) {
@@ -136,14 +137,15 @@ export default function ComparativoBody({ scenario }) {
 
       <h2>Simule com seus dados</h2>
       <p>
-        Abra a{' '}
-        <Link href="/" className="text-money font-semibold hover:underline">
-          calculadora CLT vs PJ 2026
-        </Link>
-        {' '}e informe salário CLT de R$ {formatBRLShort(cltGross)}
-        {pjRate ? ` e valor/hora PJ de R$ ${formatBRL(pjRate)}` : ''}. Dependentes, PLR, Fator R real e regime MEI/Presumido
-        podem alterar o resultado.
+        Os números acima refletem médias de mercado. Dependendo dos seus benefícios individuais (VR, plano de saúde, PLR e dependentes), a vantagem pode mudar de lado.
       </p>
+
+      <CalculatorCallout
+        title="Quer comparar uma proposta diferente?"
+        description={`Simule na calculadora CLT vs PJ incluindo seu salário exato de R$ ${formatBRLShort(cltGross)}, benefícios da sua empresa e faturamento PJ.`}
+        buttonText="Simular Proposta Personalizada"
+        href="/"
+      />
 
       {related?.length > 0 && (
         <>

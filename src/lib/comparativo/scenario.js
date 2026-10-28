@@ -76,16 +76,16 @@ export function buildComparativoScenario(config) {
 
   if (type === 'case-study') {
     seriesLabel = 'Estudo de caso';
-    title = `CLT R$ ${cltLabel} vs PJ R$ ${pjLabel}: Simulação 2026`;
-    description = `Compare CLT de R$ ${cltLabel} com PJ de R$ ${pjLabel}/mês. Líquido CLT (pacote total): R$ ${formatBRL(clt.totalPackage)}. Líquido PJ: R$ ${formatBRL(pj.net)}. Diferença: R$ ${formatBRL(Math.abs(diffMonthly))}/mês a favor ${winner === 'pj' ? 'da PJ' : 'da CLT'}.`;
+    title = `CLT de R$ ${cltLabel} vs PJ de R$ ${pjLabel}: Qual Compensa Mais em 2026?`;
+    description = `Compare proposta CLT de R$ ${cltLabel} com PJ de R$ ${pjLabel}/mês em 2026. Cálculo com impostos reais, benefícios, encargos e pró-labore.`;
   } else if (type === 'profession') {
     seriesLabel = role || 'Profissão';
-    title = `CLT ou PJ para ${role}: Simulação 2026`;
-    description = `${role} com CLT R$ ${cltLabel} vs PJ ~R$ ${pjLabel}/mês. Pacote CLT R$ ${formatBRL(clt.totalPackage)} vs líquido PJ R$ ${formatBRL(pj.net)}. Veja qual regime compensa.`;
+    title = `CLT ou PJ para ${role}: Salário Líquido, Impostos e Benefícios em 2026`;
+    description = `Comparativo para ${role}: CLT de R$ ${cltLabel} vs PJ de ~R$ ${pjLabel}/mês. Veja a comparação detalhada de salário líquido, Simples Nacional e benefícios.`;
   } else {
     seriesLabel = 'Faixa salarial';
-    title = `CLT R$ ${cltLabel} ou PJ: Qual Vale Mais em 2026?`;
-    description = `CLT R$ ${cltLabel} vs PJ equivalente (~R$ ${pjLabel}/mês). Simulação com impostos 2026: pacote CLT R$ ${formatBRL(clt.totalPackage)} vs líquido PJ R$ ${formatBRL(pj.net)}. Veja qual compensa no seu caso.`;
+    title = `CLT de R$ ${cltLabel} vs PJ de R$ ${pjLabel}: Qual Compensa Mais em 2026?`;
+    description = `Simulação comparativa entre CLT de R$ ${cltLabel} e PJ equivalente (~R$ ${pjLabel}/mês). Veja o comparativo de salário líquido, encargos e impostos em 2026.`;
   }
 
   const richContent = getRichComparativoContent({

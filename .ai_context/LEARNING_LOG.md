@@ -2,6 +2,103 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-10-22] Implementação: Otimização Estratégica de SEO, Interlinking e Expansão de Profissões
+
+**Contexto**: O usuário solicitou um pacote completo de otimização de SEO com base nas métricas reais observadas no Google Search Console, sem promessas especulativas, mantendo o domínio atual na Vercel e preservando o motor de cálculos e monetização.
+
+**Ações Implementadas**:
+1. **Otimização de Títulos e Meta Descriptions**:
+   - Home `/`: De `Calculadora CLT x PJ 2026 | Veja Qual Compensa Mais` para `Calculadora CLT vs PJ 2026: Compare Salário Líquido e Benefícios`. Sincronizado também no schema `@graph` (`WebApplication`).
+   - Comparativos por Profissão: Padrão refinado para `CLT ou PJ para ${role}: Salário Líquido, Impostos e Benefícios em 2026`.
+   - Comparativos por Faixa Salarial: Padrão refinado para `CLT de R$ ${cltLabel} vs PJ de R$ ${pjLabel}: Qual Compensa Mais em 2026?`.
+   - Comparativos Estudos de Caso: Padrão `CLT de R$ ${cltLabel} vs PJ de R$ ${pjLabel}: Qual Compensa Mais em 2026?`.
+   - Artigos do Blog: Títulos revisados removendo termos agressivos como "(Grátis)" e evitando truncamento em SERP mobile/desktop.
+2. **Interlinking Interno Contextual**:
+   - Criação do componente reutilizável `CalculatorCallout.js` (`src/components/blog/CalculatorCallout.js`), integrado a `PostContent.js` e `ComparativoBody.js`.
+   - Eliminação de páginas órfãs: posts do blog com 0 links internos (`pj-para-desenvolvedores-vale-a-pena.mdx`, `como-abrir-cnpj-trabalhar-pj.mdx`, `clt-ou-pj-qual-vale-mais.mdx`, `como-calcular-salario-pj.mdx`, `SimplesAnexoContent.js`) receberam links contextuais e naturais para a calculadora principal (`/`), para os comparativos específicos e para o hub `/blog/comparativos`.
+   - Todos os CTAs de parceiros de contabilidade (`AffiliateCTA` da Manassés) foram rigorosamente preservados.
+3. **Expansão Seletiva de 5 Novas Profissões**:
+   - Adicionadas ao catálogo `src/data/comparativos/professions.js`:
+     1. `clt-ou-pj-desenvolvedor-junior` (R$ 4.500 CLT | PJ R$ 6.300)
+     2. `clt-ou-pj-tech-lead` (R$ 18.000 CLT | PJ R$ 28.800)
+     3. `clt-ou-pj-engenheiro-dados` (R$ 13.000 CLT | PJ R$ 20.150)
+     4. `clt-ou-pj-arquiteto-software` (R$ 22.000 CLT | PJ R$ 35.200)
+     5. `clt-ou-pj-desenvolvedor-mobile` (R$ 10.000 CLT | PJ R$ 15.500)
+   - Conteúdo editorial rico e específico implementado em `src/lib/comparativo/content.js` com introduções personalizadas e FAQs reais por função técnica (evitando texto genérico de substituição de cargo).
+4. **Dados Estruturados e Validação**:
+   - Preservados os schemas válidos `WebApplication`, `BlogPosting` e `BreadcrumbList`.
+   - Respeitada a diretriz atual do Google de não aplicar `FAQPage` schema especulativo.
+5. **Domínio e Sitemap**:
+   - Domínio `https://calculadora-cltvspj.vercel.app` 100% mantido.
+   - Sitemap estático (`public/sitemap.xml`) e `robots.txt` gerados com sucesso no build totalizando 56 URLs válidas.
+6. **Testes e Build**:
+   - `test_regressao.mjs`: 100% aprovado.
+   - `npm run build`: Compilado com sucesso (código 0).
+   - Testes de rotas HTTP em servidor local (`scripts/test_seo_routes.mjs`): 10 rotas críticas validadas com HTTP 200, title, description e canonical.
+
+---
+
+## [2026-10-22] Auditoria de Retomada e Desempenho Orgânico (GA4 + GSC)
+
+**Contexto**: O usuário retornou ao projeto após meses sem mexer e solicitou um diagnóstico completo de como está o desempenho da página.
+
+**Diagnóstico Atualizado (GA4 + GSC em 22/10/2026)**:
+1. **Google Search Console (Salto Exponencial de Tráfego Orgânico)**:
+   - **Últimos 28 dias**: **472 impressões** (contra 148 do período anterior, alta de +218%) e **4 cliques orgânicos diretos** (primeiros cliques orgânicos consolidados).
+   - **Posição Média Geral**: Subiu de 90.1 para **30.1** (ganho de 60 posições!).
+   - **Conquista da Primeira Página (Top 3 a 10)**: O sitemap com 51 URLs foi totalmente maturado pelo Google, e as páginas de comparativos salariais por cargo estão ranqueando nas primeiras posições de busca:
+     - `/blog/comparativo/clt-ou-pj-product-owner`: Posição **3.9** (15 impressões)
+     - `/blog/comparativo/clt-ou-pj-desenvolvedor-pleno`: Posição **4.7** (30 impressões, 1 clique)
+     - `/blog/comparativo/clt-ou-pj-qa-analista`: Posição **5.2** (26 impressões)
+     - `/blog/comparativo/clt-ou-pj-desenvolvedor-senior`: Posição **5.7** (41 impressões, 1 clique)
+     - `/blog/comparativo/clt-10000-vs-pj-15000`: Posição **3.8** (9 impressões)
+     - `/blog/comparativo/clt-5500-vs-pj`: Posição **4.8**
+     - `/blog/comparativo/clt-25000-vs-pj`: Posição **6.7**
+     - `/blog/comparativo/clt-4500-vs-pj`: Posição **6.9**
+     - `/blog/comparativo/clt-18000-vs-pj`: Posição **7.0**
+     - `/blog/comparativo/clt-3500-vs-pj`: Posição **7.5**
+     - `/blog/comparativo/clt-10000-vs-pj`: Posição **8.0**
+     - `/blog/comparativo/clt-20000-vs-pj-30000`: Posição **8.2**
+     - `/blog/comparativo/clt-30000-vs-pj`: Posição **9.0**
+2. **Google Analytics 4 (Outubro/2026)**:
+   - **8 usuários únicos** (todos 100% novos), 8 sessões e 14 pageviews acumulados no mês.
+   - **Origem**: 75% do tráfego vindo de **Organic Search** (6 sessões diretamente do Google), confirmando a virada de canal (antes era apenas tráfego direto de testes).
+   - **Top Páginas Acessadas**: Home `/`, `/blog/comparativo/clt-ou-pj-desenvolvedor-senior`, `/blog/comparativo/clt-4500-vs-pj`, `/blog/comparativo/clt-ou-pj-cientista-dados`, `/blog/comparativo/clt-ou-pj-product-owner`, etc.
+3. **Conversões e Afiliados (Auditoria de Monetização & Atribuição Técnica)**:
+   - **Total de Cliques de Afiliados**: **18 eventos `affiliate_click`** registrados no GA4 por 4 usuários únicos.
+   - **Manassés Contabilidade (`/go/manasses`)**: **16 redirecionamentos** acumulados para o link com token `ref=e150bfec6701708e9e17fdc38a6fc261`.
+   - **Agilize (`/go/agilize`)**: 2 redirecionamentos.
+   - **Descoberta Técnica no Site da Manassés**: Inspecionamos o HTML de `manassescontabilidade.com.br/orcamento/` e confirmamos que existe o script `cf7-afiliados-rebuilt-js-js-after` que grava o parâmetro `?ref=` em cookie (7 dias) e preenche `<input type="hidden" name="afiliado_ref">` nos formulários Contact Form 7.
+   - **Gargalo de Atribuição (Comercial vs Sistema)**: O comercial (Anderson) informou que afere repasses perguntando verbalmente ao cliente no onboarding ("como conheceu?"), o que é uma falha grave (clientes raramente lembram o nome do site).
+   - **Solução Estratégica**: (1) Orientar o comercial a consultar o banco do Contact Form 7 / e-mails com `afiliado_ref`; (2) Fornecer um cupom explícito (ex: "CLT50") no nosso site para o cliente ter incentivo financeiro de falar o código; (3) Avaliar captura direta de lead (nome/WhatsApp) antes do redirecionamento.
+4. **Infraestrutura e Motor**:
+   - Vercel Edge respondendo com cache ativo (`X-Vercel-Cache: HIT`, HTTP 200).
+   - Testes de regressão do motor de cálculo (`test_regressao.mjs`) 100% aprovados.
+
+---
+
+## [2026-09-19] Auditoria Atualizada de Métricas (GA4 e Google Search Console)
+
+**Contexto**: O usuário solicitou uma análise do status atual do site em relação às suas métricas.
+
+**Diagnóstico Atualizado (GA4 + GSC em 19/09/2026)**:
+1. **Google Analytics 4 (Histórico e Recência)**:
+   - **Histórico Mensal**:
+     - **Maio/2026**: 5 usuários | 6 sessões | 12 pageviews | Duração média: 125.6s
+     - **Junho/2026**: 10 usuários | 34 sessões | 143 pageviews | Duração média: 917.3s (pico de testes e interações)
+     - **Julho/2026**: 11 usuários | 12 sessões | 13 pageviews | Duração média: 30.4s
+     - **Agosto/2026**: 1 usuário | 1 sessão | 1 pageview
+     - **Setembro/2026 (até dia 19)**: Tráfego estagnado, sem novas sessões orgânicas capturadas.
+   - **Canais**: Tráfego majoritariamente Direto (48 sessões / 23 usuários) e Redes Sociais Orgânicas (5 sessões / 2 usuários).
+   - **Conversão de Afiliados**: 18 cliques em afiliados (`affiliate_click`) acumulados por 4 usuários únicos (Manassés e Agilize), confirmando forte intenção de quem acessa.
+2. **Google Search Console (Últimos 28 e 90 dias)**:
+   - **Últimos 90 dias**: 661 impressões no Google | 0 cliques | Posição média: 89.8.
+   - **Últimos 28 dias**: 157 impressões (queda vs 219 do período anterior) | 0 cliques | Posição média: 90.1.
+   - **Visibilidade**: O Google continua reconhecendo o site para mais de 30 palavras-chave relevantes ("calculadora clt pj", "calculadora pj x clt", "calculadora clt para pj", etc.).
+   - **Gargalo**: Apenas a página inicial `/` registra impressões no GSC. As 51 páginas do sitemap (posts de blog e comparativos de salários) ainda não conquistaram tração no ranking. A posição média na página 9-10 (posições 80-100) impede cliques orgânicos sem autoridade de domínio e backlinks.
+
+---
+
 ## [2026-08-28] Diagnóstico de Acessos, Tráfego e Conexão Permanente com o Search Console
 
 **Contexto**: O usuário solicitou um panorama geral sobre os acessos e a relevância do projeto, e cadastrou a Service Account no Google Search Console para restaurar o monitoramento automático.

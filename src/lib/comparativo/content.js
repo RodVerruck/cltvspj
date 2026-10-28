@@ -98,7 +98,104 @@ export function getRichComparativoContent(params) {
     premium: `Faixa premium: CLT de R$ ${cltLabel} compete com PJ de R$ ${pjLabel}+. A diferença bruta é grande, mas impostos, contador e ausência de FGTS/13º pesam na decisão final.`,
   };
 
-  const professionIntro = role
+  const PROFESSION_PROFILES = {
+    'Desenvolvedor Júnior': {
+      intro: (clt, pj) =>
+        `Para o início de carreira como **Desenvolvedor Júnior**, a escolha entre CLT de R$ ${clt} e proposta PJ equivalente a ~R$ ${pj}/mês envolve segurança vs aprendizado financeiro. Com a nova isenção de IRPF até R$ 5.000 (Lei 15.270/2025), o salário CLT tem desconto reduzido na fonte, enquanto os custos fixos de uma PJ (honorários de contador e taxa municipal) consomem percentual relevante da receita nessa faixa salarial.`,
+      faq: [
+        {
+          q: 'Desenvolvedor Júnior pode ser MEI para pagar menos imposto?',
+          a: 'Não. A atividade de desenvolvimento e programação de software (CNAE 6201-5/00) é considerada atividade intelectual regulamentada e vedada ao MEI. O profissional deve constituir Microempresa (ME) enquadrada no Simples Nacional.',
+        },
+        {
+          q: 'Vale a pena ser PJ logo no início da carreira?',
+          a: 'Em geral, a CLT oferece vantagens importantes nos primeiros anos: mentoria corporativa formal, férias remuneradas sem interrupção de receita, FGTS e estabilidade para constituição da primeira reserva de emergência.',
+        },
+      ],
+    },
+    'Tech Lead': {
+      intro: (clt, pj) =>
+        `A posição de **Tech Lead** combina liderança técnica, arquitetura de sistemas e coordenação de equipes. Com remuneração de R$ ${clt} na CLT vs ~R$ ${pj}/mês no PJ, a diferença tributária é acentuada: na CLT, a retenção de IRPF atinge a alíquota máxima de 27,5% e o teto do INSS. No modelo PJ, a aplicação correta do Fator R no Anexo III do Simples Nacional ou até Lucro Presumido permite reter uma parcela substancialmente maior no bolso.`,
+      faq: [
+        {
+          q: 'Qual o melhor enquadramento tributário para Tech Lead PJ?',
+          a: 'Para faturamentos entre R$ 25k e R$ 30k/mês, o Simples Nacional com Fator R (retirando pró-labore de pelo menos 28% para tributar no Anexo III a partir de 6%) é normalmente a estrutura mais vantajosa. Se o faturamento anual ultrapassar a faixa inicial ou tiver despesas dedutíveis reduzidas, o Lucro Presumido deve ser avaliado pelo contador.',
+        },
+        {
+          q: 'Como proteger a remuneração de liderança em contratos PJ?',
+          a: 'Como não há aviso prévio obrigatório ou multa rescisória de 40% do FGTS na PJ, contratos de Tech Lead costumam exigir cláusulas claras de aviso prévio contratual (30 a 60 dias) e honorários extras para períodos de transição ou sobreaviso.',
+        },
+      ],
+    },
+    'Engenheiro de Dados': {
+      intro: (clt, pj) =>
+        `O **Engenheiro de Dados** atua na espinha dorsal das plataformas de Big Data, Cloud e IA corporativa. Comparando CLT de R$ ${clt} com PJ de ~R$ ${pj}/mês, a alta demanda por esse perfil permite flexibilidade para múltiplos contratos ou prestação de serviços internacional. A escolha pelo PJ viabiliza maior rentabilidade líquida mensal, desde que o profissional reserve recursos para férias e plano de saúde por conta própria.`,
+      faq: [
+        {
+          q: 'Engenheiro de Dados PJ pode prestar serviços para clientes do exterior?',
+          a: 'Sim. Na exportação de serviços de tecnologia, a empresa PJ fica isenta de PIS, COFINS e ISS no Brasil, reduzindo expressivamente a carga tributária na nota fiscal sobre recebimentos em dólar ou euro.',
+        },
+        {
+          q: 'Qual CNAE o Engenheiro de Dados costuma utilizar no CNPJ?',
+          a: 'Geralmente utiliza o CNAE 6201-5/00 (Desenvolvimento de programas de computador sob encomenda) ou 6311-9/00 (Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet), ambos elegíveis ao Simples Nacional com regra do Fator R.',
+        },
+      ],
+    },
+    'Arquiteto de Software': {
+      intro: (clt, pj) =>
+        `No nível de **Arquiteto de Software**, comparando CLT de R$ ${clt} com proposta PJ de ~R$ ${pj}/mês, a tributação progressiva da CLT gera retenções superiores a R$ 5.000 mensais em impostos diretos. No regime PJ, com planejamento tributário focado em pró-labore ótimo e distribuição de lucros isenta, a rentabilidade líquida do profissional cresce de forma muito expressiva, compensando encargos rescisórios celetistas.`,
+      faq: [
+        {
+          q: 'A tributação sobre dividendos da Lei 15.270 atinge o Arquiteto PJ?',
+          a: 'A retenção de 10% sobre dividendos prevista na legislação atinge retiradas que excedam R$ 50.000 mensais por pessoa física. Para rendas líquidas mensais na faixa de R$ 25k a R$ 40k, a distribuição de lucros permanece 100% isenta no Brasil.',
+        },
+        {
+          q: 'Vale a pena abrir como SLU para Arquiteto de Software?',
+          a: 'Sim. A Sociedade Limitada Unipessoal (SLU) é o formato padrão mais recomendado, pois protege o patrimônio pessoal do arquiteto separando-o do patrimônio da empresa, sem a necessidade de incluir sócios fictícios.',
+        },
+      ],
+    },
+    'Desenvolvedor Mobile': {
+      intro: (clt, pj) =>
+        `Para o **Desenvolvedor Mobile** (iOS, Android, Flutter, React Native), a comparação entre CLT de R$ ${clt} e PJ de ~R$ ${pj}/mês é muito frequente em startups e agências digitais. Como os projetos costumam exigir equipamentos dedicados (como MacBooks e aparelhos físicos de teste), o regime PJ permite utilizar a receita da empresa para aquisição de instrumentos de trabalho, reduzindo o impacto no orçamento pessoal.`,
+      faq: [
+        {
+          q: 'Como funciona o recolhimento de ISS para Desenvolvedor Mobile PJ?',
+          a: 'No Simples Nacional, o ISS já é recolhido de forma unificada dentro da guia única (DAS), variando de 2% a 5% conforme a alíquota municipal da sede da sua empresa, sem a necessidade de emissão de guias municipais avulsas.',
+        },
+        {
+          q: 'Desenvolvedor Mobile PJ pode manter aplicativos próprios na App Store?',
+          a: 'Sim. O mesmo CNPJ utilizado para prestar serviços para empresas pode ser cadastrado como desenvolvedor corporativo na Apple Developer e Google Play Console, unificando a receita de serviços e eventuais monetizações diretas de apps.',
+        },
+      ],
+    },
+    'Desenvolvedor Pleno': {
+      intro: (clt, pj) =>
+        `Para o **Desenvolvedor Pleno**, a proposta PJ de ~R$ ${pj}/mês contra CLT de R$ ${clt} é o ponto de virada clássico no mercado de tecnologia brasileiro. É aqui que o ganho líquido começa a superar os benefícios corporativos de forma sólida, exigindo apenas que o profissional tenha disciplina para guardar reservas de férias e emergência.`,
+      faq: [
+        {
+          q: 'Qual o valor ideal de pró-labore para Dev Pleno no Simples?',
+          a: 'Para pagar apenas 6% de imposto no Simples Nacional (Anexo III), a folha de pagamento com pró-labore deve ser de pelo menos 28% do faturamento mensal (regra do Fator R). Para R$ 13.950 de faturamento, o pró-labore deve ser de aproximadamente R$ 3.910/mês.',
+        },
+      ],
+    },
+    'Desenvolvedor Sênior': {
+      intro: (clt, pj) =>
+        `Para o **Desenvolvedor Sênior**, com remuneração CLT de R$ ${clt} e propostas PJ de ~R$ ${pj}/mês, a vantagem líquida da PJ costuma ser bastante expressiva. Os descontos de IRPF e INSS na CLT pesam no topo da tabela progressiva, enquanto no modelo PJ um planejamento contábil correto maximiza a renda disponível.`,
+      faq: [
+        {
+          q: 'Como calcular o pacote total CLT para comparar com proposta PJ sênior?',
+          a: 'Não compare apenas salário líquido com faturamento PJ. Some ao salário CLT: FGTS (8%), provisão mensal de 1/12 de 13º salário e férias (com 1/3 constitucional), além de plano de saúde e VR pagos pela empresa.',
+        },
+      ],
+    },
+  };
+
+  const profProfile = role ? PROFESSION_PROFILES[role] : null;
+
+  const professionIntro = profProfile
+    ? profProfile.intro(cltLabel, pjLabel)
+    : role
     ? `Este comparativo simula o cenário típico de **${role}** com remuneração CLT de R$ ${cltLabel} e proposta PJ equivalente a ~R$ ${pjLabel}/mês — perfil comum em tecnologia e produto digital.`
     : null;
 
@@ -124,6 +221,10 @@ export function getRichComparativoContent(params) {
           : `Com faturamento PJ de R$ ${pjLabel}/mês, MEI pode ser analisado — mas compare sempre com Simples se houver crescimento previsto.`,
     },
   ];
+
+  if (profProfile?.faq) {
+    faq.unshift(...profProfile.faq);
+  }
 
   if (type === 'case-study') {
     faq.unshift({

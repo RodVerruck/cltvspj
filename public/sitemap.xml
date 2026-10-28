@@ -266,4 +266,29 @@
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-desenvolvedor-junior</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-tech-lead</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-engenheiro-dados</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-arquiteto-software</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-desenvolvedor-mobile</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
 </urlset>

@@ -10,4 +10,9 @@ export const PROFESSIONS = [
   { slug: 'clt-ou-pj-analista-suporte', type: 'profession', role: 'Analista de Suporte', cltGross: 4500, pjMultiplier: 1.4, hoursPerMonth: 160, date: '2026-06-08', tags: ['comparativo', 'suporte', 'ti', 'clt vs pj'] },
   { slug: 'clt-ou-pj-devops', type: 'profession', role: 'DevOps / SRE', cltGross: 13000, pjMultiplier: 1.6, hoursPerMonth: 160, date: '2026-06-08', tags: ['comparativo', 'devops', 'ti', 'clt vs pj'] },
   { slug: 'clt-ou-pj-scrum-master', type: 'profession', role: 'Scrum Master', cltGross: 11000, pjMultiplier: 1.5, hoursPerMonth: 160, date: '2026-06-08', tags: ['comparativo', 'agile', 'ti', 'clt vs pj'] },
+  { slug: 'clt-ou-pj-desenvolvedor-junior', type: 'profession', role: 'Desenvolvedor Júnior', cltGross: 4500, pjMultiplier: 1.4, hoursPerMonth: 160, date: '2026-10-22', tags: ['comparativo', 'desenvolvedor', 'junior', 'ti', 'clt vs pj'] },
+  { slug: 'clt-ou-pj-tech-lead', type: 'profession', role: 'Tech Lead', cltGross: 18000, pjMultiplier: 1.6, hoursPerMonth: 160, date: '2026-10-22', tags: ['comparativo', 'tech lead', 'liderança', 'ti', 'clt vs pj'] },
+  { slug: 'clt-ou-pj-engenheiro-dados', type: 'profession', role: 'Engenheiro de Dados', cltGross: 13000, pjMultiplier: 1.55, hoursPerMonth: 160, date: '2026-10-22', tags: ['comparativo', 'dados', 'engenharia de dados', 'ti', 'clt vs pj'] },
+  { slug: 'clt-ou-pj-arquiteto-software', type: 'profession', role: 'Arquiteto de Software', cltGross: 22000, pjMultiplier: 1.6, hoursPerMonth: 160, date: '2026-10-22', tags: ['comparativo', 'arquiteto de software', 'engenharia', 'ti', 'clt vs pj'] },
+  { slug: 'clt-ou-pj-desenvolvedor-mobile', type: 'profession', role: 'Desenvolvedor Mobile', cltGross: 10000, pjMultiplier: 1.55, hoursPerMonth: 160, date: '2026-10-22', tags: ['comparativo', 'mobile', 'ios', 'android', 'ti', 'clt vs pj'] },
 ];

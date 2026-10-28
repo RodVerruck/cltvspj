@@ -115,17 +115,17 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Calculadora CLT x PJ 2026 | Veja Qual Compensa Mais</title>
-        <meta name="description" content="Calculadora gratuita CLT x PJ. Compare quanto você ganha líquido como CLT vs PJ com todos os impostos. Resultado instantâneo!" />
-        <meta name="keywords" content="CLT ou PJ, calculadora CLT PJ, quanto ganho como PJ, PJ vale a pena, converter CLT para PJ, simples nacional, impostos PJ, salário líquido CLT" />
+        <title>Calculadora CLT vs PJ 2026: Compare Salário Líquido e Benefícios</title>
+        <meta name="description" content="Simule e compare o salário líquido entre CLT e PJ em 2026 com todos os impostos (INSS, IRPF, Simples Nacional), benefícios e custos de contador." />
+        <meta name="keywords" content="CLT vs PJ, calculadora CLT PJ, salário líquido CLT, impostos PJ, Simples Nacional, Fator R, converter CLT para PJ" />
         <meta name="author" content="CLT ou PJ" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
-        <meta property="og:title" content="Calculadora CLT x PJ 2026 | Veja Qual Compensa Mais" />
-        <meta property="og:description" content="Compare seu salário CLT com PJ em segundos. Cálculo completo com TODOS os impostos e benefícios." />
+        <meta property="og:title" content="Calculadora CLT vs PJ 2026: Compare Salário Líquido e Benefícios" />
+        <meta property="og:description" content="Simulação completa entre CLT e PJ em 2026 considerando impostos, encargos trabalhistas, benefícios e pró-labore." />
         <meta property="og:site_name" content="CLT ou PJ" />
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
         <meta property="og:image:width" content="1200" />
@@ -133,8 +133,8 @@ export default function Home() {
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Calculadora CLT x PJ 2026" />
-        <meta name="twitter:description" content="Descubra quanto você realmente ganha como CLT vs PJ" />
+        <meta name="twitter:title" content="Calculadora CLT vs PJ 2026: Compare Salário Líquido e Benefícios" />
+        <meta name="twitter:description" content="Simule e compare o salário líquido entre CLT e PJ em 2026 com todos os impostos e benefícios." />
         <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
 
         {/* Canonical */}
