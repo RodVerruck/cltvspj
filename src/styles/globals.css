@@ -43,6 +43,21 @@
     outline: 2px solid var(--money);
     outline-offset: 2px;
   }
+
+  /* Tipografia moderna: quebra equilibrada em títulos e prevenção de palavras órfãs (runts) */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: balance;
+  }
+
+  p,
+  blockquote {
+    text-wrap: pretty;
+  }
 }
 
 @layer components {
@@ -53,8 +68,8 @@
   }
 
   /* Drop Cap - Letra capitular do primeiro parágrafo */
-  .post-content > p:first-of-type::first-letter,
-  article > p:first-of-type::first-letter {
+  .post-content>p:first-of-type::first-letter,
+  article>p:first-of-type::first-letter {
     font-family: var(--f-display);
     font-size: 5.5rem;
     float: left;

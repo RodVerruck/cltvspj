@@ -2,6 +2,32 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Implementação: Lote 4 de Credibilidade (E-E-A-T), Tipografia Moderna e Finalização da Auditoria
+
+**Contexto**: O usuário autorizou a execução do Lote 4, focado em transparência editorial, páginas de credibilidade institucional (E-E-A-T), balanceamento tipográfico moderno e eliminação de links mortos no rodapé. Também analisamos os comparativos visuais do banner de parceria da Manassés Contabilidade enviados pelo usuário.
+
+**Diagnóstico dos Banners Enviados pelo Usuário**:
+- **Imagem 1 (Antes)**: O card antigo com fundo verde escuro sofria de herança de CSS (`.post-content p` e tags H3 forçando `color: #1a1815` / preto), tornando título, descrição, cupom e rodapé quase invisíveis.
+- **Imagem 2 (Intermediário)**: O título foi forçado para creme/branco, mas o texto explicativo ("A Manassés é especialista em contabilidade consultiva..."), o selo institucional e as notas de cupom continuavam pretos sobre o fundo verde escuro, mantendo contraste insuficiente.
+- **Solução Definitiva no Código**: Em [`ComparativoBody.js`](file:///c:/Projetos/cltvspj/src/components/comparativo/ComparativoBody.js), substituímos completamente o bloco escuro pesado por um **Card Editorial Premium em fundo branco**, com faixa superior verde esmeralda, tipografia nítida de alto contraste (`text-ink`), badges de benefícios escaneáveis com checks (Assessoria Fator R, Migração, WhatsApp), cupom em formato de voucher destacado (`CLTVSPJ50`) e botão de ação em verde com alto contraste.
+
+**Ações Implementadas no Lote 4**:
+1. **Balanceamento Tipográfico Moderno (`text-wrap: balance` e `text-wrap: pretty`)**:
+   - Em [`src/styles/globals.css`](file:///c:/Projetos/cltvspj/src/styles/globals.css), aplicamos `text-wrap: balance` aos cabeçalhos (`h1, h2, h3, h4, h5, h6, .font-display`) para evitar quebras deselegantes de linhas em títulos curtos, e `text-wrap: pretty` aos parágrafos (`p, li, blockquote`) para prevenir viúvas orfãs em finais de frases (conforme recomendação do *modern-web-guidance*).
+2. **Criação da Página de Metodologia Detalhada (`/metodologia`)**:
+   - Criado [`src/pages/metodologia.js`](file:///c:/Projetos/cltvspj/src/pages/metodologia.js), documentando detalhadamente as fórmulas matemáticas e leis tributárias: Composição do Pacote Total CLT, cálculo do DAS pelo Simples Nacional (Anexos III e V), algoritmo de otimização do Fator R (folha ideal de 28%), retenção de INSS e IRPF sobre pró-labore, fórmula do Ponto de Equilíbrio (Break-Even PJ) e fontes legais oficiais.
+3. **Criação da Página de Contato e Política de Dados (`/contato`)**:
+   - Criado [`src/pages/contato.js`](file:///c:/Projetos/cltvspj/src/pages/contato.js), apresentando canais diretos de suporte, contato com a contabilidade parceira via WhatsApp para assessoria de migração de carreira com cupom `CLTVSPJ50`, e termo de conformidade com a LGPD (processamento 100% no navegador sem persistência ou venda de dados de simulação).
+4. **Criação da Página de Glossário Tributário (`/glossario`)**:
+   - Criado [`src/pages/glossario.js`](file:///c:/Projetos/cltvspj/src/pages/glossario.js), reunindo definições práticas e descomplicadas dos 12 termos tributários e trabalhistas mais buscados (Anexo III, Anexo V, Break-Even, CNAE, DAS, Fator R, FGTS, Lei 15.270/2025, Lucro Presumido, MEI, Pró-Labore, RBT12), com links internos estratégicos para artigos do blog e a calculadora principal.
+5. **Atualização do Rodapé Global (`Footer.js`)**:
+   - Em [`src/components/Footer.js`](file:///c:/Projetos/cltvspj/src/components/Footer.js), substituídos os links mortos (`href="#"`) pelos novos links internos ativos: `/glossario`, `/metodologia` e `/contato`.
+6. **Validação**:
+   - `node test_regressao.mjs`: 100% dos testes aprovados.
+   - Rotas `/metodologia`, `/contato` e `/glossario` testadas com sucesso (HTTP 200).
+
+---
+
 ## [2026-11-06] Implementação: Lote 3 de Visual, Hierarquia de Resultados e Gráfico de Barras
 
 **Contexto**: O usuário autorizou a execução do Lote 3, focado em refinamento visual, linearidade do fluxo de leitura do resultado e representação gráfica de impacto.

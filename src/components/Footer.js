@@ -29,15 +29,15 @@ export default function Footer() {
             </h4>
             <Link href="/blog" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Blog</Link>
             <Link href="/blog/vale-pena-pj-isencao-ir-lei-15270-2026" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Guia Lei 15.270</Link>
-            <a href="#" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Glossário</a>
+            <Link href="/glossario" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Glossário</Link>
           </div>
 
           <div>
             <h4 className="font-mono text-[11px] uppercase tracking-[0.15em] text-paper/50 mb-4 font-medium">
               Sobre
             </h4>
-            <a href="#" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Metodologia</a>
-            <a href="#" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Contato</a>
+            <Link href="/metodologia" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Metodologia</Link>
+            <Link href="/contato" className="block text-sm text-paper/85 hover:text-paper mb-2 transition-colors">Contato</Link>
           </div>
         </div>
 
