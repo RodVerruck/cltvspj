@@ -340,96 +340,105 @@ ${url}`;
               <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-sans items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-sans items-stretch">
               {/* BLOCO CLT */}
-              <fieldset className="bg-white border border-rule rounded-xl p-6 sm:p-8 relative shadow-sm">
+              <fieldset className="bg-white border border-rule rounded-xl p-6 sm:p-8 relative shadow-sm flex flex-col justify-between h-full">
                 <legend className="sr-only">Proposta CLT (Regime Atual)</legend>
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
-                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink" aria-hidden="true">
-                  Proposta CLT <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Regime Atual</span>
-                </div>
-
-                {/* Salário Bruto Mensal */}
-                <div className="mb-6">
-                  <label htmlFor="field-salary" className="text-sm font-medium text-ink mb-2 block">Salário bruto mensal</label>
-                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                    <span className="font-mono text-lg text-ink-fade">R$</span>
-                    <input
-                      id="field-salary"
-                      type="text"
-                      inputMode="decimal"
-                      value={salary}
-                      onChange={(e) => setSalary(e.target.value)}
-                      className="font-mono text-2xl font-bold text-ink bg-transparent outline-none flex-1 py-1"
-                    />
-                    <span className="text-xs text-ink-fade">/mês</span>
+                <div>
+                  <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink" aria-hidden="true">
+                    Proposta CLT <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Regime Atual</span>
                   </div>
-                </div>
 
-                {/* Benefícios Mensais em Grid 2x2 Compacto */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-display text-lg text-ink font-bold">Benefícios Mensais</h4>
-                    <span className="text-xs font-mono text-money font-semibold bg-money-light px-2 py-0.5 rounded">
-                      Total: R$ {((parseFloat(benefits.vr) || 0) + (parseFloat(benefits.vt) || 0) + (parseFloat(benefits.planoSaude) || 0) + (parseFloat(benefits.seguroVida) || 0)).toLocaleString('pt-BR')}
-                    </span>
+                  {/* Salário Bruto Mensal */}
+                  <div className="mb-6">
+                    <label htmlFor="field-salary" className="text-sm font-medium text-ink mb-2 block">Salário bruto mensal</label>
+                    <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                      <span className="font-mono text-lg text-ink-fade">R$</span>
+                      <input
+                        id="field-salary"
+                        type="text"
+                        inputMode="decimal"
+                        value={salary}
+                        onChange={(e) => setSalary(e.target.value)}
+                        className="font-mono text-2xl sm:text-3xl font-bold text-ink bg-transparent outline-none flex-1 py-1"
+                      />
+                      <span className="text-xs text-ink-fade">/mês</span>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      { key: 'vr', label: 'Vale Refeição / Alimentação' },
-                      { key: 'planoSaude', label: 'Plano de Saúde' },
-                      { key: 'vt', label: 'Vale Transporte / Auxílio' },
-                      { key: 'seguroVida', label: 'Seguro de Vida / Outros' }
-                    ].map(({ key, label }) => (
-                      <div key={key} className="bg-paper/40 border border-rule/60 rounded-lg px-3.5 py-2.5 focus-within:border-money transition-colors">
-                        <label htmlFor={`field-benefit-${key}`} className="text-xs text-ink-muted mb-1 block">{label}</label>
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="font-mono text-xs text-ink-fade">R$</span>
-                          <input
-                            id={`field-benefit-${key}`}
-                            type="text"
-                            inputMode="decimal"
-                            value={benefits[key]}
-                            onChange={(e) => setBenefits({ ...benefits, [key]: e.target.value })}
-                            className="font-mono text-base font-semibold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
-                          />
+
+                  {/* Benefícios Mensais em Grid 2x2 Compacto */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-display text-lg text-ink font-bold">Benefícios Mensais</h4>
+                      <span className="text-xs font-mono text-money font-bold bg-money-light border border-money/20 px-2.5 py-0.5 rounded shadow-sm">
+                        Total: R$ {((parseFloat(benefits.vr) || 0) + (parseFloat(benefits.vt) || 0) + (parseFloat(benefits.planoSaude) || 0) + (parseFloat(benefits.seguroVida) || 0)).toLocaleString('pt-BR')}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      {[
+                        { key: 'vr', label: 'Vale Refeição / Alimentação' },
+                        { key: 'planoSaude', label: 'Plano de Saúde' },
+                        { key: 'vt', label: 'Vale Transporte / Auxílio' },
+                        { key: 'seguroVida', label: 'Seguro de Vida / Outros' }
+                      ].map(({ key, label }) => (
+                        <div key={key} className="bg-paper/50 hover:bg-paper/80 border border-rule/70 rounded-lg px-3.5 py-2.5 focus-within:border-money transition-colors">
+                          <label htmlFor={`field-benefit-${key}`} className="text-xs text-ink-muted mb-1 block">{label}</label>
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="font-mono text-xs text-ink-fade">R$</span>
+                            <input
+                              id={`field-benefit-${key}`}
+                              type="text"
+                              inputMode="decimal"
+                              value={benefits[key]}
+                              onChange={(e) => setBenefits({ ...benefits, [key]: e.target.value })}
+                              className="font-mono text-base font-bold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Resumo Rápido Pacote CLT */}
-                <div className="bg-paper/70 border border-rule/80 rounded-lg p-4 mb-5 flex items-center justify-between">
-                  <div>
-                    <span className="text-xs text-ink-muted block">Pacote CLT Estimado (Líquido + FGTS + 13º + Férias + Benefícios)</span>
-                    <span className="font-display text-2xl font-bold text-ink">
-                      R$ {clt.totalPackage.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}<span className="text-xs font-sans font-normal text-ink-muted">/mês</span>
-                    </span>
+                  {/* Resumo Rápido Pacote CLT (Espelha o card PJ) */}
+                  <div className="bg-paper/70 border border-rule/80 rounded-xl p-4 mb-5">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div>
+                        <span className="text-xs text-ink-muted block">Pacote CLT Estimado (Total econômico)</span>
+                        <span className="font-display text-2xl font-bold text-ink">
+                          R$ {clt.totalPackage.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}<span className="text-xs font-sans font-normal text-ink-muted">/mês</span>
+                        </span>
+                      </div>
+                      <span className="text-[11px] font-mono uppercase tracking-wider font-bold text-ink-muted bg-white border border-rule px-2.5 py-1 rounded shadow-sm">
+                        Líquido: R$ {clt.net.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-ink-muted font-sans border-t border-rule/60 pt-2 flex flex-wrap gap-x-4 gap-y-1">
+                      <span>• <strong>FGTS:</strong> R$ {clt.fgts.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês</span>
+                      <span>• <strong>13º + Férias:</strong> R$ {Math.round((clt.decimoTerceiroNet + clt.feriasNet) / 12).toLocaleString('pt-BR')}/mês</span>
+                      <span>• <strong>INSS:</strong> R$ {clt.inss.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span>
+                    </div>
                   </div>
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-ink-fade bg-white border border-rule px-2.5 py-1 rounded">
-                    Líquido: R$ {clt.net.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
-                  </span>
                 </div>
 
                 {/* Gaveta de Ajustes Avançados CLT & IRPF */}
-                <div className="border-t border-rule pt-4">
+                <div className="border-t border-rule pt-4 mt-auto">
                   <button
                     id="btn-clt-advanced"
                     type="button"
                     aria-expanded={showCltAdvanced}
                     aria-controls="clt-advanced-panel"
                     onClick={() => setShowCltAdvanced(!showCltAdvanced)}
-                    className="w-full flex items-center justify-between text-xs font-mono uppercase tracking-wider text-ink-muted hover:text-ink py-2 px-3 rounded-lg hover:bg-paper/60 transition-colors"
+                    className="w-full flex items-center justify-between text-xs font-medium text-ink-muted hover:text-ink py-2 px-2.5 rounded-lg hover:bg-paper/60 transition-colors group"
                   >
-                    <span className="flex items-center gap-2 font-bold">
+                    <span className="flex items-center gap-2 font-semibold">
                       <span>⚙️ Opções Avançadas (PLR, Dependentes e Pensão)</span>
                       {(plrAnual || dependentes !== '0' || pensaoAlimenticia) && (
-                        <span className="bg-money text-white text-[10px] px-1.5 py-0.5 rounded">Ativo</span>
+                        <span className="bg-money text-white text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-bold">Ativo</span>
                       )}
                     </span>
-                    <span className="text-sm">{showCltAdvanced ? '▴ Ocultar' : '▾ Expandir'}</span>
+                    <span className="text-xs font-mono uppercase tracking-wider text-ink-fade group-hover:text-ink">{showCltAdvanced ? '▴ Ocultar' : '▾ Expandir'}</span>
                   </button>
 
                   {showCltAdvanced && (
@@ -502,161 +511,163 @@ ${url}`;
               </fieldset>
 
               {/* BLOCO PJ */}
-              <fieldset className="bg-white border border-rule rounded-xl p-6 sm:p-8 relative shadow-sm">
+              <fieldset className="bg-white border border-rule rounded-xl p-6 sm:p-8 relative shadow-sm flex flex-col justify-between h-full">
                 <legend className="sr-only">Proposta PJ (Regime Alternativo)</legend>
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
-                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink" aria-hidden="true">
-                  Proposta PJ <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Alternativa</span>
-                </div>
-
-                {/* Valor da Proposta PJ com Alternador Mensal / Por Hora */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <label htmlFor={pjInputMode === 'mensal' ? 'field-pj-monthly' : 'field-pj-rate'} className="text-sm font-medium text-ink">
-                      {pjInputMode === 'mensal' ? 'Faturamento bruto mensal' : 'Valor por hora e jornada'}
-                    </label>
-                    <div role="radiogroup" aria-label="Modo de preenchimento do valor PJ" className="inline-flex bg-paper border border-rule rounded-lg p-0.5 text-xs">
-                      <button
-                        type="button"
-                        role="radio"
-                        aria-checked={pjInputMode === 'mensal'}
-                        onClick={() => switchPjInputMode('mensal')}
-                        className={`px-2.5 py-1 rounded-md font-medium transition-colors ${pjInputMode === 'mensal' ? 'bg-ink text-paper shadow-sm' : 'text-ink-muted hover:text-ink'}`}
-                      >
-                        Valor Mensal
-                      </button>
-                      <button
-                        type="button"
-                        role="radio"
-                        aria-checked={pjInputMode === 'hora'}
-                        onClick={() => switchPjInputMode('hora')}
-                        className={`px-2.5 py-1 rounded-md font-medium transition-colors ${pjInputMode === 'hora' ? 'bg-ink text-paper shadow-sm' : 'text-ink-muted hover:text-ink'}`}
-                      >
-                        Por Hora
-                      </button>
-                    </div>
+                <div>
+                  <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink" aria-hidden="true">
+                    Proposta PJ <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Alternativa</span>
                   </div>
 
-                  {pjInputMode === 'mensal' ? (
-                    <div>
-                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                        <span className="font-mono text-lg text-ink-fade">R$</span>
-                        <input
-                          id="field-pj-monthly"
-                          type="text"
-                          inputMode="decimal"
-                          value={pjMonthlyInput}
-                          onChange={(e) => handlePjMonthlyChange(e.target.value)}
-                          className="font-mono text-2xl font-bold text-ink bg-transparent outline-none flex-1 py-1"
-                        />
-                        <span className="text-xs text-ink-fade">/mês</span>
+                  {/* Valor da Proposta PJ com Alternador Mensal / Por Hora */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <label htmlFor={pjInputMode === 'mensal' ? 'field-pj-monthly' : 'field-pj-rate'} className="text-sm font-medium text-ink">
+                        {pjInputMode === 'mensal' ? 'Faturamento bruto mensal' : 'Valor por hora e jornada'}
+                      </label>
+                      <div role="radiogroup" aria-label="Modo de preenchimento do valor PJ" className="inline-flex bg-paper border border-rule rounded-lg p-0.5 text-xs">
+                        <button
+                          type="button"
+                          role="radio"
+                          aria-checked={pjInputMode === 'mensal'}
+                          onClick={() => switchPjInputMode('mensal')}
+                          className={`px-2.5 py-1 rounded-md font-medium transition-colors ${pjInputMode === 'mensal' ? 'bg-ink text-paper shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                        >
+                          Valor Mensal
+                        </button>
+                        <button
+                          type="button"
+                          role="radio"
+                          aria-checked={pjInputMode === 'hora'}
+                          onClick={() => switchPjInputMode('hora')}
+                          className={`px-2.5 py-1 rounded-md font-medium transition-colors ${pjInputMode === 'hora' ? 'bg-ink text-paper shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                        >
+                          Por Hora
+                        </button>
                       </div>
-                      <span className="text-[11px] font-mono text-ink-fade mt-1.5 block">
-                        Equivale a R$ {((parseFloat(pjRate) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/hora (base de {hoursPerMonth}h/mês)
-                      </span>
                     </div>
-                  ) : (
-                    <div className="grid grid-cols-2 gap-4">
+
+                    {pjInputMode === 'mensal' ? (
                       <div>
-                        <label htmlFor="field-pj-rate" className="text-xs text-ink-muted mb-1 block">Valor da hora</label>
-                        <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                          <span className="font-mono text-base text-ink-fade">R$</span>
+                        <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                          <span className="font-mono text-lg text-ink-fade">R$</span>
                           <input
-                            id="field-pj-rate"
+                            id="field-pj-monthly"
                             type="text"
                             inputMode="decimal"
-                            value={pjRate}
-                            onChange={(e) => handlePjRateChange(e.target.value)}
-                            className="font-mono text-xl font-bold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
+                            value={pjMonthlyInput}
+                            onChange={(e) => handlePjMonthlyChange(e.target.value)}
+                            className="font-mono text-2xl sm:text-3xl font-bold text-ink bg-transparent outline-none flex-1 py-1"
                           />
-                          <span className="text-xs text-ink-fade">/h</span>
+                          <span className="text-xs text-ink-fade">/mês</span>
+                        </div>
+                        <span className="text-[11px] font-mono text-ink-fade mt-1.5 block">
+                          Equivale a R$ {((parseFloat(pjRate) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/hora (base de {hoursPerMonth}h/mês)
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="field-pj-rate" className="text-xs text-ink-muted mb-1 block">Valor da hora</label>
+                          <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                            <span className="font-mono text-base text-ink-fade">R$</span>
+                            <input
+                              id="field-pj-rate"
+                              type="text"
+                              inputMode="decimal"
+                              value={pjRate}
+                              onChange={(e) => handlePjRateChange(e.target.value)}
+                              className="font-mono text-xl font-bold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
+                            />
+                            <span className="text-xs text-ink-fade">/h</span>
+                          </div>
+                        </div>
+                        <div>
+                          <label htmlFor="field-hours" className="text-xs text-ink-muted mb-1 block">Horas/mês</label>
+                          <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                            <input
+                              id="field-hours"
+                              type="text"
+                              inputMode="numeric"
+                              value={hoursPerMonth}
+                              onChange={(e) => handleHoursChange(e.target.value)}
+                              className="font-mono text-xl font-bold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
+                            />
+                            <span className="text-xs text-ink-fade">horas</span>
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <label htmlFor="field-hours" className="text-xs text-ink-muted mb-1 block">Horas/mês</label>
-                        <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                          <input
-                            id="field-hours"
-                            type="text"
-                            inputMode="numeric"
-                            value={hoursPerMonth}
-                            onChange={(e) => handleHoursChange(e.target.value)}
-                            className="font-mono text-xl font-bold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
-                          />
-                          <span className="text-xs text-ink-fade">horas</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Regime Tributário */}
-                <div className="mb-6">
-                  <label id="label-regime" className="text-sm font-medium text-ink mb-2 block">Regime tributário</label>
-                  <div role="radiogroup" aria-labelledby="label-regime" className="grid grid-cols-3 border border-rule rounded-lg overflow-hidden bg-paper/40 p-1 gap-1">
-                    {[
-                      { id: 'simples', label: 'Simples Nacional', sub: 'Anexo III / V' },
-                      { id: 'presumido', label: 'Lucro Presumido', sub: '11,33% + ISS' },
-                      { id: 'mei', label: 'MEI', sub: 'Até R$ 6.750/mês' }
-                    ].map((item) => (
-                      <button
-                        key={item.id}
-                        type="button"
-                        role="radio"
-                        aria-checked={regime === item.id}
-                        onClick={() => setRegime(item.id)}
-                        className={`py-2 px-2 rounded-md text-center transition-all ${regime === item.id ? 'bg-ink text-paper shadow-sm font-bold' : 'text-ink-muted hover:text-ink hover:bg-white/60'}`}
-                      >
-                        <span className="text-xs sm:text-sm block">{item.label}</span>
-                        <span className={`text-[10px] font-mono block mt-0.5 ${regime === item.id ? 'text-paper/75' : 'text-ink-fade'}`}>{item.sub}</span>
-                      </button>
-                    ))}
+                    )}
                   </div>
-                </div>
 
-                {/* Card de Resumo Líquido PJ & Premissas Ativas */}
-                <div className="bg-money-light/70 border border-money/20 rounded-lg p-4 mb-5">
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <div>
-                      <span className="text-xs text-ink-muted block">Líquido PJ Estimado (após impostos e custos)</span>
-                      <span className="font-display text-2xl font-bold text-money">
-                        R$ {pj.net.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}<span className="text-xs font-sans font-normal text-ink-muted">/mês</span>
+                  {/* Regime Tributário */}
+                  <div className="mb-6">
+                    <label id="label-regime" className="text-sm font-medium text-ink mb-2 block">Regime tributário</label>
+                    <div role="radiogroup" aria-labelledby="label-regime" className="grid grid-cols-3 border border-rule rounded-lg overflow-hidden bg-paper/40 p-1 gap-1">
+                      {[
+                        { id: 'simples', label: 'Simples Nacional', sub: 'Anexo III / V' },
+                        { id: 'presumido', label: 'Lucro Presumido', sub: '11,33% + ISS' },
+                        { id: 'mei', label: 'MEI', sub: 'Até R$ 6.750/mês' }
+                      ].map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          role="radio"
+                          aria-checked={regime === item.id}
+                          onClick={() => setRegime(item.id)}
+                          className={`py-2 px-2 rounded-md text-center transition-all ${regime === item.id ? 'bg-ink text-paper shadow-sm font-bold' : 'text-ink-muted hover:text-ink hover:bg-white/60'}`}
+                        >
+                          <span className="text-xs sm:text-sm block">{item.label}</span>
+                          <span className={`text-[10px] font-mono block mt-0.5 ${regime === item.id ? 'text-paper/75' : 'text-ink-fade'}`}>{item.sub}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Card de Resumo Líquido PJ & Premissas Ativas */}
+                  <div className="bg-money-light/70 border border-money/20 rounded-xl p-4 mb-5">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div>
+                        <span className="text-xs text-ink-muted block">Líquido PJ Estimado (após impostos e custos)</span>
+                        <span className="font-display text-2xl font-bold text-money">
+                          R$ {pj.net.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}<span className="text-xs font-sans font-normal text-ink-muted">/mês</span>
+                        </span>
+                      </div>
+                      <span className="text-[11px] font-mono uppercase tracking-wider font-bold text-money bg-white border border-money/20 px-2.5 py-1 rounded shadow-sm">
+                        {pj.taxName}
                       </span>
                     </div>
-                    <span className="text-[11px] font-mono uppercase tracking-wider font-bold text-money bg-white border border-money/20 px-2.5 py-1 rounded">
-                      {pj.taxName}
-                    </span>
+                    {regime !== 'mei' && (
+                      <div className="text-[11px] text-ink-muted font-sans border-t border-money/15 pt-2 flex flex-wrap gap-x-4 gap-y-1">
+                        <span>• <strong>Pró-labore:</strong> R$ {pj.proLabore.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ({proLaboreInput === 'padrao' ? 'Fator R 28%' : proLaboreInput === 'minimo' ? 'Mínimo' : 'Personalizado'})</span>
+                        <span>• <strong>Contador:</strong> {mensalidadeContador ? `R$ ${mensalidadeContador}/mês` : 'Não incluído'}</span>
+                        {regime === 'simples' && (
+                          <span>• <strong>Anexo:</strong> {pj.anexo} ({pj.fatorRPercent.toFixed(1)}% Fator R)</span>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  {regime !== 'mei' && (
-                    <div className="text-[11px] text-ink-muted font-sans border-t border-money/15 pt-2 flex flex-wrap gap-x-4 gap-y-1">
-                      <span>• <strong>Pró-labore:</strong> R$ {pj.proLabore.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ({proLaboreInput === 'padrao' ? 'Fator R 28%' : proLaboreInput === 'minimo' ? 'Mínimo' : 'Personalizado'})</span>
-                      <span>• <strong>Contador:</strong> {mensalidadeContador ? `R$ ${mensalidadeContador}/mês` : 'Não incluído'}</span>
-                      {regime === 'simples' && (
-                        <span>• <strong>Anexo:</strong> {pj.anexo} ({pj.fatorRPercent.toFixed(1)}% Fator R)</span>
-                      )}
-                    </div>
-                  )}
                 </div>
 
                 {/* Gaveta de Ajustes Avançados PJ */}
                 {regime !== 'mei' && (
-                  <div className="border-t border-rule pt-4">
+                  <div className="border-t border-rule pt-4 mt-auto">
                     <button
                       id="btn-pj-advanced"
                       type="button"
                       aria-expanded={showPjAdvanced}
                       aria-controls="pj-advanced-panel"
                       onClick={() => setShowPjAdvanced(!showPjAdvanced)}
-                      className="w-full flex items-center justify-between text-xs font-mono uppercase tracking-wider text-ink-muted hover:text-ink py-2 px-3 rounded-lg hover:bg-paper/60 transition-colors"
+                      className="w-full flex items-center justify-between text-xs font-medium text-ink-muted hover:text-ink py-2 px-2.5 rounded-lg hover:bg-paper/60 transition-colors group"
                     >
-                      <span className="flex items-center gap-2 font-bold">
-                        <span>⚙️ Personalizar Pró-labore, Contador e {regime === 'simples' ? 'Fator R' : 'ISS'}</span>
+                      <span className="flex items-center gap-2 font-semibold">
+                        <span>⚙️ Ajustes Fiscais (Pró-labore, Contador e {regime === 'simples' ? 'Fator R' : 'ISS'})</span>
                         {(proLaboreInput !== 'minimo' || mensalidadeContador !== '' || faturamento12Meses !== '' || folha12Meses !== '') && (
-                          <span className="bg-money text-white text-[10px] px-1.5 py-0.5 rounded">Customizado</span>
+                          <span className="bg-money text-white text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-bold">Customizado</span>
                         )}
                       </span>
-                      <span className="text-sm">{showPjAdvanced ? '▴ Ocultar' : '▾ Expandir'}</span>
+                      <span className="text-xs font-mono uppercase tracking-wider text-ink-fade group-hover:text-ink">{showPjAdvanced ? '▴ Ocultar' : '▾ Expandir'}</span>
                     </button>
 
                     {showPjAdvanced && (
@@ -857,16 +868,18 @@ ${url}`;
               </fieldset>
             </div>
             <div className="mt-12 pt-8 border-t border-rule flex flex-col md:flex-row items-center justify-between gap-6">
-                <p className="font-display italic text-xl text-ink-muted">
-                  "Não é sobre qual paga mais, é sobre qual faz sentido pra tua vida."
-                </p>
-                <button
-                  onClick={() => { setShowResults(true); setShowingResults(true); setTimeout(() => document.getElementById('resultado')?.scrollIntoView({ behavior: 'smooth' }), 100); }}
-                  className="bg-money hover:bg-money-hover text-white px-8 py-4 rounded font-medium transition-all"
-                >
-                  {showingResults ? 'Recalcular' : 'Calcular comparativo'}
-                </button>
-              </div>
+              <p className="font-display italic text-xl text-ink-muted">
+                "Não é sobre qual paga mais, é sobre qual faz sentido pra tua vida."
+              </p>
+              <button
+                onClick={() => { setShowResults(true); setShowingResults(true); setTimeout(() => document.getElementById('resultado')?.scrollIntoView({ behavior: 'smooth' }), 100); }}
+                className="inline-flex items-center gap-2.5 bg-money hover:bg-[#0a3d33] text-white px-8 py-4 rounded-xl font-sans font-bold text-base transition-all duration-300 hover:scale-[1.02] shadow-md hover:shadow-xl"
+              >
+                <Calculator className="w-5 h-5" />
+                <span>{showingResults ? 'Recalcular comparativo' : 'Calcular comparativo'}</span>
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
             </div>
           </section>
 

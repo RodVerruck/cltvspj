@@ -18,7 +18,12 @@ Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do te
    - Movidos os campos secundários (`PLR Anual`, `Dependentes IRPF` e `Pensão Alimentícia Judicial`) para a gaveta acessível **`⚙️ Opções Avançadas (PLR, Dependentes e Pensão)`**, eliminando o antigo bloco superior avulso que empurrava a calculadora para baixo.
 4. **Impacto Visual e de Conversão**:
    - As duas colunas (CLT e PJ) agora têm exatamente a mesma altura e peso visual na abertura da página, permitindo simular em 5 segundos sem perder nenhuma funcionalidade avançada.
-5. **Validação**:
+5. **Refinamento Visual e Correção de Órfãos**:
+   - Alinhamento vertical com `items-stretch` e `h-full flex flex-col justify-between`, garantindo nivelamento milimétrico da linha inferior dos dois cards.
+   - Eliminação do "R" órfão e da caixa alta pesada nos botões de gaveta (`⚙️ Ajustes Fiscais (Pró-labore, Contador e Fator R)` e `⚙️ Opções Avançadas (PLR, Dependentes e Pensão)`).
+   - Espelhamento de microdados no card de resumo da CLT (adicionando discriminativo de FGTS, 13º e Férias) para simetria estética com o card PJ.
+   - Botão "Recalcular comparativo" enriquecido com ícone de calculadora e estilo institucional de alta conversão.
+6. **Validação**:
    - `test_regressao.mjs`: 100% aprovado.
    - `http://localhost:3000/`: Status 200 OK.
 
