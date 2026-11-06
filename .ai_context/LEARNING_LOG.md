@@ -2,6 +2,27 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Implementação: Lote 3 de Visual, Hierarquia de Resultados e Gráfico de Barras
+
+**Contexto**: O usuário autorizou a execução do Lote 3, focado em refinamento visual, linearidade do fluxo de leitura do resultado e representação gráfica de impacto.
+
+**Ações Implementadas**:
+1. **Gráfico de Barras Proporcionais (Visual Bar Chart)**:
+   - Integrado diretamente dentro do Hero Result Card em [`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js) um comparativo gráfico de barras horizontais (`cltBarPercent` vs `pjBarPercent`).
+   - Apresenta os dois pacotes mensais normalizados (Pacote Total CLT vs Líquido Real PJ), colorindo a barra vencedora em verde editorial (`#0c4a3e`) com animação fluida e percentual de impacto visível.
+2. **Reorganização e Linearidade dos Alertas no `#resultado`**:
+   - Movido o `Alerta de Comparação Desproporcional` para o início da seção de resultados (junto com o alerta de teto MEI), imediatamente antes do Hero Card.
+   - Isso elimina a surpresa do usuário: quando valores brutos assimétricos forem digitados (relação fora de 0.8x a 1.2x), a explicação contextual é lida *antes* do veredito numérico, garantindo total transparência técnica.
+3. **Agrupamento Semântico dos Blocos do Formulário (`<fieldset>` e `<legend>`)**:
+   - Os painéis de preenchimento "Proposta CLT" e "Proposta PJ" em [`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js) foram transformados em elementos `<fieldset>` com `<legend className="sr-only">`, estabelecendo grupos de campos semanticamente isolados no formulário.
+4. **Suporte a Imagens OG Específicas nos Comparativos**:
+   - Em [`src/components/seo/PostSEO.js`](file:///c:/Projetos/cltvspj/src/components/seo/PostSEO.js), parametrizado `post.ogImage || DEFAULT_OG_IMAGE`, permitindo enriquecimento de previews sociais por post ou estudo de caso.
+5. **Validação**:
+   - `test_regressao.mjs`: 100% aprovado.
+   - Servidor local ativo e respondendo com 200 OK.
+
+---
+
 ## [2026-11-06] Implementação: Lote 2 de Acessibilidade Estrutural, Interação e Semântica
 
 **Contexto**: O usuário autorizou a execução do Lote 2 de melhorias, focado em conformidade com WCAG 2.1 AA, navegação por teclado e acessibilidade para leitores de tela.

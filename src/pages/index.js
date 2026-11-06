@@ -166,6 +166,10 @@ export default function Home() {
   );
   const breakEvenMultiplier = clt.gross > 0 ? (breakEven.monthlyGross / clt.gross).toFixed(2) : '1.50';
 
+  const maxComparisonVal = Math.max(clt.totalPackage || 0, pj.net || 0, 1);
+  const cltBarPercent = Math.round(((clt.totalPackage || 0) / maxComparisonVal) * 100);
+  const pjBarPercent = Math.round(((pj.net || 0) / maxComparisonVal) * 100);
+
   const getShareUrl = () => {
     if (typeof window === 'undefined') return '';
     const params = new URLSearchParams();
@@ -346,10 +350,11 @@ ${url}`;
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-sans">
               {/* BLOCO CLT */}
-              <div className="bg-white border border-rule rounded-md p-8 relative">
+              <fieldset className="bg-white border border-rule rounded-md p-8 relative">
+                <legend className="sr-only">Proposta CLT (Regime Atual)</legend>
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
-                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink">
+                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink" aria-hidden="true">
                   Proposta CLT <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Regime Atual</span>
                 </div>
 
@@ -423,13 +428,14 @@ ${url}`;
                     </p>
                   </div>
                 </div>
-              </div>
+              </fieldset>
 
               {/* BLOCO PJ */}
-              <div className="bg-white border border-rule rounded-md p-8 relative">
+              <fieldset className="bg-white border border-rule rounded-md p-8 relative">
+                <legend className="sr-only">Proposta PJ (Regime Alternativo)</legend>
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
-                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink">
+                <div className="flex items-center gap-2 font-display text-2xl mb-6 text-ink" aria-hidden="true">
                   Proposta PJ <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Alternativa</span>
                 </div>
 
@@ -722,7 +728,7 @@ ${url}`;
                     </div>
                   </div>
                 </div>
-              </div>
+              </fieldset>
             </div>
             <div className="mt-12 pt-8 border-t border-rule flex flex-col md:flex-row items-center justify-between gap-6">
                 <p className="font-display italic text-xl text-ink-muted">
@@ -759,6 +765,21 @@ ${url}`;
                     <p className="text-sm text-ink-muted leading-relaxed font-sans">
                       O faturamento simulado de <strong className="text-ink">R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mês</strong> (ou faturamento anual informado) ultrapassa o limite de <strong className="text-ink">R$ 81.000,00</strong> anuais permitido para o MEI em 2026 (verificação simplificada baseada no teto anual). 
                       Para que sua comparação seja realista e legal, recalculamos os impostos e o valor líquido abaixo automaticamente com base nas regras do <strong className="text-ink">Simples Nacional Anexo III (Fator R)</strong>.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* ALERTA DE COMPARAÇÃO DESPROPORCIONAL — exibido antes do resultado para contexto imediato */}
+              {showAlertaDiscrepancia && (
+                <div className="bg-[#fff3cd] border border-[#ffeeba] rounded-xl p-5 mb-8 flex gap-4 items-start relative animate-fade-in overflow-hidden shadow-sm text-left">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ffc107]"></div>
+                  <AlertCircle className="text-[#856404] flex-shrink-0 mt-0.5" size={22} />
+                  <div>
+                    <h4 className="font-display text-lg text-ink font-bold mb-1 text-[#856404]">Alerta de Comparação Desproporcional</h4>
+                    <p className="text-xs text-ink-muted leading-relaxed font-sans">
+                      Você está comparando um salário CLT de <strong className="text-ink">R$ {clt.gross.toLocaleString('pt-BR')}/mês</strong> com um faturamento PJ de <strong className="text-ink">R$ {pj.gross.toLocaleString('pt-BR')}/mês</strong>. 
+                      Como os valores brutos informados diferem significativamente (relação de {(pj.gross / (clt.gross || 1)).toFixed(2).replace('.', ',')}x), parte da diferença financeira mostrada no resultado decorre da assimetria dos valores brutos simulados, e não exclusivamente da diferença de regimes tributários.
                     </p>
                   </div>
                 </div>
@@ -813,6 +834,60 @@ ${url}`;
                     }`}>
                       Diferença anual: + R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano
                     </span>
+                  </div>
+                </div>
+
+                {/* Barra Visual Comparativa CLT vs PJ */}
+                <div className="mt-8 pt-6 border-t border-rule/50">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 text-xs font-mono uppercase tracking-wider text-ink-muted mb-3">
+                    <span className="font-bold flex items-center gap-1.5">
+                      📊 Comparativo Visual de Rendimento
+                    </span>
+                    <span className="text-[11px] font-sans font-normal text-ink-fade">
+                      Pacote CLT completo vs Líquido PJ
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 font-sans">
+                    {/* Barra CLT */}
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="font-medium text-ink flex items-center gap-1.5">
+                          <span className={`w-2.5 h-2.5 rounded-full ${clt.totalPackage >= pj.net ? 'bg-money' : 'bg-slate-400'}`}></span>
+                          Pacote Total CLT <span className="text-[11px] text-ink-fade hidden sm:inline">(Salário Líquido + Provisões + Benefícios)</span>
+                        </span>
+                        <span className="font-mono font-bold text-ink">
+                          R$ {clt.totalPackage.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          <span className="text-[11px] font-normal text-ink-fade ml-1">({cltBarPercent}%)</span>
+                        </span>
+                      </div>
+                      <div className="w-full bg-white/80 border border-rule/60 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+                        <div 
+                          className={`h-full rounded-full transition-all duration-700 ease-out ${clt.totalPackage >= pj.net ? 'bg-money' : 'bg-slate-400'}`}
+                          style={{ width: `${Math.max(cltBarPercent, 5)}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Barra PJ */}
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="font-medium text-ink flex items-center gap-1.5">
+                          <span className={`w-2.5 h-2.5 rounded-full ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-slate-400'}`}></span>
+                          Líquido Real PJ <span className="text-[11px] text-ink-fade hidden sm:inline">(Faturamento Bruto - Impostos - Custos)</span>
+                        </span>
+                        <span className="font-mono font-bold text-ink">
+                          R$ {pj.net.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          <span className="text-[11px] font-normal text-ink-fade ml-1">({pjBarPercent}%)</span>
+                        </span>
+                      </div>
+                      <div className="w-full bg-white/80 border border-rule/60 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+                        <div 
+                          className={`h-full rounded-full transition-all duration-700 ease-out ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-slate-400'}`}
+                          style={{ width: `${Math.max(pjBarPercent, 5)}%` }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -928,21 +1003,6 @@ ${url}`;
                   </div>
                 </div>
               </div>
-
-              {/* ALERTA DE COMPARAÇÃO DESPROPORCIONAL */}
-              {showAlertaDiscrepancia && (
-                <div className="bg-[#fff3cd] border border-[#ffeeba] rounded-xl p-5 mb-8 flex gap-4 items-start relative animate-fade-in overflow-hidden shadow-sm text-left">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ffc107]"></div>
-                  <AlertCircle className="text-[#856404] flex-shrink-0 mt-0.5" size={22} />
-                  <div>
-                    <h4 className="font-display text-lg text-ink font-bold mb-1 text-[#856404]">Alerta de Comparação Desproporcional</h4>
-                    <p className="text-xs text-ink-muted leading-relaxed font-sans">
-                      Você está comparando um salário CLT de <strong className="text-ink">R$ {clt.gross.toLocaleString('pt-BR')}/mês</strong> com um faturamento PJ de <strong className="text-ink">R$ {pj.gross.toLocaleString('pt-BR')}/mês</strong>. 
-                      Como os valores brutos informados diferem significativamente (relação de {(pj.gross / (clt.gross || 1)).toFixed(2).replace('.', ',')}x), parte da diferença financeira mostrada no resultado decorre da assimetria dos valores brutos simulados, e não exclusivamente da diferença de regimes tributários.
-                    </p>
-                  </div>
-                </div>
-              )}
 
               {/* Passo 2: COMPARE & Custos Operacionais */}
               <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 mt-12 mb-10 pt-10 border-t border-rule items-start">

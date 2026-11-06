@@ -25,6 +25,7 @@ export default function PostSEO({ post, section = 'blog' }) {
   const author = post.author || 'Equipe CLT ou PJ';
   const publishedTime = toIsoDateTime(post.date);
   const modifiedTime = toIsoDateTime(post.updatedDate || post.date);
+  const ogImage = post.ogImage || DEFAULT_OG_IMAGE;
 
   return (
     <Head>
@@ -41,7 +42,7 @@ export default function PostSEO({ post, section = 'blog' }) {
       <meta property="og:description" content={post.description} />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content={SITE_LOCALE} />
-      <meta property="og:image" content={DEFAULT_OG_IMAGE} />
+      <meta property="og:image" content={ogImage} />
       <meta property="og:image:width" content={OG_IMAGE_WIDTH} />
       <meta property="og:image:height" content={OG_IMAGE_HEIGHT} />
       {publishedTime && <meta property="article:published_time" content={publishedTime} />}
@@ -54,7 +55,7 @@ export default function PostSEO({ post, section = 'blog' }) {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={post.title} />
       <meta name="twitter:description" content={post.description} />
-      <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
+      <meta name="twitter:image" content={ogImage} />
 
       {/* Schema.org JSON-LD */}
       <script
