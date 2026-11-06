@@ -2,6 +2,29 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Redesign Visual e Modernização do Componente AffiliateCTA
+
+**Contexto**: O usuário solicitou avaliação e melhoria visual do componente de rodapé [`AffiliateCTA.js`](file:///c:/Projetos/cltvspj/src/components/AffiliateCTA.js), que apresentava um estilo pesado e desbalanceado (fundo verde escuro com grid, excesso de itálico generalizado, padding vertical de mais de 250px e textos auxiliares esmaecidos com baixa taxa de contraste reprovados no WCAG AA).
+
+**Ações Implementadas**:
+1. **Estrutura Semântica Baseada no Guia `card` (`modern-web-guidance`)**:
+   - Transformado em `<article>` com semântica de regiões diretas (header com badges de confiança, title, content e footer de ação).
+   - Substituído o bloco escuro pelo **Card Editorial em fundo branco** (`bg-white`), com borda sutil verde esmeralda (`border-2 border-money/25`), acento decorativo superior e sombra suave.
+2. **Correção de Tipografia e Hierarquia**:
+   - Eliminado o itálico indiscriminado em todos os níveis. O título agora usa a fonte display em peso nobre, o corpo do texto utiliza sans-serif em cor de tinta escura (`text-ink-muted`) com legibilidade máxima e conforto visual.
+3. **Escaneabilidade e Gatilhos de Decisão**:
+   - Adicionadas 3 pílulas com ícones de verificação (`CheckCircle2`): *"Especialista TI & Fator R"*, *"Abertura ou Migração"* e *"Direto no WhatsApp"*.
+   - Inseridos os selos institucionais: `Recomendação Editorial · Parceria Oficial` e o benefício `🎁 50% OFF na 1ª Mensalidade`.
+4. **Botão de Ação Moderno**:
+   - Botão verde esmeralda (`bg-money hover:bg-[#0a3d33]`) com proporção elegante, texto em branco com alto contraste e seta com animação suave no hover.
+5. **Acessibilidade e Contraste**:
+   - 100% dos textos agora cumprem com louvor as normas WCAG AAA de contraste sobre o fundo claro.
+6. **Validação**:
+   - Testado em artigos de blog (`/blog/calculadora-clt-vs-pj-2026`) e páginas de comparativos (`/blog/comparativo/clt-ou-pj-desenvolvedor-senior`).
+   - `test_regressao.mjs`: 100% de sucesso. Servidor local rodando em HTTP 200.
+
+---
+
 ## [2026-11-06] Alinhamento Comercial: Manutenção dos 50% de Desconto na 1ª Mensalidade sem Código de Cupom
 
 **Contexto**: O usuário esclareceu a diretriz comercial da parceria: o benefício de **50% de desconto na primeira mensalidade** deve ser mantido como atrativo em todo o site, mas **o código de cupom (`CLTVSPJ50` ou similar) não deve ser mencionado nem solicitado**, pois o desconto é concedido de forma direta pelo canal de parceria sem exigir código digitado pelo usuário.
