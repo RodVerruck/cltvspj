@@ -106,7 +106,7 @@ export default function ComparativoBody({ scenario }) {
         
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
           <div className="max-w-2xl">
-            {/* Header / Selo Oficial + Desconto */}
+            {/* Header / Selo Oficial + Benefício */}
             <div className="flex items-center gap-2.5 mb-3 flex-wrap">
               <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-money font-bold bg-money/10 px-2.5 py-1 rounded">
                 <ShieldCheck className="w-3.5 h-3.5 text-money" />
@@ -142,15 +142,6 @@ export default function ComparativoBody({ scenario }) {
                 <CheckCircle2 className="w-4 h-4 text-money flex-shrink-0" />
                 <span className="font-medium">Direto no WhatsApp</span>
               </div>
-            </div>
-
-            {/* Cupom em formato de Voucher */}
-            <div className="inline-flex items-center gap-2.5 bg-paper border border-dashed border-money/40 px-3.5 py-1.5 rounded-lg text-xs font-mono">
-              <span className="text-ink-muted">Cupom exclusivo:</span>
-              <strong className="text-money font-bold bg-white px-2 py-0.5 rounded border border-money/20 tracking-wider">
-                CLTVSPJ50
-              </strong>
-              <span className="text-[11px] text-ink-fade hidden sm:inline">(Informe no atendimento)</span>
             </div>
           </div>
 
@@ -299,7 +290,7 @@ export default function ComparativoBody({ scenario }) {
         <AffiliateCTA
           partner="manasses"
           title="Quer validar esse número com contador?"
-          description="A Manassés Contabilidade atende profissionais de TI e Fator R. Ganhe 50% de desconto na primeira mensalidade informando o cupom CLTVSPJ50."
+          description="A Manassés Contabilidade atende profissionais de TI e Fator R. Ganhe 50% de desconto na primeira mensalidade pela parceria oficial."
           buttonText="Falar com a Manassés"
         />
       </div>

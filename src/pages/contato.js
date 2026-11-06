@@ -84,7 +84,7 @@ export default function Contato() {
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-money flex-shrink-0" />
-                        <span>Cupom exclusivo: <strong>CLTVSPJ50</strong> (50% OFF na 1ª mensalidade)</span>
+                        <span>Benefício exclusivo: <strong>50% de desconto na 1ª mensalidade</strong></span>
                       </li>
                     </ul>
                   </div>

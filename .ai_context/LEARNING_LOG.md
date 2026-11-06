@@ -2,6 +2,28 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Alinhamento Comercial: Manutenção dos 50% de Desconto na 1ª Mensalidade sem Código de Cupom
+
+**Contexto**: O usuário esclareceu a diretriz comercial da parceria: o benefício de **50% de desconto na primeira mensalidade** deve ser mantido como atrativo em todo o site, mas **o código de cupom (`CLTVSPJ50` ou similar) não deve ser mencionado nem solicitado**, pois o desconto é concedido de forma direta pelo canal de parceria sem exigir código digitado pelo usuário.
+
+**Ajustes Realizados**:
+1. [`src/components/comparativo/ComparativoBody.js`](file:///c:/Projetos/cltvspj/src/components/comparativo/ComparativoBody.js):
+   - Mantido o badge oficial `🎁 50% OFF na 1ª Mensalidade` no topo do card editorial.
+   - Mantido removido o box tracejado de voucher com código de cupom.
+   - Descrição de rodapé atualizada: *"Ganhe 50% de desconto na primeira mensalidade pela parceria oficial"*.
+2. [`src/pages/contato.js`](file:///c:/Projetos/cltvspj/src/pages/contato.js):
+   - Destaque nos benefícios: *"Benefício exclusivo: 50% de desconto na 1ª mensalidade"* (sem código de cupom).
+3. [`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js):
+   - Mantida a menção de benefício: *"50% de desconto na primeira mensalidade!"*.
+4. [`src/pages/blog/[slug]/index.js`](file:///c:/Projetos/cltvspj/src/pages/blog/[slug]/index.js) e Posts MDX ([`calculadora-clt-vs-pj-2026.mdx`](file:///c:/Projetos/cltvspj/posts/calculadora-clt-vs-pj-2026.mdx), [`calculadora-mei-vs-clt-2026.mdx`](file:///c:/Projetos/cltvspj/posts/calculadora-mei-vs-clt-2026.mdx), [`vale-pena-pj-isencao-ir-lei-15270-2026.mdx`](file:///c:/Projetos/cltvspj/posts/vale-pena-pj-isencao-ir-lei-15270-2026.mdx)):
+   - Mantido o benefício de 50% de desconto na primeira mensalidade pelo link de parceria.
+5. **Validação**:
+   - Zero ocorrências da palavra `cupom` e do código `CLTVSPJ50`.
+   - `test_regressao.mjs`: 100% de sucesso.
+   - Rotas validadas no servidor local (HTTP 200).
+
+---
+
 ## [2026-11-06] Implementação: Lote 4 de Credibilidade (E-E-A-T), Tipografia Moderna e Finalização da Auditoria
 
 **Contexto**: O usuário autorizou a execução do Lote 4, focado em transparência editorial, páginas de credibilidade institucional (E-E-A-T), balanceamento tipográfico moderno e eliminação de links mortos no rodapé. Também analisamos os comparativos visuais do banner de parceria da Manassés Contabilidade enviados pelo usuário.

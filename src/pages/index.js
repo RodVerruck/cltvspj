@@ -1527,7 +1527,7 @@ ${url}`;
                           : pj.contabilidadeMetadata.ctaTexto}
                       </p>
                       <p className="text-xs text-[#f5f1e8]/75 mt-2">
-                        Assessoria especializada no Fator R para profissionais de TI e suporte dedicado via WhatsApp. <strong>Ganha 50% de desconto na primeira mensalidade!</strong>
+                        Assessoria especializada no Fator R para profissionais de TI e suporte dedicado via WhatsApp. <strong>50% de desconto na primeira mensalidade!</strong>
                       </p>
                     </div>
                     
