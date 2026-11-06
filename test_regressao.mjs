@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { calculateCLT, calculatePJ, calculateINSS, calculateIRPF, calculatePLR } from './src/lib/calculator.js';
+import { calculateCLT, calculatePJ, calculateINSS, calculateIRPF, calculatePLR, calculatePJBreakEven } from './src/lib/calculator.js';
 
 console.log('🧪 Iniciando testes de regressão do motor de cálculo...');
 
@@ -54,6 +54,14 @@ try {
   assert.ok(lp3.lpISS < lp5.lpISS, 'ISS de 3% deveria ser menor que o ISS de 5%');
   assert.ok(lp3.net > lp5.net, 'Líquido com ISS 3% deveria ser maior que com ISS 5%');
   assert.strictEqual(lp3.dividendTax, 0, 'Dividendos devem ser isentos');
+
+  // Teste 7: Ponto de Equilíbrio PJ (Break-Even)
+  console.log('  - Testando calculatePJBreakEven...');
+  const targetPacote = 10000;
+  const breakEven = calculatePJBreakEven(targetPacote, 160, 'simples', 'minimo', 350);
+  assert.ok(breakEven.monthlyGross > targetPacote, 'Faturamento bruto PJ deve ser maior que o pacote líquido alvo');
+  const pjCheck = calculatePJ(breakEven.hourlyRate, 160, 'simples', breakEven.monthlyGross * 12, 'minimo', '', 3, 0, 0, 350);
+  assert.ok(Math.abs(pjCheck.net - targetPacote) < 25, 'Líquido do PJ no ponto de equilíbrio deve ser muito próximo do pacote alvo');
 
   console.log('✅ Todos os testes de regressão do motor passaram com sucesso!');
 } catch (error) {

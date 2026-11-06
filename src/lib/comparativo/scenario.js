@@ -1,4 +1,4 @@
-import { calculateCLT, calculatePJ } from '../calculator';
+import { calculateCLT, calculatePJ, calculatePJBreakEven } from '../calculator';
 import { formatBRL, formatBRLShort } from './format';
 import { getRichComparativoContent } from './content';
 
@@ -70,6 +70,15 @@ export function buildComparativoScenario(config) {
   const cltLabel = formatBRLShort(cltGross);
   const pjLabel = formatBRLShort(pjMonthlyGross);
 
+  const breakEven = calculatePJBreakEven(
+    clt.totalPackage,
+    hoursPerMonth,
+    'simples',
+    'minimo',
+    DEFAULT_CONTADOR,
+  );
+  const breakEvenMultiplier = cltGross > 0 ? (breakEven.monthlyGross / cltGross).toFixed(2) : '1.50';
+
   let title;
   let description;
   let seriesLabel;
@@ -119,6 +128,11 @@ export function buildComparativoScenario(config) {
     diffMonthly,
     diffAnnual,
     winner,
+    breakEven: {
+      monthlyGross: breakEven.monthlyGross,
+      hourlyRate: breakEven.hourlyRate,
+      multiplier: breakEvenMultiplier,
+    },
     contextNotes: getContextNotes(cltGross, pjMonthlyGross),
     richContent,
     readingTime: richContent.readingTime,

@@ -495,3 +495,74 @@ export const calculatePJ = (
     lpAdicionalIRPJ
   };
 };
+
+export function calculatePJBreakEven(
+  targetNet,
+  hoursPerMonth = 160,
+  regime = 'simples',
+  proLaboreInput = 'minimo',
+  mensalidadeContador = 350
+) {
+  const target = parseFloat(targetNet) || 0;
+  const hours = parseFloat(hoursPerMonth) || 160;
+
+  if (target <= 0) {
+    return {
+      monthlyGross: 0,
+      hourlyRate: 0,
+    };
+  }
+
+  let low = 0;
+  let high = Math.max(target * 3, 50000);
+
+  for (let i = 0; i < 5; i++) {
+    const rate = high / hours;
+    const testPj = calculatePJ(
+      rate,
+      hours,
+      regime,
+      high * 12,
+      proLaboreInput,
+      '',
+      3,
+      0,
+      0,
+      mensalidadeContador
+    );
+    if (testPj.net >= target) break;
+    high *= 2;
+  }
+
+  for (let i = 0; i < 25; i++) {
+    const mid = (low + high) / 2;
+    const rate = mid / hours;
+    const testPj = calculatePJ(
+      rate,
+      hours,
+      regime,
+      mid * 12,
+      proLaboreInput,
+      '',
+      3,
+      0,
+      0,
+      mensalidadeContador
+    );
+
+    if (testPj.net >= target) {
+      high = mid;
+    } else {
+      low = mid;
+    }
+  }
+
+  const breakEvenGross = Math.round(high);
+  const breakEvenRate = Math.round((breakEvenGross / hours) * 100) / 100;
+
+  return {
+    monthlyGross: breakEvenGross,
+    hourlyRate: breakEvenRate,
+  };
+}
+

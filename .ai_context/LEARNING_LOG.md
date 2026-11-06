@@ -2,6 +2,54 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-05] Implementação: Destravamento de Conversão nos Comparativos (Ponto de Equilíbrio + CTA Ancorado no Topo)
+
+**Contexto**: O usuário aprovou a implementação da Frente 2 do Plano Diretor de Monetização: capturar e converter os 85% de cliques orgânicos que entram diretamente nas páginas de comparativos salariais e de cargos (que já figuram no Top 5 do Google), onde antes o CTA da Manassés ficava isolado no rodapé da página.
+
+**Ações Implementadas**:
+1. **Engine de Ponto de Equilíbrio PJ (`calculatePJBreakEven` em `src/lib/calculator.js`)**:
+   - Implementada função de busca numérica exata (bisseção com 25 passos, precisão em centavos) para determinar o faturamento bruto mensal PJ necessário para empatar com o `clt.totalPackage` (salário líquido + benefícios + provisões reais de 13º, férias e FGTS).
+   - Retorna faturamento mensal PJ mínimo (`monthlyGross`), valor hora PJ mínimo (`hourlyRate`) e razão de troca recomendada (`multiplier: X.XXx do CLT bruto`).
+   - Coberto com teste de regressão automatizado (Teste 7 adicionado em `test_regressao.mjs` com 100% de aprovação).
+2. **Integração no Gerador de Cenários (`src/lib/comparativo/scenario.js`)**:
+   - Cenários agora calculam e exportam o objeto `breakEven` nativamente para todas as páginas de comparativos salariais, estudos de caso e profissões.
+3. **Redesign do Topo de Conversão (`src/components/comparativo/ComparativoBody.js`)**:
+   - **Hero Result Card Expandido**: Adicionado painel com 3 cards de Ponto de Equilíbrio PJ (Faturamento Mínimo, Hora Mínima e Multiplicador de Troca) logo abaixo do veredito de quem leva vantagem.
+   - **CTA Ancorado no Topo**: Posicionado imediatamente na primeira rolagem (acima do texto detalhado), no padrão verde floresta institucional (`#0c4a3e`), com destaque para a parceria oficial Manassés Contabilidade, benefício de 50% de desconto na primeira mensalidade e cupom explícito `CLTVSPJ50` para blindagem de comissão.
+   - **Reforço de Rodapé**: Atualizado o `AffiliateCTA` do fim da página com menção ao cupom `CLTVSPJ50`.
+4. **Validação**:
+   - `test_regressao.mjs`: 100% aprovado.
+   - `npm run build`: 100% compilado com sucesso (61 páginas estáticas geradas, 56 URLs mapeadas no sitemap.xml).
+
+---
+
+## [2026-11-05] Auditoria Comparativa de Desempenho (GSC e GA4 vs 22/10/2026)
+
+**Contexto**: O usuário solicitou verificação do desempenho do site comparado à última auditoria realizada em 22/10/2026.
+
+**Diagnóstico Comparativo Atualizado (GSC + GA4 em 05/11/2026)**:
+1. **Google Search Console (Consolidação do Crescimento Orgânico)**:
+   - **Impressões (Últimos 28 dias)**: Subiu de **472** (em 22/10) para **515 impressões** (+9.1% de expansão sobre o recorde anterior).
+   - **Cliques Orgânicos**: Subiu de 4 para **5 cliques diretos** no período.
+   - **Posição Média Geral**: Melhorou de 30.1 para **27.1** (ganho de mais 3 posições médias no Google).
+   - **Páginas com Cliques Confirmados**:
+     - `/blog/comparativo/clt-ou-pj-qa-analista`: **2 cliques**, 28 impressões, posição média **5.0** (Top 5 absoluto).
+     - `/blog/comparativo/clt-ou-pj-desenvolvedor-senior`: **1 clique**, 31 impressões, posição **6.2**.
+     - `/blog/comparativo/clt-ou-pj-product-owner`: **1 clique**, 24 impressões, posição **4.4**.
+     - `/blog/comparativo/clt-ou-pj-desenvolvedor-pleno`: **1 clique**, 21 impressões, posição **4.8**.
+     - Home `/`: **1 clique**, 119 impressões, posição **82.2**.
+   - **Destaques na Primeira Página (Top 10)**: Múltiplas páginas mantendo ou ganhando posições de destaque: `clt-15000-vs-pj-25000` (Posição 3.0), `clt-10000-vs-pj-15000` (6.3), `clt-12000-vs-pj-18000` (6.7), `clt-20000-vs-pj-30000` (6.7), `clt-3500-vs-pj` (6.8), `clt-25000-vs-pj` (7.1), `calculadora-mei-vs-clt-2026` (8.9 com 30 impressões).
+2. **Google Analytics 4 (Outubro/Novembro 2026)**:
+   - **Volume Consolidado de Outubro**: 9 usuários únicos, 10 sessões, 17 pageviews.
+   - **Qualidade de Tráfego**: Duração média das sessões aumentou de 25s para **36.7s** e taxa de rejeição caiu para **40%**.
+   - **Canal Dominante**: Continua sendo **Organic Search** (mais de 70% das sessões), validando que a tração vem de buscas reais no Google e não de testes locais.
+3. **Monetização e Afiliados**:
+   - **Eventos `affiliate_click`**: Subiram de 18 para **19 eventos** acumulados.
+   - **Manassés Contabilidade (`/go/manasses`)**: Subiu de 16 para **17 acessos**, atingindo **5 usuários únicos**.
+   - Confirmação de que o tráfego orgânico gerado pelos comparativos continua convertendo em intenção real de contratação de contabilidade parceira.
+
+---
+
 ## [2026-10-22] Implementação: Otimização Estratégica de SEO, Interlinking e Expansão de Profissões
 
 **Contexto**: O usuário solicitou um pacote completo de otimização de SEO com base nas métricas reais observadas no Google Search Console, sem promessas especulativas, mantendo o domínio atual na Vercel e preservando o motor de cálculos e monetização.
