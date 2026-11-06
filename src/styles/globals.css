@@ -2,15 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @layer base {
   :root {
     --paper: #f5f1e8;
     --paper-dark: #ebe5d6;
     --ink: #1a1614;
-    --ink-muted: #6b6357;
-    --ink-fade: #a8a192;
+    --ink-muted: #595145;
+    --ink-fade: #71695c;
     --rule: #d4cdbe;
     --rule-strong: #b8afa0;
     --money: #0c4a3e;

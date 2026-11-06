@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, TrendingUp } from 'lucide-react';
+import { ArrowRight, TrendingUp, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import AffiliateCTA from '../AffiliateCTA';
 import CalculatorCallout from '../blog/CalculatorCallout';
 import { formatBRL, formatBRLShort } from '../../lib/comparativo/format';
@@ -99,57 +99,77 @@ export default function ComparativoBody({ scenario }) {
         )}
       </div>
 
-      {/* 2. CTA ANCORADO DA MANASSÉS NO TOPO */}
-      <div className="editorial-breakout mb-16 rounded-xl p-6 md:p-8 bg-[#0c4a3e] text-[#f5f1e8] border border-[#0c4a3e]/20 relative overflow-hidden shadow-md">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#f5f1e8 1px, transparent 1px), linear-gradient(90deg, #f5f1e8 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+      {/* 2. CTA ANCORADO DA MANASSÉS NO TOPO — DESIGN EDITORIAL PREMIUM */}
+      <article className="editorial-breakout mb-16 rounded-2xl bg-white border-2 border-money/25 p-7 md:p-10 shadow-[0_12px_40px_-15px_rgba(12,74,62,0.12)] relative overflow-hidden">
+        {/* Faixa superior esmeralda */}
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-money via-[#146b5a] to-money" />
         
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-2.5 flex-wrap">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#f5f1e8]/60 font-bold">
+            {/* Header / Selo Oficial + Desconto */}
+            <div className="flex items-center gap-2.5 mb-3 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-money font-bold bg-money/10 px-2.5 py-1 rounded">
+                <ShieldCheck className="w-3.5 h-3.5 text-money" />
                 Parceria Oficial · Manassés Contabilidade
               </span>
-              <span className="bg-[#f5f1e8] text-[#0c4a3e] text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded shadow-sm">
-                50% OFF na 1ª Mensalidade
+              <span className="inline-flex items-center font-mono text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-1 rounded shadow-sm">
+                🎁 50% OFF na 1ª Mensalidade
               </span>
             </div>
-            
-            <h3 className="font-display text-2xl md:text-3xl font-bold italic tracking-tight text-[#f5f1e8] mb-2">
+
+            {/* Título direto, sem itálico excessivo, fácil de ler */}
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-ink !mt-0 !mb-2.5 tracking-tight">
               {winner === 'pj' 
-                ? 'Vai negociar proposta PJ? Garanta enquadramento no Anexo III (6%).' 
+                ? 'Vai negociar proposta PJ? Garanta o enquadramento no Anexo III (6%).' 
                 : 'Quer checar se vale a pena negociar um valor PJ maior?'}
             </h3>
-            
-            <p className="text-sm text-[#f5f1e8]/85 leading-relaxed font-sans">
-              A Manassés é especialista em contabilidade consultiva para profissionais de TI e prestadores de serviços no Simples Nacional (Fator R).
-              Simule sua migração com segurança e tire dúvidas direto no WhatsApp.
+
+            <p className="text-sm md:text-base text-ink-muted leading-relaxed font-sans !mt-0 !mb-4">
+              A Manassés é especializada em contabilidade consultiva para profissionais de TI e prestadores de serviços. Valide seus números e evite pagar 15,5% de imposto por enquadramento incorreto.
             </p>
 
-            <div className="mt-3.5 flex flex-wrap items-center gap-2 text-xs font-mono text-[#f5f1e8]/80">
-              <span className="bg-black/25 px-2.5 py-1 rounded border border-white/10 text-[#f5f1e8] font-bold">
-                Cupom: CLTVSPJ50
-              </span>
-              <span className="text-[11px] text-[#f5f1e8]/70">
-                (Informe no WhatsApp para resgatar o desconto)
-              </span>
+            {/* 3 Benefícios escaneáveis com checks */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-4 text-xs font-sans text-ink">
+              <div className="flex items-center gap-2 bg-paper/60 border border-rule/60 px-3 py-2 rounded-lg">
+                <CheckCircle2 className="w-4 h-4 text-money flex-shrink-0" />
+                <span className="font-medium">Assessoria Fator R</span>
+              </div>
+              <div className="flex items-center gap-2 bg-paper/60 border border-rule/60 px-3 py-2 rounded-lg">
+                <CheckCircle2 className="w-4 h-4 text-money flex-shrink-0" />
+                <span className="font-medium">Abertura ou Migração</span>
+              </div>
+              <div className="flex items-center gap-2 bg-paper/60 border border-rule/60 px-3 py-2 rounded-lg">
+                <CheckCircle2 className="w-4 h-4 text-money flex-shrink-0" />
+                <span className="font-medium">Direto no WhatsApp</span>
+              </div>
+            </div>
+
+            {/* Cupom em formato de Voucher */}
+            <div className="inline-flex items-center gap-2.5 bg-paper border border-dashed border-money/40 px-3.5 py-1.5 rounded-lg text-xs font-mono">
+              <span className="text-ink-muted">Cupom exclusivo:</span>
+              <strong className="text-money font-bold bg-white px-2 py-0.5 rounded border border-money/20 tracking-wider">
+                CLTVSPJ50
+              </strong>
+              <span className="text-[11px] text-ink-fade hidden sm:inline">(Informe no atendimento)</span>
             </div>
           </div>
 
-          <div className="flex flex-col items-stretch sm:items-center lg:items-end gap-2.5 flex-shrink-0">
+          {/* Coluna de Ação */}
+          <div className="flex flex-col items-stretch sm:items-center lg:items-end gap-2.5 flex-shrink-0 lg:border-l lg:border-rule/60 lg:pl-8">
             <a
               href="/go/manasses"
               rel="sponsored nofollow"
-              className="inline-flex items-center justify-center gap-3 bg-[#f5f1e8] text-[#0c4a3e] px-8 py-4 font-display italic text-xl font-black rounded-lg transition-all duration-300 hover:scale-105 shadow-lg border border-[#f5f1e8]/20 hover:bg-white text-center w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-3 bg-money hover:bg-[#0a3d33] text-white px-8 py-4 rounded-xl font-sans font-bold text-base transition-all duration-300 hover:scale-[1.02] shadow-md hover:shadow-xl text-center w-full sm:w-auto"
             >
-              Falar com Especialista
-              <ArrowRight className="w-5 h-5 ml-1" />
+              Falar com Contador
+              <ArrowRight className="w-4 h-4" />
             </a>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#f5f1e8]/50 text-center">
-              Sem compromisso · Atendimento humanizado
+            <span className="text-[11px] font-sans text-ink-fade text-center">
+              Atendimento rápido via WhatsApp · Sem compromisso
             </span>
           </div>
         </div>
-      </div>
+      </article>
 
       <h2>Cenário simulado</h2>
       <p>{richContent?.intro}</p>

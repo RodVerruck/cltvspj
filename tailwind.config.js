@@ -15,8 +15,8 @@ module.exports = {
         },
         ink: {
           DEFAULT: '#1a1614',
-          muted: '#6b6357',
-          fade: '#a8a192',
+          muted: '#595145',
+          fade: '#71695c',
         },
         rule: {
           DEFAULT: '#d4cdbe',

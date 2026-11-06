@@ -299,7 +299,7 @@ ${url}`;
               <div>
                 <h3 className="font-display text-xl text-ink mb-1 flex items-center gap-1.5 font-bold">
                   Deduções de Imposto de Renda
-                  <span className="text-[9px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Pessoa Física</span>
+                  <span className="text-[11px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Pessoa Física</span>
                 </h3>
                 <p className="text-xs text-ink-muted leading-relaxed font-sans">
                   Valores deduzidos no cálculo tradicional do IRPF para o salário CLT e para o Pró-labore PJ.
@@ -311,7 +311,7 @@ ${url}`;
                   <select 
                     value={dependentes}
                     onChange={(e) => setDependentes(e.target.value)}
-                    className="font-mono text-sm text-ink bg-transparent border-b-2 border-rule pb-2 outline-none w-full focus:border-money"
+                    className="font-mono text-base sm:text-sm text-ink bg-transparent border-b-2 border-rule pb-2 outline-none w-full focus:border-money"
                   >
                     <option value="0">0 dependentes</option>
                     <option value="1">1 dependente</option>
@@ -327,13 +327,14 @@ ${url}`;
                     <span className="font-mono text-sm text-ink-fade">R$</span>
                     <input 
                       type="text" 
+                      inputMode="decimal"
                       value={pensaoAlimenticia} 
                       onChange={(e) => setPensaoAlimenticia(e.target.value)}
                       placeholder="0,00"
-                      className="font-mono text-sm text-ink bg-transparent outline-none w-full py-0.5"
+                      className="font-mono text-base text-ink bg-transparent outline-none w-full py-0.5"
                     />
                   </div>
-                  <p className="text-[9px] text-ink-fade mt-1 leading-tight font-sans">
+                  <p className="text-xs text-ink-fade mt-1 leading-tight font-sans">
                     Apenas pensão homologada judicialmente ou por escritura pública.
                   </p>
                 </div>
@@ -355,6 +356,7 @@ ${url}`;
                     <span className="font-mono text-lg text-ink-fade">R$</span>
                     <input
                       type="text"
+                      inputMode="decimal"
                       value={salary}
                       onChange={(e) => setSalary(e.target.value)}
                       className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
@@ -378,6 +380,7 @@ ${url}`;
                           <span className="font-mono text-ink-fade">R$</span>
                           <input
                             type="text"
+                            inputMode="decimal"
                             value={benefits[key]}
                             onChange={(e) => setBenefits({ ...benefits, [key]: e.target.value })}
                             className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
@@ -386,7 +389,7 @@ ${url}`;
                       </div>
                     ))}
                   </div>
-                  <p className="text-[10px] text-ink-fade mt-4 leading-normal font-sans bg-paper p-3 rounded border border-rule">
+                  <p className="text-xs text-ink-fade mt-4 leading-normal font-sans bg-paper p-3 rounded border border-rule">
                     💡 <strong>Nota sobre Benefícios</strong>: Benefícios corporativos pagos pela empresa (como plano de saúde familiar, VR, etc.) entram integralmente isentos de impostos e elevam o valor do seu Pacote Total.
                   </p>
                 </div>
@@ -396,19 +399,20 @@ ${url}`;
                   <div>
                     <label className="text-xs text-ink-muted mb-1 block flex items-center gap-1.5">
                       PLR anual (opcional)
-                      <span className="text-[9px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Tributação Exclusiva</span>
+                      <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Tributação Exclusiva</span>
                     </label>
                     <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                       <span className="font-mono text-lg text-ink-fade">R$</span>
                       <input
                         type="text"
+                        inputMode="decimal"
                         value={plrAnual}
                         onChange={(e) => setPlrAnual(e.target.value)}
                         placeholder="0,00"
                         className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1 placeholder:text-ink-fade/40"
                       />
                     </div>
-                    <p className="text-[10px] text-ink-fade mt-1.5 leading-normal font-sans">
+                    <p className="text-xs text-ink-fade mt-1.5 leading-normal font-sans">
                       Informe apenas se sua empresa possui programa de PLR.
                     </p>
                   </div>
@@ -437,7 +441,7 @@ ${url}`;
                   <div className="mb-6 animate-fade-in">
                     <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                       Mensalidade do contador (opcional)
-                      <span className="text-[10px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Custo Operacional</span>
+                      <span className="text-[11px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Custo Operacional</span>
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                       {[
@@ -461,6 +465,7 @@ ${url}`;
                         <span className="font-mono text-base text-ink-fade">R$</span>
                         <input
                           type="text"
+                          inputMode="decimal"
                           value={mensalidadeContador}
                           onChange={(e) => setMensalidadeContador(e.target.value)}
                           className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5"
@@ -485,6 +490,7 @@ ${url}`;
                     <span className="font-mono text-lg text-ink-fade">R$</span>
                     <input
                       type="text"
+                      inputMode="decimal"
                       value={pjRate}
                       onChange={(e) => setPjRate(e.target.value)}
                       className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
@@ -498,6 +504,7 @@ ${url}`;
                   <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                     <input
                       type="text"
+                      inputMode="numeric"
                       value={hoursPerMonth}
                       onChange={(e) => setHoursPerMonth(e.target.value)}
                       className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
@@ -540,6 +547,7 @@ ${url}`;
                         <span className="font-mono text-lg text-ink-fade">R$</span>
                         <input
                           type="text"
+                          inputMode="decimal"
                           value={proLaboreCustom}
                           onChange={(e) => setProLaboreCustom(e.target.value)}
                           placeholder="0,00"
@@ -548,7 +556,7 @@ ${url}`;
                         <span className="text-xs text-ink-fade">/mês</span>
                       </div>
                     )}
-                    <p className="text-[10px] text-ink-fade mt-1 leading-normal font-sans">
+                    <p className="text-xs text-ink-fade mt-1 leading-normal font-sans">
                       ⚠️ <em>Pró-labore deve ser compatível com a atividade exercida.</em>
                     </p>
                   </div>
@@ -559,12 +567,13 @@ ${url}`;
                     <div>
                       <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                         Faturamento dos últimos 12 meses (RBT12)
-                        <span className="text-[9px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
+                        <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
                       </label>
                       <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                         <span className="font-mono text-base text-ink-fade">R$</span>
                         <input
                           type="text"
+                          inputMode="decimal"
                           value={faturamento12Meses}
                           onChange={(e) => setFaturamento12Meses(e.target.value)}
                           placeholder="Ex: 180.000,00"
@@ -576,12 +585,13 @@ ${url}`;
                     <div>
                       <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                         Folha de pagamento dos últimos 12 meses
-                        <span className="text-[9px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
+                        <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
                       </label>
                       <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                         <span className="font-mono text-base text-ink-fade">R$</span>
                         <input
                           type="text"
+                          inputMode="decimal"
                           value={folha12Meses}
                           onChange={(e) => setFolha12Meses(e.target.value)}
                           placeholder="Ex: 50.400,00"
@@ -607,8 +617,8 @@ ${url}`;
                     {/* Indicador Visual do Fator R no formulário */}
                     <div className="col-span-1 sm:col-span-2 border border-rule/60 rounded p-4 bg-paper/30 mt-2">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-ink-muted">Potencial de otimização tributária</span>
-                        <span className={`text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded text-white ${pj.anexo === 'III' ? 'bg-money' : 'bg-hot'}`}>
+                        <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">Potencial de otimização tributária</span>
+                        <span className={`text-xs font-mono uppercase font-bold px-2 py-0.5 rounded text-white ${pj.anexo === 'III' ? 'bg-money' : 'bg-hot'}`}>
                           {pj.anexo === 'III' ? 'Anexo III (Tributação menor)' : 'Anexo V (Tributação maior)'}
                         </span>
                       </div>
@@ -623,7 +633,7 @@ ${url}`;
                         ></div>
                         <div className="absolute top-0 bottom-0 left-[100%] w-0.5 bg-ink/30" style={{ left: '28%' }}></div>
                       </div>
-                      <p className="text-[11px] text-ink-muted font-sans leading-normal">
+                      <p className="text-xs text-ink-muted font-sans leading-normal">
                         {pj.anexo === 'III' ? (
                           <span className="text-money font-medium">✓ Enquadrado no Anexo III. Sua folha atende à exigência mínima da Receita Federal.</span>
                         ) : (
@@ -640,7 +650,7 @@ ${url}`;
                   <div className="mb-6 animate-fade-in">
                     <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                       ISS do município (Alíquota)
-                      <span className="text-[10px] bg-rule/50 px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Municipal</span>
+                      <span className="text-[11px] bg-rule/50 px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Municipal</span>
                     </label>
                     <div className="flex border border-rule rounded overflow-hidden">
                       {['2', '3', '4', '5'].map((rate) => (
@@ -654,7 +664,7 @@ ${url}`;
                         </button>
                       ))}
                     </div>
-                    <p className="text-[10px] text-ink-fade mt-1.5 leading-normal font-sans">
+                    <p className="text-xs text-ink-fade mt-1.5 leading-normal font-sans">
                       A alíquota de ISS varia de 2% a 5% conforme a cidade. <strong>Consulte seu contador ou prefeitura.</strong>
                     </p>
                   </div>
@@ -746,7 +756,7 @@ ${url}`;
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-2.5">
                       <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">Recomendação</span>
-                      <span className={`text-[10px] font-semibold font-mono uppercase tracking-wider px-2 py-0.5 rounded border flex items-center gap-1.5 shadow-sm ${impactoGeralCor}`}>
+                      <span className={`text-xs font-semibold font-mono uppercase tracking-wider px-2 py-0.5 rounded border flex items-center gap-1.5 shadow-sm ${impactoGeralCor}`}>
                         <span>{impactoBolinha}</span>
                         <span>{impactoGeralLabel}</span>
                       </span>
@@ -761,7 +771,7 @@ ${url}`;
                     <p className="text-sm text-ink-muted max-w-xl font-sans leading-relaxed">
                       Desenvolvido com base nas regras tributárias vigentes e destinado a fins de simulação e apoio à tomada de decisão.
                     </p>
-                    <p className="text-[11px] text-ink-fade font-mono mt-3 pt-3 border-t border-rule/30">
+                    <p className="text-xs text-ink-fade font-mono mt-3 pt-3 border-t border-rule/30">
                       Comparação baseada em: CLT R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mês (salário bruto) vs PJ R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mês (faturamento bruto).
                     </p>
                   </div>
@@ -769,7 +779,7 @@ ${url}`;
                   <div className={`border rounded-lg p-6 min-w-[280px] lg:text-right flex flex-col justify-center bg-white/70 backdrop-blur-sm ${
                     pj.net > clt.totalPackage ? 'border-money/15' : 'border-hot/15'
                   }`}>
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted block mb-1">
+                    <span className="font-mono text-xs uppercase tracking-wider text-ink-muted block mb-1">
                       {pj.net > clt.totalPackage ? 'Rendimento Extra Mensal (PJ)' : 'Rendimento Extra Mensal (CLT)'}
                     </span>
                     <span className={`font-display text-5xl md:text-6xl lg:text-7xl font-black block leading-none mb-2 ${pj.net > clt.totalPackage ? 'text-money' : 'text-hot'}`}>
@@ -778,7 +788,7 @@ ${url}`;
                     <span className="text-xs text-ink-muted font-sans block mb-3">
                       Equivale a <strong className="text-ink">{Math.abs(((pj.net - clt.totalPackage) / (pj.net > clt.totalPackage ? clt.totalPackage : pj.net)) * 100).toFixed(1)}%</strong> a mais de rendimento.
                     </span>
-                    <span className={`font-mono text-[10px] uppercase tracking-wider text-ink-muted block border-t pt-3 ${
+                    <span className={`font-mono text-xs uppercase tracking-wider text-ink-muted block border-t pt-3 ${
                       pj.net > clt.totalPackage ? 'border-money/15' : 'border-hot/15'
                     }`}>
                       Diferença anual: + R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano
@@ -791,7 +801,7 @@ ${url}`;
               <div className="border border-rule/60 rounded-xl p-5 mb-6 animate-fade-in font-sans bg-paper relative overflow-hidden shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="max-w-xl">
-                    <p className="font-mono text-[10px] uppercase tracking-widest text-ink-fade mb-1.5">Próximo passo recomendado</p>
+                    <p className="font-mono text-xs uppercase tracking-widest text-ink-fade mb-1.5">Próximo passo recomendado</p>
                     <p className="text-sm text-ink leading-relaxed">
                       {pj.net > clt.totalPackage ? (
                         <>
@@ -823,33 +833,33 @@ ${url}`;
                 <div className="lg:col-span-2 bg-white border border-rule/70 rounded-xl p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <TrendingUp className="text-money w-4 h-4" />
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-ink font-bold">
+                    <span className="font-mono text-xs uppercase tracking-wider text-ink font-bold">
                       Ponto de Equilíbrio PJ (Break-Even)
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-sans text-xs pt-1">
                     <div className="bg-paper/40 border border-rule/50 rounded-lg p-3">
-                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink-muted block mb-0.5">Faturamento Mínimo</span>
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted block mb-0.5">Faturamento Mínimo</span>
                       <span className="font-display text-xl font-bold text-ink block">
-                        R$ {breakEven.monthlyGross.toLocaleString('pt-BR')}<span className="text-[10px] font-sans font-normal text-ink-muted">/mês</span>
+                        R$ {breakEven.monthlyGross.toLocaleString('pt-BR')}<span className="text-xs font-sans font-normal text-ink-muted">/mês</span>
                       </span>
-                      <span className="text-[10px] text-ink-fade leading-tight block mt-0.5">Para empatar com pacote CLT</span>
+                      <span className="text-xs text-ink-fade leading-tight block mt-0.5">Para empatar com pacote CLT</span>
                     </div>
 
                     <div className="bg-paper/40 border border-rule/50 rounded-lg p-3">
-                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink-muted block mb-0.5">Valor Hora Mínimo</span>
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted block mb-0.5">Valor Hora Mínimo</span>
                       <span className="font-display text-xl font-bold text-ink block">
-                        R$ {breakEven.hourlyRate.toLocaleString('pt-BR')}<span className="text-[10px] font-sans font-normal text-ink-muted">/h</span>
+                        R$ {breakEven.hourlyRate.toLocaleString('pt-BR')}<span className="text-xs font-sans font-normal text-ink-muted">/h</span>
                       </span>
-                      <span className="text-[10px] text-ink-fade leading-tight block mt-0.5">Em {hoursPerMonth}h mensais</span>
+                      <span className="text-xs text-ink-fade leading-tight block mt-0.5">Em {hoursPerMonth}h mensais</span>
                     </div>
 
                     <div className="bg-paper/40 border border-rule/50 rounded-lg p-3">
-                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink-muted block mb-0.5">Multiplicador Ideal</span>
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted block mb-0.5">Multiplicador Ideal</span>
                       <span className="font-display text-xl font-bold text-money block">
-                        {breakEvenMultiplier}x <span className="text-[10px] font-sans font-normal text-ink-muted">do CLT</span>
+                        {breakEvenMultiplier}x <span className="text-xs font-sans font-normal text-ink-muted">do CLT</span>
                       </span>
-                      <span className="text-[10px] text-ink-fade leading-tight block mt-0.5">Fator de reposição total</span>
+                      <span className="text-xs text-ink-fade leading-tight block mt-0.5">Fator de reposição total</span>
                     </div>
                   </div>
                 </div>
@@ -859,7 +869,7 @@ ${url}`;
                   <div>
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <Share2 className="text-money w-4 h-4" />
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-ink font-bold">
+                      <span className="font-mono text-xs uppercase tracking-wider text-ink font-bold">
                         Compartilhar Simulação
                       </span>
                     </div>
@@ -967,7 +977,7 @@ ${url}`;
                     <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                       {showDetalhamento ? 'Ocultar detalhamento técnico' : 'Ver detalhamento completo'}
                     </span>
-                    <span className="text-[10px] font-mono bg-rule/50 text-ink-fade px-1.5 py-0.5 rounded">
+                    <span className="text-xs font-mono bg-rule/50 text-ink-fade px-1.5 py-0.5 rounded">
                       Fator R · Simulador · Previdência · Impostos linha a linha
                     </span>
                   </span>
@@ -1016,7 +1026,7 @@ ${url}`;
                     <h5 className="text-sm font-bold text-ink mb-1">Potencial de otimização identificado: {pj.contabilidadeMetadata.potencialPlanejamentoLabel}</h5>
                     <p className="text-xs text-ink-muted leading-relaxed">{pj.contabilidadeMetadata.potencialPlanejamentoMsg}</p>
                     
-                    <div className="mt-2 text-[10px] text-ink-fade leading-normal font-sans border-t border-rule/30 pt-1.5">
+                    <div className="mt-2 text-xs text-ink-fade leading-normal font-sans border-t border-rule/30 pt-1.5">
                       <strong>Motivos:</strong> {
                         regime === 'presumido' 
                           ? 'Regime de Lucro Presumido selecionado.' 
@@ -1060,7 +1070,7 @@ ${url}`;
                         <span>Fator R = Folha 12m ÷ RBT12</span>
                         <span className="flex items-center gap-1.5">
                           <span>Dados do Fator R:</span>
-                          <span className="font-mono text-[9px] uppercase font-bold px-1.5 py-0.5 rounded border bg-paper-dark text-ink-muted border-rule/80">
+                          <span className="font-mono text-[11px] uppercase font-bold px-1.5 py-0.5 rounded border bg-paper-dark text-ink-muted border-rule/80">
                             {pj.contabilidadeMetadata.nivelConfiancaFatorR === 'alta' 
                               ? 'Dados Reais' 
                               : pj.contabilidadeMetadata.nivelConfiancaFatorR === 'media' 
@@ -1168,7 +1178,7 @@ ${url}`;
                           <div className="flex items-center gap-1.5 text-xs text-green-700 font-bold mb-1">
                             <span>🟢</span>
                             <span>Economia Potencial</span>
-                            <span className={`ml-auto text-[9px] font-mono uppercase font-bold px-1.5 py-0.5 rounded border flex items-center gap-1 ${
+                            <span className={`ml-auto text-[11px] font-mono uppercase font-bold px-1.5 py-0.5 rounded border flex items-center gap-1 ${
                               pj.fatorROptimization.ganhoLiquidoReal < 100 
                                 ? 'bg-green-50 text-green-700 border-green-200' 
                                 : pj.fatorROptimization.ganhoLiquidoReal < 500 
@@ -1185,7 +1195,7 @@ ${url}`;
                           <p className="text-xs text-green-700 font-medium">
                             ou R$ {Math.round(pj.fatorROptimization.ganhoLiquidoReal * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano
                           </p>
-                          <p className="text-[10px] text-green-600/80 mt-1 leading-normal">
+                          <p className="text-xs text-green-600/80 mt-1 leading-normal">
                             Uma análise contábil pode confirmar se essa economia é viável na prática.
                           </p>
                         </div>
@@ -1201,7 +1211,7 @@ ${url}`;
                           <p className="text-xs text-red-700 font-medium">
                             ou R$ {Math.round(pj.fatorROptimization.ganhoLiquidoReal * 12).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano
                           </p>
-                          <p className="text-[10px] text-red-600/80 mt-1 leading-normal">
+                          <p className="text-xs text-red-600/80 mt-1 leading-normal">
                             A economia de DAS do Anexo III não cobre o aumento de impostos pessoais (INSS e IRPF) do pró-labore. Melhor permanecer no Anexo V.
                           </p>
                         </div>
@@ -1209,7 +1219,7 @@ ${url}`;
                     </div>
                   </div>
 
-                  <p className="text-[10px] text-ink-fade leading-relaxed font-sans italic">
+                  <p className="text-xs text-ink-fade leading-relaxed font-sans italic">
                     *Esta é uma projeção matemática simplificada considerando que toda a folha adicional seria alocada no pró-labore. Na prática, a folha do Fator R pode ser composta por funcionários, estagiários e encargos.
                   </p>
                 </div>
@@ -1230,17 +1240,17 @@ ${url}`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 font-mono text-xs">
                     <div className="bg-paper/30 border border-rule/50 rounded-lg p-3 flex justify-between items-center">
-                      <span className="text-ink-fade uppercase tracking-wider text-[10px]">CLT (INSS Anual)</span>
+                      <span className="text-ink-fade uppercase tracking-wider text-xs">CLT (INSS Anual)</span>
                       <span className="font-bold text-ink font-mono">R$ {clt.inssAnualCLT.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano</span>
                     </div>
 
                     <div className="bg-paper/30 border border-rule/50 rounded-lg p-3 flex justify-between items-center">
-                      <span className="text-ink-fade uppercase tracking-wider text-[10px]">PJ (INSS Pró-labore Anual)</span>
+                      <span className="text-ink-fade uppercase tracking-wider text-xs">PJ (INSS Pró-labore Anual)</span>
                       <span className="font-bold text-ink font-mono">R$ {pj.inssAnualPJ.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano</span>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-ink-fade leading-relaxed bg-paper p-3.5 rounded border border-rule">
+                  <p className="text-xs text-ink-fade leading-relaxed bg-paper p-3.5 rounded border border-rule">
                     ℹ️ <strong>Informação Previdenciária</strong>: A contribuição previdenciária anual estimada (INSS retido) influencia diretamente benefícios governamentais essenciais como o valor da aposentadoria por tempo/idade, auxílio-doença, pensão por morte e salário-maternidade. Uma contribuição menor resulta em menor custo previdenciário imediato, mas pode reduzir a cobertura ou o valor de benefícios futuros. O impacto real depende do histórico contributivo acumulado de cada segurado.
                   </p>
                 </div>
@@ -1357,7 +1367,7 @@ ${url}`;
                     <div className="flex justify-between py-2 border-b border-rule">
                       <div>
                         <span className="text-ink-muted block">Distribuição de Dividendos</span>
-                        <span className="text-[10px] text-ink-fade leading-tight block font-sans max-w-[260px] mt-0.5">
+                        <span className="text-xs text-ink-fade leading-tight block font-sans max-w-[260px] mt-0.5">
                           Dividendos líquidos distribuídos após a aplicação das regras tributárias consideradas nesta simulação.
                         </span>
                       </div>
@@ -1418,14 +1428,14 @@ ${url}`;
                   <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#f5f1e8 1px, transparent 1px), linear-gradient(90deg, #f5f1e8 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
                   
                   {pj.contabilidadeMetadata.oportunidadeScore >= 8 && (
-                    <span className="absolute top-0 right-0 bg-[#f5f1e8] text-[#0c4a3e] font-mono text-[9px] uppercase font-bold tracking-widest px-3 py-1 rounded-bl-lg shadow-sm">
+                    <span className="absolute top-0 right-0 bg-[#f5f1e8] text-[#0c4a3e] font-mono text-[11px] uppercase font-bold tracking-widest px-3 py-1 rounded-bl-lg shadow-sm">
                       Recomendado
                     </span>
                   )}
                   
                   <div className="flex flex-col md:flex-row md:items-center gap-6 justify-between font-sans relative z-10">
                     <div className="max-w-xl">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#f5f1e8]/50 block mb-2 font-bold">
+                      <span className="font-mono text-xs uppercase tracking-[0.15em] text-[#f5f1e8]/50 block mb-2 font-bold">
                         Parceiro Contábil Recomendado
                       </span>
                       <p className={`leading-relaxed text-[#f5f1e8] ${pj.contabilidadeMetadata.oportunidadeScore >= 8 ? 'text-base font-semibold' : 'text-sm'}`}>
@@ -1433,7 +1443,7 @@ ${url}`;
                           ? `A diferença encontrada foi de apenas R$ ${Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} por mês. Nessa situação, benefícios CLT, aposentadoria, estabilidade e estratégia empresarial podem ser tão relevantes quanto os impostos. Recomendamos falar com a equipe da Manassés.`
                           : pj.contabilidadeMetadata.ctaTexto}
                       </p>
-                      <p className="text-[11px] text-[#f5f1e8]/75 mt-2">
+                      <p className="text-xs text-[#f5f1e8]/75 mt-2">
                         Assessoria especializada no Fator R para profissionais de TI e suporte dedicado via WhatsApp. <strong>Ganha 50% de desconto na primeira mensalidade!</strong>
                       </p>
                     </div>
@@ -1454,7 +1464,7 @@ ${url}`;
 
               {/* Passo 10: LIMITAÇÕES DA SIMULAÇÃO (RODAPÉ DISCRETO) */}
               <div className="mt-8 pt-5 border-t border-rule/30 text-center font-sans">
-                <p className="text-[10px] text-ink-fade leading-relaxed max-w-2xl mx-auto">
+                <p className="text-xs text-ink-fade leading-relaxed max-w-2xl mx-auto">
                   *Esta ferramenta é um simulador simplificado com finalidade exclusivamente informativa e de apoio à tomada de decisão. As estimativas tributárias não constituem orientação contábil formal ou aconselhamento jurídico e devem ser validadas individualmente com um profissional qualificado antes de qualquer enquadramento societário ou tributário.
                 </p>
               </div>

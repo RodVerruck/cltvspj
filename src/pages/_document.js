@@ -13,11 +13,7 @@ export default function Document() {
           rel="stylesheet"
         />
         <meta name="google-adsense-account" content="ca-pub-2888261288759622" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2888261288759622"
-          crossOrigin="anonymous"
-        />
+        {/* AdSense é carregado sob demanda pelo componente AdSense.js apenas se houver anúncios na página */}
       </Head>
       <body>
         <Main />

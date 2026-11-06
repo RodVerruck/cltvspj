@@ -2,6 +2,37 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Implementação: Lote 1 de Otimização Visual, Acessibilidade e Web Best Practices
+
+**Contexto**: O usuário aprovou a auditoria de aparência e boas práticas (`auditoria_visual_boas_praticas.md`), autorizando o Lote 1 (Rápido e de Alto Impacto).
+
+**Ações Implementadas**:
+1. **Contraste e Legibilidade (WCAG AA Compliant)**:
+   - Em `tailwind.config.js` e `src/styles/globals.css`, ajustadas as variáveis da paleta editorial:
+     - `ink.fade`: de `#a8a192` (contraste reprovado de ~2.3:1) para `#71695c` (contraste auditado de 4.7:1 no fundo `#f5f1e8`).
+     - `ink.muted`: de `#6b6357` para `#595145` (contraste > 7:1, nível AAA).
+   - Eliminadas **todas as 40 ocorrências de micro-tipografia** (`text-[9px]`, `text-[10px]`) em `src/pages/index.js`, elevando para no mínimo `text-xs` (12px) e `text-[11px]` para tags compactas.
+2. **Teclado Numérico Mobile (`inputMode="decimal"`)**:
+   - Adicionado `inputMode="decimal"` em todos os 10 campos monetários e fiscais em `src/pages/index.js` (salário bruto, VR, VT, plano de saúde, seguro de vida, pensão judicial, PLR anual, valor hora PJ, mensalidade do contador, pró-labore personalizado, faturamento e folha RBT12).
+   - Adicionado `inputMode="numeric"` no campo de horas mensais.
+   - Ajustada a escala tipográfica dos inputs para `text-base` (16px) ou superior, evitando o zoom automático indesejado no iOS Safari ao focar nos campos.
+3. **Eliminação de Cadeia de Fontes Duplicadas (`@import`)**:
+   - Removido `@import url(...)` desnecessário na linha 5 de `src/styles/globals.css`. As fontes Google (`Instrument Serif`, `Instrument Sans`, `JetBrains Mono`) já são carregadas via `<link rel="preload/stylesheet">` com `preconnect` otimizado em `src/pages/_document.js`.
+4. **Otimização de Carregamento do Google AdSense**:
+   - Em `src/pages/_document.js`, removido o script tag síncrono/async global do `adsbygoogle.js`, mantendo intacta a tag `<meta name="google-adsense-account" content="..." />` para validação contínua de propriedade no Google.
+   - Atualizado o componente `src/components/AdSense.js` para injetar o script sob demanda apenas quando um bloco de anúncio real for montado no DOM.
+5. **Geração da Imagem de Prévia Oficial (`public/og-image.png`)**:
+   - Criado gerador visual em Python com Pillow (`scripts/generate_og_image.py`) para renderizar a imagem padrão 1200x630 pixel-perfect da identidade visual editorial (fundo papel `#f5f1e8`, bordas verde floresta `#0c4a3e`, tipografia serifada, badges de simulação 2026, Fator R e Ponto de Equilíbrio).
+   - Resolvido o problema de links compartilhados no WhatsApp e Twitter aparecerem sem imagem de prévia.
+6. **Higiene do Repositório**:
+   - Removida a rota pública temporária de testes `src/pages/test.js`.
+   - Removido o arquivo legado de parceiro inativo `public/apresentacao_parceiro_agilize.html`.
+7. **Validação do Sistema**:
+   - `test_regressao.mjs`: 100% aprovado (7 testes de cálculo).
+   - Build de produção Next.js validado.
+
+---
+
 ## [2026-11-06] Implementação: Motor Viral (Compartilhamento URL/WhatsApp) e Expansão de +10 Profissões
 
 **Contexto**: O usuário aprovou a execução da Frente 3 do Plano Diretor de Monetização: dotar a calculadora principal de um motor viral de compartilhamento com parâmetros de URL e expandir o catálogo de SEO programático com 10 novas profissões de alta pejotização e sujeitas ao Fator R / Simples Nacional.
