@@ -189,52 +189,55 @@ export default function ComparativoBody({ scenario }) {
       </ol>
 
       <h2>Números lado a lado</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>CLT</th>
-            <th>PJ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Bruto / faturamento</td>
-            <td>R$ {formatBRL(clt.gross)}</td>
-            <td>R$ {formatBRL(pj.gross)}</td>
-          </tr>
-          <tr>
-            <td>INSS / previdência</td>
-            <td>R$ {formatBRL(clt.inss)}</td>
-            <td>R$ {formatBRL(pj.inssProLabore)} (pró-labore)</td>
-          </tr>
-          <tr>
-            <td>IRPF</td>
-            <td>R$ {formatBRL(clt.irpf)}</td>
-            <td>R$ {formatBRL(pj.irpfProLabore || 0)}</td>
-          </tr>
-          <tr>
-            <td>Líquido mensal</td>
-            <td>R$ {formatBRL(clt.net)}</td>
-            <td>R$ {formatBRL(pj.net)}</td>
-          </tr>
-          <tr>
-            <td>Pacote total CLT*</td>
-            <td>R$ {formatBRL(clt.totalPackage)}</td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td>Impostos PJ ({pj.taxName})</td>
-            <td>—</td>
-            <td>R$ {formatBRL(pj.totalTaxes)}</td>
-          </tr>
-          <tr>
-            <td>Fator R / Anexo</td>
-            <td>—</td>
-            <td>{pj.fatorRPercent?.toFixed(1)}% · {pj.taxName}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="overflow-x-auto my-6 -mx-4 sm:mx-0 px-4 sm:px-0">
+        <table className="w-full">
+          <caption className="sr-only">Comparativo numérico detalhado entre proposta CLT e faturamento PJ</caption>
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">CLT</th>
+              <th scope="col">PJ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" className="font-medium text-ink">Bruto / faturamento</th>
+              <td>R$ {formatBRL(clt.gross)}</td>
+              <td>R$ {formatBRL(pj.gross)}</td>
+            </tr>
+            <tr>
+              <th scope="row" className="font-medium text-ink">INSS / previdência</th>
+              <td>R$ {formatBRL(clt.inss)}</td>
+              <td>R$ {formatBRL(pj.inssProLabore)} (pró-labore)</td>
+            </tr>
+            <tr>
+              <th scope="row" className="font-medium text-ink">IRPF</th>
+              <td>R$ {formatBRL(clt.irpf)}</td>
+              <td>R$ {formatBRL(pj.irpfProLabore || 0)}</td>
+            </tr>
+            <tr>
+              <th scope="row" className="font-medium text-ink">Líquido mensal</th>
+              <td>R$ {formatBRL(clt.net)}</td>
+              <td>R$ {formatBRL(pj.net)}</td>
+            </tr>
+            <tr>
+              <th scope="row" className="font-medium text-ink">Pacote total CLT*</th>
+              <td>R$ {formatBRL(clt.totalPackage)}</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row" className="font-medium text-ink">Impostos PJ ({pj.taxName})</th>
+              <td>—</td>
+              <td>R$ {formatBRL(pj.totalTaxes)}</td>
+            </tr>
+            <tr>
+              <th scope="row" className="font-medium text-ink">Fator R / Anexo</th>
+              <td>—</td>
+              <td>{pj.fatorRPercent?.toFixed(1)}% · {pj.taxName}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p><em>* Pacote total = líquido + FGTS + 13º + férias (provisões líquidas) + benefícios informados.</em></p>
 
       <h2>Vantagens da CLT nesta faixa</h2>

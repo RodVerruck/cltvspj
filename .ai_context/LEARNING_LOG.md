@@ -2,6 +2,30 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Implementação: Lote 2 de Acessibilidade Estrutural, Interação e Semântica
+
+**Contexto**: O usuário autorizou a execução do Lote 2 de melhorias, focado em conformidade com WCAG 2.1 AA, navegação por teclado e acessibilidade para leitores de tela.
+
+**Ações Implementadas**:
+1. **Associação Completa de Rótulos e Campos (`htmlFor` + `id`)**:
+   - Conectados todos os `<label>` da Home aos seus respectivos `<input>` e `<select>` (`field-dependentes`, `field-pensao`, `field-salary`, `field-benefit-*`, `field-plr`, `field-pj-rate`, `field-hours`, `field-rbt12`, `field-folha12`, `field-contador-personalizado`, `field-pro-labore-custom`). Clicar em qualquer rótulo agora posiciona o foco no campo de forma imediata e legível para leitores de tela.
+2. **Estrutura Semântica de Landmarks e Skip Link (`2.4.1 Bypass Blocks`)**:
+   - Criado link de salto acessível (`.skip-link`) no topo do [`Header.js`](file:///c:/Projetos/cltvspj/src/components/Header.js): *"Pular para o conteúdo principal"*, visível exclusivamente ao receber foco pelo teclado (`Tab`).
+   - Adicionada a tag `<main id="main-content" tabIndex={-1}>` em todas as rotas do projeto (`/`, `/blog`, `/blog/comparativos`, `/blog/[slug]`, `/blog/comparativo/[slug]`), permitindo navegação direta e pulo de cabeçalho.
+   - Envolvido o cabeçalho no elemento semântico `<header>` com `<nav aria-label="Navegação principal">`.
+3. **Menu Mobile Acessível no Header**:
+   - Corrigido o sumiço dos links no mobile: o link *"Blog"* agora fica visível e clicável no cabeçalho em telas menores, sem depender da rolagem até o rodapé.
+4. **Semântica de Grupos de Seleção (`role="radiogroup"` / `role="radio"`)**:
+   - Os seletores de Regime Tributário (Simples / Presumido / MEI), Opções de Mensalidade do Contador, Pró-labore e Alíquotas de ISS agora expõem `role="radiogroup"` e `role="radio"` com `aria-checked`, informando o estado da seleção de forma transparente a tecnologias assistivas.
+5. **Acordeão de Detalhamento com W3C ARIA**:
+   - Botão configurado com `aria-expanded={showDetalhamento}` e `aria-controls="detalhamento-tecnico"`. O painel colapsável agora possui `id="detalhamento-tecnico" role="region" aria-labelledby="btn-detalhamento"`.
+6. **Tabela Responsiva Acessível nos Comparativos**:
+   - Em [`ComparativoBody.js`](file:///c:/Projetos/cltvspj/src/components/comparativo/ComparativoBody.js), adicionado `<caption>` descritivo oculto, cabeçalhos de coluna com `<th scope="col">`, cabeçalhos de linha com `<th scope="row">` e wrapper `overflow-x-auto` para visualização móvel sem quebra de layout.
+7. **Estilo Padronizado de Foco (`:focus-visible`)**:
+   - Adicionado no [`globals.css`](file:///c:/Projetos/cltvspj/src/styles/globals.css) um anel de foco de alto contraste (`outline: 2px solid var(--money); outline-offset: 2px`) para elementos navegados por teclado.
+
+---
+
 ## [2026-11-06] Implementação: Lote 1 de Otimização Visual, Acessibilidade e Web Best Practices
 
 **Contexto**: O usuário aprovou a auditoria de aparência e boas práticas (`auditoria_visual_boas_praticas.md`), autorizando o Lote 1 (Rápido e de Alto Impacto).

@@ -37,9 +37,20 @@
     color: inherit;
     text-decoration: none;
   }
+
+  /* Estilo padronizado de foco visível para acessibilidade e navegação por teclado (WCAG 2.4.7) */
+  :where(a:any-link, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--money);
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
+
+  /* Skip link de acessibilidade para navegação direta ao conteúdo principal */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[99999] focus:bg-money focus:text-paper focus:px-4 focus:py-2.5 focus:rounded focus:font-sans focus:text-sm focus:font-bold focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-paper;
+  }
 
   /* Drop Cap - Letra capitular do primeiro parágrafo */
   .post-content > p:first-of-type::first-letter,

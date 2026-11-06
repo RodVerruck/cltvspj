@@ -245,7 +245,8 @@ ${url}`;
       <div className="page-root">
         <Header />
 
-        {/* Hero Section */}
+        <main id="main-content" tabIndex={-1} className="focus:outline-none">
+          {/* Hero Section */}
         <section className="border-b border-rule py-16 md:py-24 relative">
           <div className="absolute inset-0 opacity-[0.10] pointer-events-none z-0" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
           <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
@@ -307,8 +308,9 @@ ${url}`;
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-xs text-ink-muted mb-1 block">Dependentes IRPF</label>
+                  <label htmlFor="field-dependentes" className="text-xs text-ink-muted mb-1 block">Dependentes IRPF</label>
                   <select 
+                    id="field-dependentes"
                     value={dependentes}
                     onChange={(e) => setDependentes(e.target.value)}
                     className="font-mono text-base sm:text-sm text-ink bg-transparent border-b-2 border-rule pb-2 outline-none w-full focus:border-money"
@@ -322,10 +324,11 @@ ${url}`;
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs text-ink-muted mb-1 block">Pensão Alimentícia Judicial</label>
+                  <label htmlFor="field-pensao" className="text-xs text-ink-muted mb-1 block">Pensão Alimentícia Judicial</label>
                   <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                     <span className="font-mono text-sm text-ink-fade">R$</span>
                     <input 
+                      id="field-pensao"
                       type="text" 
                       inputMode="decimal"
                       value={pensaoAlimenticia} 
@@ -351,10 +354,11 @@ ${url}`;
                 </div>
 
                 <div className="mb-6">
-                  <label className="text-sm text-ink-muted mb-2 block">Salário bruto mensal</label>
+                  <label htmlFor="field-salary" className="text-sm text-ink-muted mb-2 block">Salário bruto mensal</label>
                   <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                     <span className="font-mono text-lg text-ink-fade">R$</span>
                     <input
+                      id="field-salary"
                       type="text"
                       inputMode="decimal"
                       value={salary}
@@ -375,10 +379,11 @@ ${url}`;
                       { key: 'seguroVida', label: 'Seguro de Vida' }
                     ].map(({ key, label }) => (
                       <div key={key}>
-                        <label className="text-xs text-ink-muted mb-1 block">{label}</label>
+                        <label htmlFor={`field-benefit-${key}`} className="text-xs text-ink-muted mb-1 block">{label}</label>
                         <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                           <span className="font-mono text-ink-fade">R$</span>
                           <input
+                            id={`field-benefit-${key}`}
                             type="text"
                             inputMode="decimal"
                             value={benefits[key]}
@@ -397,13 +402,14 @@ ${url}`;
                 <div className="mt-6 border-t border-rule pt-6">
                   <h4 className="font-display text-lg text-ink mb-4 font-bold">PLR / Bônus Anual</h4>
                   <div>
-                    <label className="text-xs text-ink-muted mb-1 block flex items-center gap-1.5">
+                    <label htmlFor="field-plr" className="text-xs text-ink-muted mb-1 block flex items-center gap-1.5">
                       PLR anual (opcional)
                       <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Tributação Exclusiva</span>
                     </label>
                     <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                       <span className="font-mono text-lg text-ink-fade">R$</span>
                       <input
+                        id="field-plr"
                         type="text"
                         inputMode="decimal"
                         value={plrAnual}
@@ -428,22 +434,22 @@ ${url}`;
                 </div>
 
                 <div className="mb-6">
-                  <label className="text-sm text-ink-muted mb-2 block">Regime tributário</label>
-                  <div className="flex border border-rule rounded overflow-hidden">
-                    <button type="button" onClick={() => setRegime('simples')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'simples' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Simples</button>
-                    <button type="button" onClick={() => setRegime('presumido')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'presumido' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Presumido</button>
-                    <button type="button" onClick={() => setRegime('mei')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'mei' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>MEI</button>
+                  <label id="label-regime" className="text-sm text-ink-muted mb-2 block">Regime tributário</label>
+                  <div role="radiogroup" aria-labelledby="label-regime" className="flex border border-rule rounded overflow-hidden">
+                    <button type="button" role="radio" aria-checked={regime === 'simples'} onClick={() => setRegime('simples')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'simples' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Simples</button>
+                    <button type="button" role="radio" aria-checked={regime === 'presumido'} onClick={() => setRegime('presumido')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'presumido' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Presumido</button>
+                    <button type="button" role="radio" aria-checked={regime === 'mei'} onClick={() => setRegime('mei')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'mei' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>MEI</button>
                   </div>
                 </div>
 
                 {/* Mensalidade do Contador */}
                 {regime !== 'mei' && (
                   <div className="mb-6 animate-fade-in">
-                    <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                    <label id="label-contador" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                       Mensalidade do contador (opcional)
                       <span className="text-[11px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Custo Operacional</span>
                     </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                    <div role="radiogroup" aria-labelledby="label-contador" className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                       {[
                         { value: '', label: 'Não considerar' },
                         { value: '150', label: 'R$ 150' },
@@ -453,6 +459,8 @@ ${url}`;
                         <button
                           key={opt.value}
                           type="button"
+                          role="radio"
+                          aria-checked={mensalidadeContador === opt.value}
                           onClick={() => setMensalidadeContador(opt.value)}
                           className={`py-1.5 px-1 text-[11px] font-medium rounded transition-colors border ${mensalidadeContador === opt.value ? 'bg-ink text-paper border-ink' : 'text-ink-muted border-rule hover:bg-rule/30'}`}
                         >
@@ -464,8 +472,10 @@ ${url}`;
                       <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                         <span className="font-mono text-base text-ink-fade">R$</span>
                         <input
+                          id="field-contador-personalizado"
                           type="text"
                           inputMode="decimal"
+                          aria-label="Valor personalizado da mensalidade do contador"
                           value={mensalidadeContador}
                           onChange={(e) => setMensalidadeContador(e.target.value)}
                           className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5"
@@ -485,10 +495,11 @@ ${url}`;
                 )}
 
                 <div className="mb-6">
-                  <label className="text-sm text-ink-muted mb-2 block">Valor da hora (PJ)</label>
+                  <label htmlFor="field-pj-rate" className="text-sm text-ink-muted mb-2 block">Valor da hora (PJ)</label>
                   <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                     <span className="font-mono text-lg text-ink-fade">R$</span>
                     <input
+                      id="field-pj-rate"
                       type="text"
                       inputMode="decimal"
                       value={pjRate}
@@ -500,9 +511,10 @@ ${url}`;
                 </div>
 
                 <div className="mb-6">
-                  <label className="text-sm text-ink-muted mb-2 block">Horas trabalhadas/mês</label>
+                  <label htmlFor="field-hours" className="text-sm text-ink-muted mb-2 block">Horas trabalhadas/mês</label>
                   <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                     <input
+                      id="field-hours"
                       type="text"
                       inputMode="numeric"
                       value={hoursPerMonth}
@@ -516,13 +528,13 @@ ${url}`;
                 {/* Configuração do Pró-labore */}
                 {regime !== 'mei' && (
                   <div className="mb-6">
-                    <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                    <label id="label-pro-labore" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                       Configuração do Pró-labore
                       <span className="text-ink-fade hover:text-ink cursor-help relative group" title="O pró-labore é o salário do sócio-administrador. Ele deve ser compatível com a atividade exercida.">
                         <Info size={13} className="inline-block" />
                       </span>
                     </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+                    <div role="radiogroup" aria-labelledby="label-pro-labore" className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                       {[
                         { value: 'minimo', label: 'Mínimo (R$ 1.621)' },
                         { value: 'padrao', label: 'Otimizado (Fator R)' },
@@ -534,6 +546,8 @@ ${url}`;
                         <button
                           key={opt.value}
                           type="button"
+                          role="radio"
+                          aria-checked={proLaboreInput === opt.value}
                           onClick={() => setProLaboreInput(opt.value)}
                           className={`py-1.5 px-1.5 text-[11px] font-medium rounded transition-colors border ${proLaboreInput === opt.value ? 'bg-ink text-paper border-ink' : 'text-ink-muted border-rule hover:bg-rule/30'}`}
                         >
@@ -546,8 +560,10 @@ ${url}`;
                       <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money animate-fade-in">
                         <span className="font-mono text-lg text-ink-fade">R$</span>
                         <input
+                          id="field-pro-labore-custom"
                           type="text"
                           inputMode="decimal"
+                          aria-label="Valor personalizado do pró-labore mensal"
                           value={proLaboreCustom}
                           onChange={(e) => setProLaboreCustom(e.target.value)}
                           placeholder="0,00"
@@ -565,13 +581,14 @@ ${url}`;
                 {regime === 'simples' && (
                   <div className="mb-6 animate-fade-in grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                      <label htmlFor="field-rbt12" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                         Faturamento dos últimos 12 meses (RBT12)
                         <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
                       </label>
                       <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                         <span className="font-mono text-base text-ink-fade">R$</span>
                         <input
+                          id="field-rbt12"
                           type="text"
                           inputMode="decimal"
                           value={faturamento12Meses}
@@ -583,13 +600,14 @@ ${url}`;
                     </div>
 
                     <div>
-                      <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                      <label htmlFor="field-folha12" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                         Folha de pagamento dos últimos 12 meses
                         <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
                       </label>
                       <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                         <span className="font-mono text-base text-ink-fade">R$</span>
                         <input
+                          id="field-folha12"
                           type="text"
                           inputMode="decimal"
                           value={folha12Meses}
@@ -648,15 +666,17 @@ ${url}`;
 
                 {regime === 'presumido' && (
                   <div className="mb-6 animate-fade-in">
-                    <label className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
+                    <label id="label-iss" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
                       ISS do município (Alíquota)
                       <span className="text-[11px] bg-rule/50 px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Municipal</span>
                     </label>
-                    <div className="flex border border-rule rounded overflow-hidden">
+                    <div role="radiogroup" aria-labelledby="label-iss" className="flex border border-rule rounded overflow-hidden">
                       {['2', '3', '4', '5'].map((rate) => (
                         <button
                           key={rate}
                           type="button"
+                          role="radio"
+                          aria-checked={issRate === rate}
                           onClick={() => setIssRate(rate)}
                           className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${issRate === rate ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}
                         >
@@ -970,8 +990,11 @@ ${url}`;
               <div className="mt-8 mb-2">
                 <button
                   type="button"
+                  id="btn-detalhamento"
+                  aria-expanded={showDetalhamento}
+                  aria-controls="detalhamento-tecnico"
                   onClick={() => setShowDetalhamento(!showDetalhamento)}
-                  className="w-full flex items-center justify-between gap-3 py-4 px-5 border border-rule rounded-lg bg-white hover:bg-paper transition-colors font-sans group shadow-sm"
+                  className="w-full flex items-center justify-between gap-3 py-4 px-5 border border-rule rounded-lg bg-white hover:bg-paper transition-colors font-sans group shadow-sm focus-visible:ring-2 focus-visible:ring-money focus-visible:outline-none"
                 >
                   <span className="flex items-center gap-2">
                     <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
@@ -981,7 +1004,7 @@ ${url}`;
                       Fator R · Simulador · Previdência · Impostos linha a linha
                     </span>
                   </span>
-                  <span className={`text-ink-muted transition-transform duration-300 ${showDetalhamento ? 'rotate-180' : ''}`}>
+                  <span className={`text-ink-muted transition-transform duration-300 ${showDetalhamento ? 'rotate-180' : ''}`} aria-hidden="true">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
@@ -990,7 +1013,7 @@ ${url}`;
               </div>
 
               {showDetalhamento && (
-              <div className="animate-fade-in">
+              <div id="detalhamento-tecnico" role="region" aria-labelledby="btn-detalhamento" className="animate-fade-in">
 
               {/* Passo 3: Qualidade dos Dados e Potencial de Planejamento */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 font-sans">
@@ -1474,6 +1497,7 @@ ${url}`;
             </div>
           </section>
           )}
+        </main>
 
         <Footer />
       </div >

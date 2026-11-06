@@ -42,7 +42,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs text-paper/40 font-mono tracking-wide">
-          <span> 2026 · Construído em Florianópolis</span>
+          <span>© 2026 · Construído em Florianópolis</span>
           <span>v2.0 · ATUALIZADO LEI 15.270/2025</span>
         </div>
       </div>

@@ -26,7 +26,8 @@ export default function Blog({ feedItems, comparativoCount, articleCount }) {
       <div className="page-root">
         <Header />
 
-        <section className="border-b border-rule py-16 md:py-24 relative">
+        <main id="main-content" tabIndex={-1} className="focus:outline-none">
+          <section className="border-b border-rule py-16 md:py-24 relative">
           <div className="absolute inset-0 opacity-[0.07] pointer-events-none bg-grid-pattern" />
           <div className="max-w-6xl mx-auto px-6 md:px-8 relative">
             <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink-muted mb-6 flex items-center gap-2">
@@ -98,6 +99,7 @@ export default function Blog({ feedItems, comparativoCount, articleCount }) {
             </div>
           </div>
         </section>
+        </main>
 
         <Footer />
       </div>

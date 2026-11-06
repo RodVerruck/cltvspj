@@ -92,7 +92,7 @@ export default function ComparativoPage({ scenario, related }) {
 
       <Header />
 
-      <main className="bg-paper min-h-screen">
+      <main id="main-content" tabIndex={-1} className="bg-paper min-h-screen focus:outline-none">
         <div className="border-b border-rule pt-28 pb-20 md:pt-36 md:pb-24 relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-pattern" />
           <div className="max-w-5xl mx-auto px-6 md:px-8 relative">
