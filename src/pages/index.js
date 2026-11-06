@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, ArrowRight, Briefcase, Info, Users } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, ArrowRight, Briefcase, Info, Users, Share2, Copy, Check, MessageCircle } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AdSense from '../components/AdSense';
 import { SITE_URL } from '../lib/config';
-import { calculateCLT, calculatePJ } from '../lib/calculator';
+import { calculateCLT, calculatePJ, calculatePJBreakEven } from '../lib/calculator';
 import { getCalculatorSchemaJsonLd } from '../lib/schema/calculator';
 
 const calculatorSchemaJsonLd = getCalculatorSchemaJsonLd();
 
 export default function Home() {
+  const router = useRouter();
+  const [copiedLink, setCopiedLink] = useState(false);
   const [salary, setSalary] = useState('8000');
   const [benefits, setBenefits] = useState({
     vr: '600',
@@ -35,6 +38,48 @@ export default function Home() {
   const [folha12Meses, setFolha12Meses] = useState('');
   const [issRate, setIssRate] = useState('3');
   const [mensalidadeContador, setMensalidadeContador] = useState('');
+
+  // Leitura de parâmetros de compartilhamento via URL
+  useEffect(() => {
+    if (!router.isReady) return;
+    const q = router.query;
+    let hasUrlParams = false;
+
+    if (q.salary || q.clt) {
+      setSalary(String(q.salary || q.clt));
+      hasUrlParams = true;
+    }
+    if (q.pjRate) {
+      setPjRate(String(q.pjRate));
+      hasUrlParams = true;
+    } else if (q.pj) {
+      const h = Number(q.hours) || 160;
+      setPjRate(String(Math.round(Number(q.pj) / h)));
+      hasUrlParams = true;
+    }
+    if (q.hours) setHoursPerMonth(String(q.hours));
+    if (q.regime && ['simples', 'presumido', 'mei'].includes(String(q.regime))) {
+      setRegime(String(q.regime));
+    }
+    if (q.vr || q.vt || q.plano || q.seguro) {
+      setBenefits(prev => ({
+        vr: q.vr !== undefined ? String(q.vr) : prev.vr,
+        vt: q.vt !== undefined ? String(q.vt) : prev.vt,
+        planoSaude: q.plano !== undefined ? String(q.plano) : prev.planoSaude,
+        seguroVida: q.seguro !== undefined ? String(q.seguro) : prev.seguroVida,
+      }));
+    }
+    if (q.dep) setDependentes(String(q.dep));
+    if (q.contador) setMensalidadeContador(String(q.contador));
+
+    if (hasUrlParams) {
+      setShowResults(true);
+      setShowingResults(true);
+      setTimeout(() => {
+        document.getElementById('resultado')?.scrollIntoView({ behavior: 'smooth' });
+      }, 350);
+    }
+  }, [router.isReady]);
 
   const handleCalculate = () => {
     setShowResults(true);
@@ -111,6 +156,54 @@ export default function Home() {
   if (excede100) {
     FatorRDesc = `Para fins previdenciários, a simulação considera a contribuição mínima baseada em 1 salário mínimo vigente (R$ 1.621,00), que supera o faturamento mensal simulado de R$ ${pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.`;
   }
+
+  const breakEven = calculatePJBreakEven(
+    clt.totalPackage,
+    hoursPerMonth,
+    regime,
+    proLaboreInput === 'personalizado' ? proLaboreCustom : proLaboreInput,
+    mensalidadeContador
+  );
+  const breakEvenMultiplier = clt.gross > 0 ? (breakEven.monthlyGross / clt.gross).toFixed(2) : '1.50';
+
+  const getShareUrl = () => {
+    if (typeof window === 'undefined') return '';
+    const params = new URLSearchParams();
+    params.set('salary', salary);
+    params.set('pjRate', pjRate);
+    params.set('hours', hoursPerMonth);
+    params.set('regime', regime);
+    if (benefits.vr) params.set('vr', benefits.vr);
+    if (benefits.vt) params.set('vt', benefits.vt);
+    if (benefits.planoSaude) params.set('plano', benefits.planoSaude);
+    if (benefits.seguroVida) params.set('seguro', benefits.seguroVida);
+    if (dependentes && dependentes !== '0') params.set('dep', dependentes);
+    if (mensalidadeContador) params.set('contador', mensalidadeContador);
+    return `${window.location.origin}/?${params.toString()}`;
+  };
+
+  const handleCopyLink = () => {
+    const url = getShareUrl();
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(url);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 3000);
+    }
+  };
+
+  const handleShareWhatsApp = () => {
+    const url = getShareUrl();
+    const dif = Math.abs(pj.net - clt.totalPackage);
+    const vencedor = pj.net > clt.totalPackage ? 'PJ' : 'CLT';
+    const text = `📊 Simulação CLT vs PJ (2026):
+• CLT Bruto: R$ ${Number(salary || 0).toLocaleString('pt-BR')} (Pacote Total: R$ ${clt.totalPackage.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês)
+• PJ Faturamento: R$ ${pj.gross.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês (Líquido: R$ ${pj.net.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês)
+👉 Resultado: ${vencedor} rende +R$ ${dif.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês!
+
+Veja o cálculo detalhado:
+${url}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+  };
 
   return (
     <>
@@ -721,6 +814,88 @@ export default function Home() {
                     Falar com contador
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </a>
+                </div>
+              </div>
+
+              {/* PONTO DE EQUILÍBRIO PJ (BREAK-EVEN) & COMPARTILHAMENTO VIRAL */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8 animate-fade-in font-sans">
+                {/* Card Break-Even */}
+                <div className="lg:col-span-2 bg-white border border-rule/70 rounded-xl p-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className="text-money w-4 h-4" />
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-ink font-bold">
+                      Ponto de Equilíbrio PJ (Break-Even)
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-sans text-xs pt-1">
+                    <div className="bg-paper/40 border border-rule/50 rounded-lg p-3">
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink-muted block mb-0.5">Faturamento Mínimo</span>
+                      <span className="font-display text-xl font-bold text-ink block">
+                        R$ {breakEven.monthlyGross.toLocaleString('pt-BR')}<span className="text-[10px] font-sans font-normal text-ink-muted">/mês</span>
+                      </span>
+                      <span className="text-[10px] text-ink-fade leading-tight block mt-0.5">Para empatar com pacote CLT</span>
+                    </div>
+
+                    <div className="bg-paper/40 border border-rule/50 rounded-lg p-3">
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink-muted block mb-0.5">Valor Hora Mínimo</span>
+                      <span className="font-display text-xl font-bold text-ink block">
+                        R$ {breakEven.hourlyRate.toLocaleString('pt-BR')}<span className="text-[10px] font-sans font-normal text-ink-muted">/h</span>
+                      </span>
+                      <span className="text-[10px] text-ink-fade leading-tight block mt-0.5">Em {hoursPerMonth}h mensais</span>
+                    </div>
+
+                    <div className="bg-paper/40 border border-rule/50 rounded-lg p-3">
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink-muted block mb-0.5">Multiplicador Ideal</span>
+                      <span className="font-display text-xl font-bold text-money block">
+                        {breakEvenMultiplier}x <span className="text-[10px] font-sans font-normal text-ink-muted">do CLT</span>
+                      </span>
+                      <span className="text-[10px] text-ink-fade leading-tight block mt-0.5">Fator de reposição total</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Barra de Compartilhamento Viral */}
+                <div className="bg-white border border-rule/70 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Share2 className="text-money w-4 h-4" />
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-ink font-bold">
+                        Compartilhar Simulação
+                      </span>
+                    </div>
+                    <p className="text-xs text-ink-muted leading-tight font-sans mb-3">
+                      Envie esta conta para amigos, sócios ou recrutadores com link direto.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={handleShareWhatsApp}
+                      className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-4 py-2.5 rounded-lg text-xs font-bold transition-all shadow-sm"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Enviar no WhatsApp
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleCopyLink}
+                      className="inline-flex items-center justify-center gap-2 bg-paper hover:bg-rule/40 border border-rule text-ink px-4 py-2.5 rounded-lg text-xs font-mono font-medium transition-all"
+                    >
+                      {copiedLink ? (
+                        <>
+                          <Check className="w-4 h-4 text-money" />
+                          <span className="text-money font-bold">Link Copiado!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4 text-ink-muted" />
+                          <span>Copiar Link</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
 

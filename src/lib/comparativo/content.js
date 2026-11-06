@@ -189,6 +189,146 @@ export function getRichComparativoContent(params) {
         },
       ],
     },
+    'Desenvolvedor Frontend': {
+      intro: (clt, pj) =>
+        `Para o **Desenvolvedor Frontend** (focado em React, Vue, Next.js e interfaces modernas), a transição de CLT de R$ ${clt} para PJ de ~R$ ${pj}/mês é muito frequente devido ao trabalho remoto. Com a tributação progressiva da CLT consumindo fatias elevadas em faixas plenas, a PJ no Simples Nacional com Anexo III garante maior liquidez mensal para investir em equipamento e previdência própria.`,
+      faq: [
+        {
+          q: 'Qual o CNAE correto para Desenvolvedor Frontend abrir CNPJ?',
+          a: 'Geralmente utiliza o CNAE 6201-5/00 (Desenvolvimento de programas de computador sob encomenda). Essa atividade é elegível ao Simples Nacional e pode ser tributada no Anexo III (alíquota inicial de 6%) desde que cumpra a regra do Fator R com pró-labore de pelo menos 28%.',
+        },
+        {
+          q: 'Dev Frontend PJ pode prestar serviços para múltiplos clientes?',
+          a: 'Sim. Uma das principais vantagens do regime PJ em frontend é a possibilidade de manter um contrato fixo de dedicação parcial e prestar consultorias adicionais para outras empresas, multiplicando a renda bruta.',
+        },
+      ],
+    },
+    'Desenvolvedor Backend': {
+      intro: (clt, pj) =>
+        `No mercado de **Desenvolvedor Backend** (Node.js, Java, Python, Go, Cloud e Microsserviços), a comparação entre CLT de R$ ${clt} e PJ de ~R$ ${pj}/mês reflete a alta valorização técnica da função. Além de permitir contratos no Brasil, a estrutura PJ prepara o desenvolvedor para receber contratos do exterior em moeda forte com isenção de tributos municipais e federais de exportação.`,
+      faq: [
+        {
+          q: 'Como funciona o Fator R para Desenvolvedor Backend no Simples Nacional?',
+          a: 'O Fator R exige que o somatório de despesas com folha de pagamento (incluindo o pró-labore do sócio) represente no mínimo 28% do faturamento da empresa nos últimos 12 meses. Atingindo essa meta, a tributação cai de 15,5% (Anexo V) para 6% (Anexo III).',
+        },
+        {
+          q: 'Vale a pena manter contrato PJ com empresa estrangeira sendo Backend?',
+          a: 'Sim. Serviços de software prestados para o exterior têm isenção de PIS, COFINS e ISS no Brasil, resultando em uma alíquota efetiva de Simples Nacional ainda menor, frequentemente em torno de 3% a 4%.',
+        },
+      ],
+    },
+    'Desenvolvedor Full Stack': {
+      intro: (clt, pj) =>
+        `O **Desenvolvedor Full Stack** combina domínio de frontend, backend e infraestrutura básica, sendo um dos profissionais mais disputados por startups e scale-ups. Comparando CLT de R$ ${clt} com PJ de ~R$ ${pj}/mês, a autonomia do contrato de prestação de serviços compensa encargos formais se o profissional souber precificar sua hora com o multiplicador de equilíbrio adequado.`,
+      faq: [
+        {
+          q: 'Qual a proporção mínima de PJ para Full Stack em relação ao CLT?',
+          a: 'No mercado de desenvolvimento de software, recomenda-se que a proposta PJ seja de no mínimo 1,45× a 1,6× o salário CLT bruto para repor integralmente férias remuneradas, 13º salário, FGTS e benefícios de saúde corporativos.',
+        },
+        {
+          q: 'Desenvolvedor Full Stack pode ser MEI?',
+          a: 'Não. O desenvolvimento e arquitetura de software é atividade intelectual expressamente vedada ao MEI pela legislação federal. É necessário abrir uma ME (Microempresa), preferencialmente como Sociedade Limitada Unipessoal (SLU).',
+        },
+      ],
+    },
+    'Analista de Segurança da Informação': {
+      intro: (clt, pj) =>
+        `O **Analista de Segurança da Informação** (Cibersegurança, DevSecOps, Pentest e Cloud Security) atua na proteção contra incidentes e conformidade LGPD/ISO. Comparando CLT de R$ ${clt} com proposta PJ de ~R$ ${pj}/mês, o modelo PJ viabiliza honorários premium e acordos B2B com cláusulas claras de sobreaviso ou atendimento a incidentes críticos.`,
+      faq: [
+        {
+          q: 'Como é tributada a atividade de consultoria em segurança da informação?',
+          a: 'Pode ser enquadrada em CNAEs de suporte técnico e consultoria em TI (como 6202-3/00 ou 6209-1/00), enquadrados no Simples Nacional. O Fator R permite tributar no Anexo III (6%) mantendo pró-labore regular.',
+        },
+        {
+          q: 'Quais cuidados contratuais o profissional PJ de segurança deve tomar?',
+          a: 'É fundamental ter cláusulas de limitação de responsabilidade civil em contrato de prestação de serviços, além de definir claramente escopo de atuação para não assumir responsabilidade pessoal por incidentes cibernéticos imprevistos.',
+        },
+      ],
+    },
+    'Product Designer': {
+      intro: (clt, pj) =>
+        `O **Product Designer** lidera a estratégia de experiência do usuário, design systems e interfaces de produto. Com CLT de R$ ${clt} vs PJ de ~R$ ${pj}/mês, a modalidade PJ permite deduzir despesas com ferramentas de design (Figma, Adobe, plataformas de teste) e atuar para mais de um produto ou cliente em paralelo.`,
+      faq: [
+        {
+          q: 'Product Designer pode atuar como MEI?',
+          a: 'A atividade de design de produto e software envolve criação intelectual regulada e geralmente não se enquadra nas ocupações permitidas pelo MEI. O caminho seguro é constituir uma ME no Simples Nacional.',
+        },
+        {
+          q: 'Qual o segredo para economizar imposto como Product Designer PJ?',
+          a: 'Alinhar o pró-labore ao patamar de 28% do faturamento para usufruir da alíquota de 6% no Anexo III do Simples Nacional, garantindo que o restante dos rendimentos seja distribuído como lucros isentos de IRPF.',
+        },
+      ],
+    },
+    'Gestor de Tráfego': {
+      intro: (clt, pj) =>
+        `O **Gestor de Tráfego** (mídia paga em Meta Ads, Google Ads, TikTok e LinkedIn) é uma das carreiras mais pejotizadas do mercado digital. Na comparação entre CLT de R$ ${clt} e faturamento PJ de ~R$ ${pj}/mês, a flexibilidade da PJ permite cobrar valores fixos mais percentual sobre performance das campanhas gerenciadas.`,
+      faq: [
+        {
+          q: 'Como separar a verba de anúncios da receita própria do Gestor PJ?',
+          a: 'Nunca receba a verba dos anúncios dos clientes na sua conta bancária da empresa. Os clientes devem pagar as plataformas de anúncios diretamente com seus próprios cartões ou boletos, emitindo NF apenas sobre o seu serviço de gestão.',
+        },
+        {
+          q: 'Gestor de tráfego pode ser MEI?',
+          a: 'Depende do CNAE. Atividades de consultoria de marketing e agenciamento de publicidade não são permitidas no MEI. A maioria dos gestores profissionais opera como Microempresa no Simples Nacional para evitar autuações fiscais.',
+        },
+      ],
+    },
+    'Engenheiro Civil': {
+      intro: (clt, pj) =>
+        `Para o **Engenheiro Civil**, com atuação em projetos, laudos, reformas e gestão de obras, a comparação entre CLT de R$ ${clt} e remuneração PJ de ~R$ ${pj}/mês é recorrente em construtoras e escritórios de engenharia. Como a profissão é regulamentada pelo Confea/Crea, a prestação de serviços exige ART técnica e planejamento tributário cuidadoso.`,
+      faq: [
+        {
+          q: 'Engenheiro Civil pode ser MEI?',
+          a: 'Não. Engenharia civil é profissão regulamentada por conselho de classe e tem vedação expressa ao MEI. A empresa deve ser aberta como ME no Simples Nacional ou Lucro Presumido, com registro no Crea.',
+        },
+        {
+          q: 'Como funciona o imposto do Engenheiro Civil no Simples Nacional?',
+          a: 'Serviços de engenharia e elaboração de projetos entram por padrão no Anexo V (iniciando em 15,5%). Porém, com o Fator R (folha/pró-labore ≥ 28%), o imposto cai para o Anexo III (a partir de 6%), gerando economia brutal.',
+        },
+      ],
+    },
+    'Arquiteto e Urbanista': {
+      intro: (clt, pj) =>
+        `Para o **Arquiteto e Urbanista**, comparando CLT de R$ ${clt} com PJ de ~R$ ${pj}/mês, a flexibilidade de ter um CNPJ próprio viabiliza tanto a contratação contínua por escritórios de arquitetura quanto a captação de clientes próprios para projetos residenciais e comerciais, registrando o RRT no CAU.`,
+      faq: [
+        {
+          q: 'Arquiteto e Urbanista pode abrir MEI?',
+          a: 'Não. Arquitetura é atividade intelectual e regulamentada pelo Conselho de Arquitetura e Urbanismo (CAU), vedada ao MEI. A estrutura ideal é a Sociedade Limitada Unipessoal (SLU) no Simples Nacional.',
+        },
+        {
+          q: 'Como pagar menos imposto como Arquiteto PJ?',
+          a: 'Utilizando o Fator R no Simples Nacional. Com um pró-labore planejado de 28% do faturamento, a alíquota de impostos sobre as notas emitidas cai para 6% no Anexo III, em vez dos 15,5% do Anexo V.',
+        },
+      ],
+    },
+    'Médico Plantonista': {
+      intro: (clt, pj) =>
+        `O **Médico Plantonista** vivencia uma das maiores taxas de contratação PJ no Brasil, já que grande parte dos hospitais, operadoras e clínicas privadas contrata exclusivamente via CNPJ. Comparando CLT de R$ ${clt} com faturamento PJ de ~R$ ${pj}/mês, a retenção de 27,5% de IRPF na pessoa física torna a PJ uma decisão quase mandatória para preservação patrimonial.`,
+      faq: [
+        {
+          q: 'Médico pode ser MEI para dar plantão?',
+          a: 'De forma alguma. A medicina é profissão regulamentada pelo CFM/CRM e estritamente proibida no MEI. Médicos devem constituir empresa médica (ME) com registro no CRM PJ do seu estado.',
+        },
+        {
+          q: 'Qual o melhor regime tributário para Médico Plantonista PJ?',
+          a: 'Para quem atua sozinho dando plantões, o Simples Nacional com Fator R (atingindo pró-labore de 28% para tributar a 6% no Anexo III) costuma ser o mais econômico. Conforme o faturamento escala acima de R$ 30k/mês ou ocorram despesas médicas clínicas, o Lucro Presumido (com equiparação hospitalar se aplicável) deve ser comparado.',
+        },
+      ],
+    },
+    'Psicólogo Clínico': {
+      intro: (clt, pj) =>
+        `Para o **Psicólogo Clínico**, comparando vínculos CLT de R$ ${clt} (comum em RH ou hospitais) com atendimento PJ em clínicas ou plataformas online de ~R$ ${pj}/mês, o CNPJ oferece formalização profissional para emissão de notas fiscais exigidas por planos de saúde para reembolso de pacientes e redução de imposto sobre consultas.`,
+      faq: [
+        {
+          q: 'Psicólogo pode ser MEI?',
+          a: 'Não. A psicologia é profissão regulamentada pelo CFP/CRP e não consta na lista de ocupações permitidas do MEI. O psicólogo deve abrir uma microempresa no Simples Nacional.',
+        },
+        {
+          q: 'Como funciona o imposto do Psicólogo no Simples Nacional?',
+          a: 'A atividade de psicologia está sujeita ao Fator R. Se a despesa de pró-labore representar pelo menos 28% do faturamento, o imposto começa em 6% no Anexo III. Sem esse planejamento, cai no Anexo V a 15,5%.',
+        },
+      ],
+    },
   };
 
   const profProfile = role ? PROFESSION_PROFILES[role] : null;

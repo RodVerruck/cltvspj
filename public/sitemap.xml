@@ -291,4 +291,54 @@
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-desenvolvedor-frontend</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-desenvolvedor-backend</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-desenvolvedor-full-stack</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-seguranca-informacao</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-product-designer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-gestor-trafego</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-engenheiro-civil</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-arquiteto-urbanista</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-medico-plantonista</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://calculadora-cltvspj.vercel.app/blog/comparativo/clt-ou-pj-psicologo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
 </urlset>

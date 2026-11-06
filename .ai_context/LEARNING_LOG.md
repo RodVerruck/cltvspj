@@ -2,6 +2,37 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Implementação: Motor Viral (Compartilhamento URL/WhatsApp) e Expansão de +10 Profissões
+
+**Contexto**: O usuário aprovou a execução da Frente 3 do Plano Diretor de Monetização: dotar a calculadora principal de um motor viral de compartilhamento com parâmetros de URL e expandir o catálogo de SEO programático com 10 novas profissões de alta pejotização e sujeitas ao Fator R / Simples Nacional.
+
+**Ações Implementadas**:
+1. **Motor Viral e Leitura de Query Strings na Calculadora (`src/pages/index.js`)**:
+   - Integrado `useRouter` para ler parâmetros de simulação na URL (`salary`, `pjRate`, `pj`, `hours`, `regime`, `vr`, `vt`, `plano`, `seguro`, `dep`, `contador`).
+   - Carregamento instantâneo da simulação e auto-scroll para a seção `#resultado` quando acessado com link compartilhado.
+   - Botão **"Enviar no WhatsApp"**: Gera mensagem formatada pronta com os números de CLT, PJ, vencedor, rendimento extra mensal e link direto da simulação.
+   - Botão **"Copiar Link"**: Copia a URL parametrizada para o clipboard com feedback visual ("Link Copiado!").
+   - Painel integrado de **Ponto de Equilíbrio PJ (Break-Even)** exibindo Faturamento Mínimo, Hora Mínima e Multiplicador Ideal no resultado da Home.
+2. **Expansão de 10 Novas Profissões de Alta Demanda (`src/data/comparativos/professions.js`)**:
+   - Adicionados ao catálogo:
+     1. `clt-ou-pj-desenvolvedor-frontend` (CLT R$ 8.500 | PJ R$ 13.175)
+     2. `clt-ou-pj-desenvolvedor-backend` (CLT R$ 9.500 | PJ R$ 14.725)
+     3. `clt-ou-pj-desenvolvedor-full-stack` (CLT R$ 10.500 | PJ R$ 16.275)
+     4. `clt-ou-pj-seguranca-informacao` (CLT R$ 11.000 | PJ R$ 17.600)
+     5. `clt-ou-pj-product-designer` (CLT R$ 9.000 | PJ R$ 13.950)
+     6. `clt-ou-pj-gestor-trafego` (CLT R$ 6.000 | PJ R$ 9.000)
+     7. `clt-ou-pj-engenheiro-civil` (CLT R$ 9.000 | PJ R$ 13.500)
+     8. `clt-ou-pj-arquiteto-urbanista` (CLT R$ 7.500 | PJ R$ 11.250)
+     9. `clt-ou-pj-medico-plantonista` (CLT R$ 18.000 | PJ R$ 27.000)
+     10. `clt-ou-pj-psicologo` (CLT R$ 5.000 | PJ R$ 7.500)
+3. **Conteúdo Editorial Rico e Específico (`src/lib/comparativo/content.js`)**:
+   - Criados perfis em `PROFESSION_PROFILES` para as 10 novas profissões com introduções personalizadas e FAQs tributárias reais (CNAE, regras do Fator R, vedações legais ao MEI e orientações de Simples Nacional).
+4. **Validação do Sistema**:
+   - `test_regressao.mjs`: 100% aprovado.
+   - `npm run build`: Compilação de 71 páginas estáticas e **66 URLs geradas no sitemap.xml**.
+
+---
+
 ## [2026-11-05] Implementação: Destravamento de Conversão nos Comparativos (Ponto de Equilíbrio + CTA Ancorado no Topo)
 
 **Contexto**: O usuário aprovou a implementação da Frente 2 do Plano Diretor de Monetização: capturar e converter os 85% de cliques orgânicos que entram diretamente nas páginas de comparativos salariais e de cargos (que já figuram no Top 5 do Google), onde antes o CTA da Manassés ficava isolado no rodapé da página.
