@@ -293,51 +293,48 @@ ${url}`;
 
         <main id="main-content" tabIndex={-1} className="focus:outline-none">
           {/* Hero Section */}
-        <section className="border-b border-rule py-16 md:py-24 relative">
+        <section className="border-b border-rule pt-8 pb-7 md:pt-12 md:pb-9 relative">
           <div className="absolute inset-0 opacity-[0.10] pointer-events-none z-0" style={{ backgroundImage: 'linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px)', backgroundSize: '48px 48px' }}></div>
           <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
-            <div className="eyebrow mb-7">
+            <div className="eyebrow mb-3.5">
               <span className="eyebrow-dot"></span>
               <span>Atualizado · Lei 15.270/2025 vigente em 2026</span>
             </div>
 
-            <h1 className="font-display text-[clamp(60px,8vw,110px)] leading-[0.95] tracking-editorial text-ink mb-8 max-w-4xl">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[68px] leading-[1.05] tracking-editorial text-ink mb-3.5 max-w-4xl">
               CLT <em className="italic text-money">ou</em> PJ.<br />
               Descubra em 60 segundos.
             </h1>
 
-            <p className="text-lg md:text-xl text-ink-muted leading-relaxed max-w-2xl mb-12">
-              A calculadora definitiva para comparar regimes - já com a nova isenção de IR até R$ 5.000, redutor progressivo e retenção de dividendos. Sem cadastro, sem enrolação.
+            <p className="text-base md:text-lg text-ink-muted leading-relaxed max-w-2xl mb-5 font-sans">
+              A calculadora definitiva para comparar regimes — com as regras vigentes da Lei 15.270/2025 (isenção de IR até R$ 5.000, redutor progressivo e retenção de dividendos). Gratuita, sem cadastro.
             </p>
 
-            <div className="flex flex-wrap gap-x-12 gap-y-6 pt-8 border-t border-rule">
-              <div>
-                <div className="font-display text-4xl text-ink">2026</div>
-                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Tabela atualizada</div>
-              </div>
-              <div>
-                <div className="font-display text-4xl text-ink">R$ 5k</div>
-                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Isenção total IR</div>
-              </div>
-              <div>
-                <div className="font-display text-4xl text-ink">3 min</div>
-                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Para concluir</div>
-              </div>
-              <div>
-                <div className="font-display text-4xl text-ink">0</div>
-                <div className="font-mono text-xs uppercase tracking-widest text-ink-muted">Cadastros pedidos</div>
-              </div>
+            {/* Badges de Confiança Compactos (Substitui as 4 caixas verticais) */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-rule/80 text-xs font-mono text-ink shadow-2xs">
+                <CheckCircle size={13} className="text-money" />
+                <span>Tabela 2026 Vigente</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-rule/80 text-xs font-mono text-ink shadow-2xs">
+                <CheckCircle size={13} className="text-money" />
+                <span>Isenção de IR até R$ 5k</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-rule/80 text-xs font-mono text-ink shadow-2xs">
+                <CheckCircle size={13} className="text-money" />
+                <span>100% Grátis e sem cadastro</span>
+              </span>
             </div>
           </div>
         </section>
 
         {/* Calculator Section */}
-        <section id="calc" className="border-b border-rule py-16 md:py-24 bg-paper">
+        <section id="calc" className="border-b border-rule pt-6 pb-16 md:pt-8 md:pb-20 bg-paper">
           <div className="max-w-6xl mx-auto px-6 md:px-8">
-            <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-6 mb-10 pb-5 border-b border-rule">
+            <div className="flex flex-col md:flex-row md:items-baseline gap-3 md:gap-6 mb-6 pb-4 border-b border-rule">
               <span className="font-mono text-sm text-ink-muted tracking-wide">§ 01</span>
-              <h2 className="font-display text-3xl md:text-4xl text-ink tracking-tight">Insira seus números</h2>
-              <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
+              <h2 className="font-display text-2xl md:text-3xl text-ink tracking-tight">Insira seus números</h2>
+              <p className="text-xs md:text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-sans items-stretch">

@@ -2,6 +2,26 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Otimização Above-the-Fold: Hero Editorial Compacto e Entrada Imediata da Calculadora
+
+**Contexto**: O usuário identificou que o Hero da Home ([`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js)) estava consumindo 100% da primeira dobra de tela (viewport height), forçando rolagem obrigatória antes mesmo do usuário visualizar qualquer campo da calculadora. O layout anterior tinha paddings excessivos (`py-24`), tipografia desproporcional (`text-[110px]`) e 4 caixas verticais pesadas com mensagens redundantes ou conflitantes (título prometia "60 segundos" e o box dizia "3 min").
+
+**Ações Implementadas**:
+1. **Compactação de Altura do Hero**:
+   - Reduzido o padding vertical de `py-16 md:py-24` para `pt-8 pb-7 md:pt-12 md:pb-9`.
+   - Reajustada a escala tipográfica do título de `clamp(60px,8vw,110px)` para `text-4xl sm:text-5xl md:text-6xl lg:text-[68px]`, mantendo o estilo editorial nobre (`Instrument Serif`, itálico em "ou PJ") sem devorar a altura da tela.
+2. **Substituição das 4 Caixas Verticais por Trust Pills Horizontais**:
+   - As antigas 4 caixas verticais (que consumiam ~160px de altura vertical) foram substituídas por uma linha fluida e compacta de badges (`CheckCircle`): *"Tabela 2026 Vigente"*, *"Isenção de IR até R$ 5k"* e *"100% Grátis e sem cadastro"*, economizando mais de 120px de altura.
+3. **Aproximação da Seção da Calculadora (`#calc`)**:
+   - Ajustado o padding superior de `#calc` de `py-16 md:py-24` para `pt-6 pb-16 md:pt-8 md:pb-20`, reduzindo também a margem do cabeçalho `§ 01`.
+4. **Impacto de Usabilidade (Time-to-Value)**:
+   - Em telas desktop e laptops comuns (768px a 900px de altura útil), os formulários de entrada da Proposta CLT e da Proposta PJ agora aparecem imediatamente na primeira tela carregada, convidando o usuário à interação sem atrito.
+5. **Validação**:
+   - `test_regressao.mjs`: 100% de sucesso.
+   - `http://localhost:3000/`: Status 200 OK.
+
+---
+
 ## [2026-11-06] Redesign Visual do Card Hero de Resultado (`#resultado`) e Nota de Contexto Metodológica
 
 **Contexto**: O usuário compartilhou o screenshot da seção de resultado da calculadora apontando pontos visuais a serem aprimorados:
