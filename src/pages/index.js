@@ -23,6 +23,10 @@ export default function Home() {
   });
   const [pjRate, setPjRate] = useState('100');
   const [hoursPerMonth, setHoursPerMonth] = useState('160');
+  const [pjInputMode, setPjInputMode] = useState('mensal');
+  const [pjMonthlyInput, setPjMonthlyInput] = useState('16000');
+  const [showCltAdvanced, setShowCltAdvanced] = useState(false);
+  const [showPjAdvanced, setShowPjAdvanced] = useState(false);
   const [faturamento12Meses, setFaturamento12Meses] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [regime, setRegime] = useState('simples');
@@ -39,6 +43,38 @@ export default function Home() {
   const [issRate, setIssRate] = useState('3');
   const [mensalidadeContador, setMensalidadeContador] = useState('');
 
+  const handlePjMonthlyChange = (val) => {
+    setPjMonthlyInput(val);
+    const numericMonthly = parseFloat(String(val).replace(',', '.')) || 0;
+    const h = parseFloat(hoursPerMonth) || 160;
+    setPjRate(String(numericMonthly / h));
+  };
+
+  const handlePjRateChange = (val) => {
+    setPjRate(val);
+    const numericRate = parseFloat(String(val).replace(',', '.')) || 0;
+    const h = parseFloat(hoursPerMonth) || 160;
+    setPjMonthlyInput(String(Math.round(numericRate * h)));
+  };
+
+  const handleHoursChange = (val) => {
+    setHoursPerMonth(val);
+    const numericHours = parseFloat(String(val).replace(',', '.')) || 0;
+    const numericRate = parseFloat(String(pjRate).replace(',', '.')) || 0;
+    setPjMonthlyInput(String(Math.round(numericRate * numericHours)));
+  };
+
+  const switchPjInputMode = (mode) => {
+    if (mode === 'hora') {
+      const cleanRate = Number((parseFloat(pjRate) || 0).toFixed(2));
+      setPjRate(String(cleanRate));
+    } else {
+      const m = Math.round((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 160));
+      setPjMonthlyInput(String(m));
+    }
+    setPjInputMode(mode);
+  };
+
   // Leitura de parâmetros de compartilhamento via URL
   useEffect(() => {
     if (!router.isReady) return;
@@ -50,11 +86,17 @@ export default function Home() {
       hasUrlParams = true;
     }
     if (q.pjRate) {
-      setPjRate(String(q.pjRate));
+      const r = Number(q.pjRate) || 0;
+      const h = Number(q.hours) || 160;
+      setPjRate(String(r));
+      setPjMonthlyInput(String(Math.round(r * h)));
       hasUrlParams = true;
     } else if (q.pj) {
+      const m = Number(q.pj) || 0;
       const h = Number(q.hours) || 160;
-      setPjRate(String(Math.round(Number(q.pj) / h)));
+      setPjMonthlyInput(String(m));
+      setPjRate(String(m / h));
+      setPjInputMode('mensal');
       hasUrlParams = true;
     }
     if (q.hours) setHoursPerMonth(String(q.hours));
@@ -298,59 +340,9 @@ ${url}`;
               <p className="text-sm text-ink-muted md:max-w-xs md:text-right ml-auto">Todos os cálculos consideram a tabela 2026 e as mudanças da Lei 15.270/2025.</p>
             </div>
 
-            {/* Painel de Dados Pessoais (Deduções IRPF) */}
-            <div className="bg-white border border-rule rounded-md p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-6 relative shadow-sm">
-              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
-              <div>
-                <h3 className="font-display text-xl text-ink mb-1 flex items-center gap-1.5 font-bold">
-                  Deduções de Imposto de Renda
-                  <span className="text-[11px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Pessoa Física</span>
-                </h3>
-                <p className="text-xs text-ink-muted leading-relaxed font-sans">
-                  Valores deduzidos no cálculo tradicional do IRPF para o salário CLT e para o Pró-labore PJ.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="field-dependentes" className="text-xs text-ink-muted mb-1 block">Dependentes IRPF</label>
-                  <select 
-                    id="field-dependentes"
-                    value={dependentes}
-                    onChange={(e) => setDependentes(e.target.value)}
-                    className="font-mono text-base sm:text-sm text-ink bg-transparent border-b-2 border-rule pb-2 outline-none w-full focus:border-money"
-                  >
-                    <option value="0">0 dependentes</option>
-                    <option value="1">1 dependente</option>
-                    <option value="2">2 dependentes</option>
-                    <option value="3">3 dependentes</option>
-                    <option value="4">4 dependentes</option>
-                    <option value="5">5+ dependentes</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="field-pensao" className="text-xs text-ink-muted mb-1 block">Pensão Alimentícia Judicial</label>
-                  <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                    <span className="font-mono text-sm text-ink-fade">R$</span>
-                    <input 
-                      id="field-pensao"
-                      type="text" 
-                      inputMode="decimal"
-                      value={pensaoAlimenticia} 
-                      onChange={(e) => setPensaoAlimenticia(e.target.value)}
-                      placeholder="0,00"
-                      className="font-mono text-base text-ink bg-transparent outline-none w-full py-0.5"
-                    />
-                  </div>
-                  <p className="text-xs text-ink-fade mt-1 leading-tight font-sans">
-                    Apenas pensão homologada judicialmente ou por escritura pública.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-sans">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-sans items-start">
               {/* BLOCO CLT */}
-              <fieldset className="bg-white border border-rule rounded-md p-8 relative">
+              <fieldset className="bg-white border border-rule rounded-xl p-6 sm:p-8 relative shadow-sm">
                 <legend className="sr-only">Proposta CLT (Regime Atual)</legend>
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
@@ -358,8 +350,9 @@ ${url}`;
                   Proposta CLT <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Regime Atual</span>
                 </div>
 
+                {/* Salário Bruto Mensal */}
                 <div className="mb-6">
-                  <label htmlFor="field-salary" className="text-sm text-ink-muted mb-2 block">Salário bruto mensal</label>
+                  <label htmlFor="field-salary" className="text-sm font-medium text-ink mb-2 block">Salário bruto mensal</label>
                   <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                     <span className="font-mono text-lg text-ink-fade">R$</span>
                     <input
@@ -368,70 +361,148 @@ ${url}`;
                       inputMode="decimal"
                       value={salary}
                       onChange={(e) => setSalary(e.target.value)}
-                      className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
+                      className="font-mono text-2xl font-bold text-ink bg-transparent outline-none flex-1 py-1"
                     />
                     <span className="text-xs text-ink-fade">/mês</span>
                   </div>
                 </div>
 
+                {/* Benefícios Mensais em Grid 2x2 Compacto */}
                 <div className="mb-6">
-                  <h4 className="font-display text-lg text-ink mb-4">Benefícios Mensais</h4>
-                  <div className="space-y-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-display text-lg text-ink font-bold">Benefícios Mensais</h4>
+                    <span className="text-xs font-mono text-money font-semibold bg-money-light px-2 py-0.5 rounded">
+                      Total: R$ {((parseFloat(benefits.vr) || 0) + (parseFloat(benefits.vt) || 0) + (parseFloat(benefits.planoSaude) || 0) + (parseFloat(benefits.seguroVida) || 0)).toLocaleString('pt-BR')}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
-                      { key: 'vr', label: 'Vale Refeição' },
-                      { key: 'vt', label: 'Vale Transporte' },
+                      { key: 'vr', label: 'Vale Refeição / Alimentação' },
                       { key: 'planoSaude', label: 'Plano de Saúde' },
-                      { key: 'seguroVida', label: 'Seguro de Vida' }
+                      { key: 'vt', label: 'Vale Transporte / Auxílio' },
+                      { key: 'seguroVida', label: 'Seguro de Vida / Outros' }
                     ].map(({ key, label }) => (
-                      <div key={key}>
+                      <div key={key} className="bg-paper/40 border border-rule/60 rounded-lg px-3.5 py-2.5 focus-within:border-money transition-colors">
                         <label htmlFor={`field-benefit-${key}`} className="text-xs text-ink-muted mb-1 block">{label}</label>
-                        <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                          <span className="font-mono text-ink-fade">R$</span>
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="font-mono text-xs text-ink-fade">R$</span>
                           <input
                             id={`field-benefit-${key}`}
                             type="text"
                             inputMode="decimal"
                             value={benefits[key]}
                             onChange={(e) => setBenefits({ ...benefits, [key]: e.target.value })}
-                            className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
+                            className="font-mono text-base font-semibold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
                           />
                         </div>
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-ink-fade mt-4 leading-normal font-sans bg-paper p-3 rounded border border-rule">
-                    💡 <strong>Nota sobre Benefícios</strong>: Benefícios corporativos pagos pela empresa (como plano de saúde familiar, VR, etc.) entram integralmente isentos de impostos e elevam o valor do seu Pacote Total.
-                  </p>
                 </div>
 
-                <div className="mt-6 border-t border-rule pt-6">
-                  <h4 className="font-display text-lg text-ink mb-4 font-bold">PLR / Bônus Anual</h4>
+                {/* Resumo Rápido Pacote CLT */}
+                <div className="bg-paper/70 border border-rule/80 rounded-lg p-4 mb-5 flex items-center justify-between">
                   <div>
-                    <label htmlFor="field-plr" className="text-xs text-ink-muted mb-1 block flex items-center gap-1.5">
-                      PLR anual (opcional)
-                      <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Tributação Exclusiva</span>
-                    </label>
-                    <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                      <span className="font-mono text-lg text-ink-fade">R$</span>
-                      <input
-                        id="field-plr"
-                        type="text"
-                        inputMode="decimal"
-                        value={plrAnual}
-                        onChange={(e) => setPlrAnual(e.target.value)}
-                        placeholder="0,00"
-                        className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1 placeholder:text-ink-fade/40"
-                      />
-                    </div>
-                    <p className="text-xs text-ink-fade mt-1.5 leading-normal font-sans">
-                      Informe apenas se sua empresa possui programa de PLR.
-                    </p>
+                    <span className="text-xs text-ink-muted block">Pacote CLT Estimado (Líquido + FGTS + 13º + Férias + Benefícios)</span>
+                    <span className="font-display text-2xl font-bold text-ink">
+                      R$ {clt.totalPackage.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}<span className="text-xs font-sans font-normal text-ink-muted">/mês</span>
+                    </span>
                   </div>
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-ink-fade bg-white border border-rule px-2.5 py-1 rounded">
+                    Líquido: R$ {clt.net.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                  </span>
+                </div>
+
+                {/* Gaveta de Ajustes Avançados CLT & IRPF */}
+                <div className="border-t border-rule pt-4">
+                  <button
+                    id="btn-clt-advanced"
+                    type="button"
+                    aria-expanded={showCltAdvanced}
+                    aria-controls="clt-advanced-panel"
+                    onClick={() => setShowCltAdvanced(!showCltAdvanced)}
+                    className="w-full flex items-center justify-between text-xs font-mono uppercase tracking-wider text-ink-muted hover:text-ink py-2 px-3 rounded-lg hover:bg-paper/60 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 font-bold">
+                      <span>⚙️ Opções Avançadas (PLR, Dependentes e Pensão)</span>
+                      {(plrAnual || dependentes !== '0' || pensaoAlimenticia) && (
+                        <span className="bg-money text-white text-[10px] px-1.5 py-0.5 rounded">Ativo</span>
+                      )}
+                    </span>
+                    <span className="text-sm">{showCltAdvanced ? '▴ Ocultar' : '▾ Expandir'}</span>
+                  </button>
+
+                  {showCltAdvanced && (
+                    <div
+                      id="clt-advanced-panel"
+                      role="region"
+                      aria-labelledby="btn-clt-advanced"
+                      className="mt-4 pt-4 border-t border-rule/50 space-y-5 animate-fade-in"
+                    >
+                      <div>
+                        <label htmlFor="field-plr" className="text-xs text-ink-muted mb-1 block flex items-center gap-1.5">
+                          PLR ou Bônus Anual (opcional)
+                          <span className="text-[10px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold">Tributação Exclusiva</span>
+                        </label>
+                        <div className="flex items-baseline gap-2 border-b-2 border-rule pb-1.5 transition-colors focus-within:border-money">
+                          <span className="font-mono text-sm text-ink-fade">R$</span>
+                          <input
+                            id="field-plr"
+                            type="text"
+                            inputMode="decimal"
+                            value={plrAnual}
+                            onChange={(e) => setPlrAnual(e.target.value)}
+                            placeholder="0,00"
+                            className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5 placeholder:text-ink-fade/40"
+                          />
+                          <span className="text-xs text-ink-fade">/ano</span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="field-dependentes" className="text-xs text-ink-muted mb-1 block">Dependentes IRPF</label>
+                          <select
+                            id="field-dependentes"
+                            value={dependentes}
+                            onChange={(e) => setDependentes(e.target.value)}
+                            className="font-mono text-sm text-ink bg-transparent border-b-2 border-rule pb-2 outline-none w-full focus:border-money"
+                          >
+                            <option value="0">0 dependentes</option>
+                            <option value="1">1 dependente</option>
+                            <option value="2">2 dependentes</option>
+                            <option value="3">3 dependentes</option>
+                            <option value="4">4 dependentes</option>
+                            <option value="5">5+ dependentes</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label htmlFor="field-pensao" className="text-xs text-ink-muted mb-1 block">Pensão Alimentícia Judicial</label>
+                          <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-1.5 transition-colors focus-within:border-money">
+                            <span className="font-mono text-sm text-ink-fade">R$</span>
+                            <input
+                              id="field-pensao"
+                              type="text"
+                              inputMode="decimal"
+                              value={pensaoAlimenticia}
+                              onChange={(e) => setPensaoAlimenticia(e.target.value)}
+                              placeholder="0,00"
+                              className="font-mono text-base text-ink bg-transparent outline-none w-full py-0.5"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-ink-fade leading-tight">
+                        *Dependentes e pensão judicial reduzem a base de cálculo do IRPF tanto na CLT quanto no pró-labore PJ.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </fieldset>
 
               {/* BLOCO PJ */}
-              <fieldset className="bg-white border border-rule rounded-md p-8 relative">
+              <fieldset className="bg-white border border-rule rounded-xl p-6 sm:p-8 relative shadow-sm">
                 <legend className="sr-only">Proposta PJ (Regime Alternativo)</legend>
                 <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-money -translate-x-px -translate-y-px"></div>
 
@@ -439,295 +510,350 @@ ${url}`;
                   Proposta PJ <span className="font-mono text-[11px] text-ink-muted tracking-widest uppercase ml-auto">Alternativa</span>
                 </div>
 
+                {/* Valor da Proposta PJ com Alternador Mensal / Por Hora */}
                 <div className="mb-6">
-                  <label id="label-regime" className="text-sm text-ink-muted mb-2 block">Regime tributário</label>
-                  <div role="radiogroup" aria-labelledby="label-regime" className="flex border border-rule rounded overflow-hidden">
-                    <button type="button" role="radio" aria-checked={regime === 'simples'} onClick={() => setRegime('simples')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'simples' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Simples</button>
-                    <button type="button" role="radio" aria-checked={regime === 'presumido'} onClick={() => setRegime('presumido')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'presumido' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>Presumido</button>
-                    <button type="button" role="radio" aria-checked={regime === 'mei'} onClick={() => setRegime('mei')} className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${regime === 'mei' ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}>MEI</button>
-                  </div>
-                </div>
-
-                {/* Mensalidade do Contador */}
-                {regime !== 'mei' && (
-                  <div className="mb-6 animate-fade-in">
-                    <label id="label-contador" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
-                      Mensalidade do contador (opcional)
-                      <span className="text-[11px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Custo Operacional</span>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <label htmlFor={pjInputMode === 'mensal' ? 'field-pj-monthly' : 'field-pj-rate'} className="text-sm font-medium text-ink">
+                      {pjInputMode === 'mensal' ? 'Faturamento bruto mensal' : 'Valor por hora e jornada'}
                     </label>
-                    <div role="radiogroup" aria-labelledby="label-contador" className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
-                      {[
-                        { value: '', label: 'Não considerar' },
-                        { value: '150', label: 'R$ 150' },
-                        { value: '250', label: 'R$ 250' },
-                        { value: '350', label: 'R$ 350' }
-                      ].map((opt) => (
-                        <button
-                          key={opt.value}
-                          type="button"
-                          role="radio"
-                          aria-checked={mensalidadeContador === opt.value}
-                          onClick={() => setMensalidadeContador(opt.value)}
-                          className={`py-1.5 px-1 text-[11px] font-medium rounded transition-colors border ${mensalidadeContador === opt.value ? 'bg-ink text-paper border-ink' : 'text-ink-muted border-rule hover:bg-rule/30'}`}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-                    {mensalidadeContador !== '' && mensalidadeContador !== '150' && mensalidadeContador !== '250' && mensalidadeContador !== '350' && (
-                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                        <span className="font-mono text-base text-ink-fade">R$</span>
-                        <input
-                          id="field-contador-personalizado"
-                          type="text"
-                          inputMode="decimal"
-                          aria-label="Valor personalizado da mensalidade do contador"
-                          value={mensalidadeContador}
-                          onChange={(e) => setMensalidadeContador(e.target.value)}
-                          className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5"
-                        />
-                      </div>
-                    )}
-                    {['', '150', '250', '350'].indexOf(mensalidadeContador) === -1 ? null : (
+                    <div role="radiogroup" aria-label="Modo de preenchimento do valor PJ" className="inline-flex bg-paper border border-rule rounded-lg p-0.5 text-xs">
                       <button
                         type="button"
-                        onClick={() => setMensalidadeContador('349')}
-                        className="text-[11px] text-money hover:underline block font-sans"
+                        role="radio"
+                        aria-checked={pjInputMode === 'mensal'}
+                        onClick={() => switchPjInputMode('mensal')}
+                        className={`px-2.5 py-1 rounded-md font-medium transition-colors ${pjInputMode === 'mensal' ? 'bg-ink text-paper shadow-sm' : 'text-ink-muted hover:text-ink'}`}
                       >
-                        + Informar valor personalizado
+                        Valor Mensal
                       </button>
-                    )}
-                  </div>
-                )}
-
-                <div className="mb-6">
-                  <label htmlFor="field-pj-rate" className="text-sm text-ink-muted mb-2 block">Valor da hora (PJ)</label>
-                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                    <span className="font-mono text-lg text-ink-fade">R$</span>
-                    <input
-                      id="field-pj-rate"
-                      type="text"
-                      inputMode="decimal"
-                      value={pjRate}
-                      onChange={(e) => setPjRate(e.target.value)}
-                      className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
-                    />
-                    <span className="text-xs text-ink-fade">/hora</span>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <label htmlFor="field-hours" className="text-sm text-ink-muted mb-2 block">Horas trabalhadas/mês</label>
-                  <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                    <input
-                      id="field-hours"
-                      type="text"
-                      inputMode="numeric"
-                      value={hoursPerMonth}
-                      onChange={(e) => setHoursPerMonth(e.target.value)}
-                      className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
-                    />
-                    <span className="text-xs text-ink-fade">horas</span>
-                  </div>
-                </div>
-
-                {/* Configuração do Pró-labore */}
-                {regime !== 'mei' && (
-                  <div className="mb-6">
-                    <label id="label-pro-labore" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
-                      Configuração do Pró-labore
-                      <span className="text-ink-fade hover:text-ink cursor-help relative group" title="O pró-labore é o salário do sócio-administrador. Ele deve ser compatível com a atividade exercida.">
-                        <Info size={13} className="inline-block" />
-                      </span>
-                    </label>
-                    <div role="radiogroup" aria-labelledby="label-pro-labore" className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
-                      {[
-                        { value: 'minimo', label: 'Mínimo (R$ 1.621)' },
-                        { value: 'padrao', label: 'Otimizado (Fator R)' },
-                        { value: '3000', label: 'R$ 3.000' },
-                        { value: '5000', label: 'R$ 5.000' },
-                        { value: '8000', label: 'R$ 8.000' },
-                        { value: 'personalizado', label: 'Personalizado' }
-                      ].map((opt) => (
-                        <button
-                          key={opt.value}
-                          type="button"
-                          role="radio"
-                          aria-checked={proLaboreInput === opt.value}
-                          onClick={() => setProLaboreInput(opt.value)}
-                          className={`py-1.5 px-1.5 text-[11px] font-medium rounded transition-colors border ${proLaboreInput === opt.value ? 'bg-ink text-paper border-ink' : 'text-ink-muted border-rule hover:bg-rule/30'}`}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
+                      <button
+                        type="button"
+                        role="radio"
+                        aria-checked={pjInputMode === 'hora'}
+                        onClick={() => switchPjInputMode('hora')}
+                        className={`px-2.5 py-1 rounded-md font-medium transition-colors ${pjInputMode === 'hora' ? 'bg-ink text-paper shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                      >
+                        Por Hora
+                      </button>
                     </div>
-                    
-                    {proLaboreInput === 'personalizado' && (
-                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money animate-fade-in">
+                  </div>
+
+                  {pjInputMode === 'mensal' ? (
+                    <div>
+                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
                         <span className="font-mono text-lg text-ink-fade">R$</span>
                         <input
-                          id="field-pro-labore-custom"
+                          id="field-pj-monthly"
                           type="text"
                           inputMode="decimal"
-                          aria-label="Valor personalizado do pró-labore mensal"
-                          value={proLaboreCustom}
-                          onChange={(e) => setProLaboreCustom(e.target.value)}
-                          placeholder="0,00"
-                          className="font-mono text-lg text-ink bg-transparent outline-none flex-1 py-1"
+                          value={pjMonthlyInput}
+                          onChange={(e) => handlePjMonthlyChange(e.target.value)}
+                          className="font-mono text-2xl font-bold text-ink bg-transparent outline-none flex-1 py-1"
                         />
                         <span className="text-xs text-ink-fade">/mês</span>
                       </div>
-                    )}
-                    <p className="text-xs text-ink-fade mt-1 leading-normal font-sans">
-                      ⚠️ <em>Pró-labore deve ser compatível com a atividade exercida.</em>
-                    </p>
+                      <span className="text-[11px] font-mono text-ink-fade mt-1.5 block">
+                        Equivale a R$ {((parseFloat(pjRate) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/hora (base de {hoursPerMonth}h/mês)
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="field-pj-rate" className="text-xs text-ink-muted mb-1 block">Valor da hora</label>
+                        <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                          <span className="font-mono text-base text-ink-fade">R$</span>
+                          <input
+                            id="field-pj-rate"
+                            type="text"
+                            inputMode="decimal"
+                            value={pjRate}
+                            onChange={(e) => handlePjRateChange(e.target.value)}
+                            className="font-mono text-xl font-bold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
+                          />
+                          <span className="text-xs text-ink-fade">/h</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="field-hours" className="text-xs text-ink-muted mb-1 block">Horas/mês</label>
+                        <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
+                          <input
+                            id="field-hours"
+                            type="text"
+                            inputMode="numeric"
+                            value={hoursPerMonth}
+                            onChange={(e) => handleHoursChange(e.target.value)}
+                            className="font-mono text-xl font-bold text-ink bg-transparent outline-none flex-1 py-0.5 w-full"
+                          />
+                          <span className="text-xs text-ink-fade">horas</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Regime Tributário */}
+                <div className="mb-6">
+                  <label id="label-regime" className="text-sm font-medium text-ink mb-2 block">Regime tributário</label>
+                  <div role="radiogroup" aria-labelledby="label-regime" className="grid grid-cols-3 border border-rule rounded-lg overflow-hidden bg-paper/40 p-1 gap-1">
+                    {[
+                      { id: 'simples', label: 'Simples Nacional', sub: 'Anexo III / V' },
+                      { id: 'presumido', label: 'Lucro Presumido', sub: '11,33% + ISS' },
+                      { id: 'mei', label: 'MEI', sub: 'Até R$ 6.750/mês' }
+                    ].map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={regime === item.id}
+                        onClick={() => setRegime(item.id)}
+                        className={`py-2 px-2 rounded-md text-center transition-all ${regime === item.id ? 'bg-ink text-paper shadow-sm font-bold' : 'text-ink-muted hover:text-ink hover:bg-white/60'}`}
+                      >
+                        <span className="text-xs sm:text-sm block">{item.label}</span>
+                        <span className={`text-[10px] font-mono block mt-0.5 ${regime === item.id ? 'text-paper/75' : 'text-ink-fade'}`}>{item.sub}</span>
+                      </button>
+                    ))}
                   </div>
-                )}
+                </div>
 
-                {regime === 'simples' && (
-                  <div className="mb-6 animate-fade-in grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Card de Resumo Líquido PJ & Premissas Ativas */}
+                <div className="bg-money-light/70 border border-money/20 rounded-lg p-4 mb-5">
+                  <div className="flex items-center justify-between gap-2 mb-2">
                     <div>
-                      <label htmlFor="field-rbt12" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
-                        Faturamento dos últimos 12 meses (RBT12)
-                        <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
-                      </label>
-                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                        <span className="font-mono text-base text-ink-fade">R$</span>
-                        <input
-                          id="field-rbt12"
-                          type="text"
-                          inputMode="decimal"
-                          value={faturamento12Meses}
-                          onChange={(e) => setFaturamento12Meses(e.target.value)}
-                          placeholder="Ex: 180.000,00"
-                          className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5 placeholder:text-ink-fade/40"
-                        />
-                      </div>
+                      <span className="text-xs text-ink-muted block">Líquido PJ Estimado (após impostos e custos)</span>
+                      <span className="font-display text-2xl font-bold text-money">
+                        R$ {pj.net.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}<span className="text-xs font-sans font-normal text-ink-muted">/mês</span>
+                      </span>
                     </div>
-
-                    <div>
-                      <label htmlFor="field-folha12" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
-                        Folha de pagamento dos últimos 12 meses
-                        <span className="text-[11px] bg-rule px-1 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Opcional</span>
-                      </label>
-                      <div className="flex items-baseline gap-2 border-b-2 border-rule pb-2 transition-colors focus-within:border-money">
-                        <span className="font-mono text-base text-ink-fade">R$</span>
-                        <input
-                          id="field-folha12"
-                          type="text"
-                          inputMode="decimal"
-                          value={folha12Meses}
-                          onChange={(e) => setFolha12Meses(e.target.value)}
-                          placeholder="Ex: 50.400,00"
-                          className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5 placeholder:text-ink-fade/40"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-1 sm:col-span-2">
-                      <p className="text-[11px] text-ink-fade leading-relaxed font-sans bg-paper p-3 rounded border border-rule flex items-start gap-1.5">
-                        <span>ℹ️</span>
-                        <span><strong>Fórmula</strong>: Fator R = Folha dos últimos 12 meses ÷ Faturamento dos últimos 12 meses (RBT12).</span>
-                      </p>
-
-                      {!folha12Meses && (
-                        <p className="text-[11px] text-[#856404] leading-relaxed font-sans bg-[#fff3cd] p-3 rounded border border-[#ffeeba] mt-3 flex items-start gap-1.5 animate-fade-in">
-                          <span>⚠️</span>
-                          <span>O Fator R está sendo estimado. Informe a folha de pagamento dos últimos 12 meses para maior precisão.</span>
-                        </p>
+                    <span className="text-[11px] font-mono uppercase tracking-wider font-bold text-money bg-white border border-money/20 px-2.5 py-1 rounded">
+                      {pj.taxName}
+                    </span>
+                  </div>
+                  {regime !== 'mei' && (
+                    <div className="text-[11px] text-ink-muted font-sans border-t border-money/15 pt-2 flex flex-wrap gap-x-4 gap-y-1">
+                      <span>• <strong>Pró-labore:</strong> R$ {pj.proLabore.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ({proLaboreInput === 'padrao' ? 'Fator R 28%' : proLaboreInput === 'minimo' ? 'Mínimo' : 'Personalizado'})</span>
+                      <span>• <strong>Contador:</strong> {mensalidadeContador ? `R$ ${mensalidadeContador}/mês` : 'Não incluído'}</span>
+                      {regime === 'simples' && (
+                        <span>• <strong>Anexo:</strong> {pj.anexo} ({pj.fatorRPercent.toFixed(1)}% Fator R)</span>
                       )}
                     </div>
-
-                    {/* Indicador Visual do Fator R no formulário */}
-                    <div className="col-span-1 sm:col-span-2 border border-rule/60 rounded p-4 bg-paper/30 mt-2">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">Potencial de otimização tributária</span>
-                        <span className={`text-xs font-mono uppercase font-bold px-2 py-0.5 rounded text-white ${pj.anexo === 'III' ? 'bg-money' : 'bg-hot'}`}>
-                          {pj.anexo === 'III' ? 'Anexo III (Tributação menor)' : 'Anexo V (Tributação maior)'}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-baseline mb-1">
-                        <span className="text-sm font-semibold text-ink">Fator R Atual: {pj.fatorRPercent.toFixed(2).replace('.', ',')}% {pj.isFatorREstimado ? '(Estimado)' : ''}</span>
-                        <span className="text-xs text-ink-fade">Meta: 28%</span>
-                      </div>
-                      <div className="w-full bg-rule/35 h-3 rounded-full overflow-hidden relative mb-2">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-300 ${pj.anexo === 'III' ? 'bg-money' : 'bg-hot'}`}
-                          style={{ width: `${Math.min(100, (pj.fatorRPercent / 28) * 100)}%` }}
-                        ></div>
-                        <div className="absolute top-0 bottom-0 left-[100%] w-0.5 bg-ink/30" style={{ left: '28%' }}></div>
-                      </div>
-                      <p className="text-xs text-ink-muted font-sans leading-normal">
-                        {pj.anexo === 'III' ? (
-                          <span className="text-money font-medium">✓ Enquadrado no Anexo III. Sua folha atende à exigência mínima da Receita Federal.</span>
-                        ) : (
-                          <span className="text-hot font-medium">
-                            ⚠️ Abaixo dos 28%. Faltam {(28 - pj.fatorRPercent).toFixed(2).replace('.', ',')} pontos percentuais (ou R$ {Math.max(0, (pj.rbt12Utilizado * 0.28) - pj.folhaUtilizada).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/ano em folha) para migrar ao Anexo III.
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {regime === 'presumido' && (
-                  <div className="mb-6 animate-fade-in">
-                    <label id="label-iss" className="text-sm text-ink-muted mb-2 block flex items-center gap-1.5">
-                      ISS do município (Alíquota)
-                      <span className="text-[11px] bg-rule/50 px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold tracking-wider">Municipal</span>
-                    </label>
-                    <div role="radiogroup" aria-labelledby="label-iss" className="flex border border-rule rounded overflow-hidden">
-                      {['2', '3', '4', '5'].map((rate) => (
-                        <button
-                          key={rate}
-                          type="button"
-                          role="radio"
-                          aria-checked={issRate === rate}
-                          onClick={() => setIssRate(rate)}
-                          className={`flex-1 py-2 text-sm font-medium transition-colors border-r border-rule last:border-r-0 ${issRate === rate ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}
-                        >
-                          {rate}%
-                        </button>
-                      ))}
-                    </div>
-                    <p className="text-xs text-ink-fade mt-1.5 leading-normal font-sans">
-                      A alíquota de ISS varia de 2% a 5% conforme a cidade. <strong>Consulte seu contador ou prefeitura.</strong>
-                    </p>
-                  </div>
-                )}
-
-                <div className="bg-money-light rounded p-5 mb-5">
-                  <h4 className="font-display text-lg text-ink mb-2">Faturamento Mensal</h4>
-                  <p className="font-display text-3xl text-money">
-                    R$ {((parseFloat(pjRate) || 0) * (parseFloat(hoursPerMonth) || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                  </p>
+                  )}
                 </div>
 
-                <div className="bg-hot-light border border-hot rounded p-4">
-                  <div className="flex gap-2">
-                    <AlertCircle className="text-hot flex-shrink-0 mt-0.5" size={20} />
-                    <div>
-                      <p className="text-sm text-hot font-medium">
-                        {regime === 'simples' ? 'Simples Nacional' : regime === 'presumido' ? 'Lucro Presumido' : 'MEI'}
-                      </p>
-                      <p className="text-xs text-hot/80 mt-1 leading-relaxed">
-                        {regime === 'simples' ? (
-                          <>
-                            Simulação voltada para atividades de serviços sujeitas ao Fator R. 
-                            Pró-labore/Folha de pagamento ≥ 28% do faturamento enquadra no <strong>Anexo III (inicia em 6%)</strong>, caso contrário cai no <strong>Anexo V (inicia em 15,5%)</strong>.
-                          </>
-                        ) : regime === 'presumido' ? (
-                          <>
-                            Tributação federal de 11,33% (IRPJ+CSLL+PIS+COFINS) + ISS do município. 
-                            <strong> Nota</strong>: Estimativa baseada em empresa sem funcionários (não inclui RAT, Terceiros/Sistema S e INSS patronal sobre salários).
-                          </>
-                        ) : (
-                          'Teto anual: R$ 81.000 (DAS R$ 86,05).'
+                {/* Gaveta de Ajustes Avançados PJ */}
+                {regime !== 'mei' && (
+                  <div className="border-t border-rule pt-4">
+                    <button
+                      id="btn-pj-advanced"
+                      type="button"
+                      aria-expanded={showPjAdvanced}
+                      aria-controls="pj-advanced-panel"
+                      onClick={() => setShowPjAdvanced(!showPjAdvanced)}
+                      className="w-full flex items-center justify-between text-xs font-mono uppercase tracking-wider text-ink-muted hover:text-ink py-2 px-3 rounded-lg hover:bg-paper/60 transition-colors"
+                    >
+                      <span className="flex items-center gap-2 font-bold">
+                        <span>⚙️ Personalizar Pró-labore, Contador e {regime === 'simples' ? 'Fator R' : 'ISS'}</span>
+                        {(proLaboreInput !== 'minimo' || mensalidadeContador !== '' || faturamento12Meses !== '' || folha12Meses !== '') && (
+                          <span className="bg-money text-white text-[10px] px-1.5 py-0.5 rounded">Customizado</span>
                         )}
-                      </p>
-                    </div>
+                      </span>
+                      <span className="text-sm">{showPjAdvanced ? '▴ Ocultar' : '▾ Expandir'}</span>
+                    </button>
+
+                    {showPjAdvanced && (
+                      <div
+                        id="pj-advanced-panel"
+                        role="region"
+                        aria-labelledby="btn-pj-advanced"
+                        className="mt-4 pt-4 border-t border-rule/50 space-y-6 animate-fade-in"
+                      >
+                        {/* Configuração do Pró-labore */}
+                        <div>
+                          <label id="label-pro-labore" className="text-xs font-medium text-ink mb-2 block flex items-center gap-1.5">
+                            Configuração do Pró-labore
+                            <span className="text-ink-fade hover:text-ink cursor-help" title="O pró-labore é o salário do sócio. Definir em 28% (Otimizado) reduz o imposto do Simples Nacional de 15,5% para 6% (Anexo III).">
+                              <Info size={13} className="inline-block" />
+                            </span>
+                          </label>
+                          <div role="radiogroup" aria-labelledby="label-pro-labore" className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-2">
+                            {[
+                              { value: 'minimo', label: 'Mínimo (R$ 1.621)' },
+                              { value: 'padrao', label: 'Otimizado (28% Fator R)' },
+                              { value: '3000', label: 'R$ 3.000' },
+                              { value: '5000', label: 'R$ 5.000' },
+                              { value: '8000', label: 'R$ 8.000' },
+                              { value: 'personalizado', label: 'Outro valor' }
+                            ].map((opt) => (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                role="radio"
+                                aria-checked={proLaboreInput === opt.value}
+                                onClick={() => setProLaboreInput(opt.value)}
+                                className={`py-1.5 px-2 text-[11px] font-medium rounded transition-colors border ${proLaboreInput === opt.value ? 'bg-ink text-paper border-ink' : 'text-ink-muted border-rule hover:bg-rule/30'}`}
+                              >
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
+
+                          {proLaboreInput === 'personalizado' && (
+                            <div className="flex items-baseline gap-2 border-b-2 border-rule pb-1.5 mt-2 transition-colors focus-within:border-money animate-fade-in">
+                              <span className="font-mono text-base text-ink-fade">R$</span>
+                              <input
+                                id="field-pro-labore-custom"
+                                type="text"
+                                inputMode="decimal"
+                                aria-label="Valor personalizado do pró-labore mensal"
+                                value={proLaboreCustom}
+                                onChange={(e) => setProLaboreCustom(e.target.value)}
+                                placeholder="0,00"
+                                className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5"
+                              />
+                              <span className="text-xs text-ink-fade">/mês</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Mensalidade do Contador */}
+                        <div>
+                          <label id="label-contador" className="text-xs font-medium text-ink mb-2 block flex items-center gap-1.5">
+                            Mensalidade do contador (opcional)
+                            <span className="text-[10px] bg-rule px-1.5 py-0.5 rounded text-ink-fade font-mono uppercase font-bold">Custo Mensal</span>
+                          </label>
+                          <div role="radiogroup" aria-labelledby="label-contador" className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+                            {[
+                              { value: '', label: 'Não considerar' },
+                              { value: '150', label: 'R$ 150' },
+                              { value: '250', label: 'R$ 250' },
+                              { value: '350', label: 'R$ 350' }
+                            ].map((opt) => (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                role="radio"
+                                aria-checked={mensalidadeContador === opt.value}
+                                onClick={() => setMensalidadeContador(opt.value)}
+                                className={`py-1.5 px-1 text-[11px] font-medium rounded transition-colors border ${mensalidadeContador === opt.value ? 'bg-ink text-paper border-ink' : 'text-ink-muted border-rule hover:bg-rule/30'}`}
+                              >
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
+                          {mensalidadeContador !== '' && mensalidadeContador !== '150' && mensalidadeContador !== '250' && mensalidadeContador !== '350' && (
+                            <div className="flex items-baseline gap-2 border-b-2 border-rule pb-1.5 transition-colors focus-within:border-money">
+                              <span className="font-mono text-sm text-ink-fade">R$</span>
+                              <input
+                                id="field-contador-personalizado"
+                                type="text"
+                                inputMode="decimal"
+                                aria-label="Valor personalizado da mensalidade do contador"
+                                value={mensalidadeContador}
+                                onChange={(e) => setMensalidadeContador(e.target.value)}
+                                className="font-mono text-base text-ink bg-transparent outline-none flex-1 py-0.5"
+                              />
+                            </div>
+                          )}
+                          {['', '150', '250', '350'].indexOf(mensalidadeContador) === -1 ? null : (
+                            <button
+                              type="button"
+                              onClick={() => setMensalidadeContador('349')}
+                              className="text-[11px] text-money hover:underline block font-sans"
+                            >
+                              + Informar outro valor de contador
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Opções Específicas do Simples Nacional (Histórico 12m + Termômetro Fator R) */}
+                        {regime === 'simples' && (
+                          <div className="space-y-4 pt-2 border-t border-rule/50">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div>
+                                <label htmlFor="field-rbt12" className="text-xs text-ink-muted mb-1 block">
+                                  Faturamento últimos 12m (RBT12)
+                                </label>
+                                <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-1.5 transition-colors focus-within:border-money">
+                                  <span className="font-mono text-sm text-ink-fade">R$</span>
+                                  <input
+                                    id="field-rbt12"
+                                    type="text"
+                                    inputMode="decimal"
+                                    value={faturamento12Meses}
+                                    onChange={(e) => setFaturamento12Meses(e.target.value)}
+                                    placeholder="Opcional"
+                                    className="font-mono text-sm text-ink bg-transparent outline-none flex-1 py-0.5 placeholder:text-ink-fade/40"
+                                  />
+                                </div>
+                              </div>
+
+                              <div>
+                                <label htmlFor="field-folha12" className="text-xs text-ink-muted mb-1 block">
+                                  Folha de pagamento últimos 12m
+                                </label>
+                                <div className="flex items-baseline gap-1.5 border-b-2 border-rule pb-1.5 transition-colors focus-within:border-money">
+                                  <span className="font-mono text-sm text-ink-fade">R$</span>
+                                  <input
+                                    id="field-folha12"
+                                    type="text"
+                                    inputMode="decimal"
+                                    value={folha12Meses}
+                                    onChange={(e) => setFolha12Meses(e.target.value)}
+                                    placeholder="Opcional"
+                                    className="font-mono text-sm text-ink bg-transparent outline-none flex-1 py-0.5 placeholder:text-ink-fade/40"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Termômetro Compacto do Fator R */}
+                            <div className="border border-rule/60 rounded-lg p-3.5 bg-paper/40">
+                              <div className="flex justify-between items-center mb-1.5">
+                                <span className="text-[11px] font-mono uppercase tracking-wider text-ink-muted">Status do Fator R: {pj.fatorRPercent.toFixed(1)}%</span>
+                                <span className={`text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded text-white ${pj.anexo === 'III' ? 'bg-money' : 'bg-hot'}`}>
+                                  {pj.anexo === 'III' ? 'Anexo III (6%)' : 'Anexo V (15,5%)'}
+                                </span>
+                              </div>
+                              <div className="w-full bg-rule/35 h-2 rounded-full overflow-hidden relative mb-1.5">
+                                <div
+                                  className={`h-full rounded-full transition-all duration-300 ${pj.anexo === 'III' ? 'bg-money' : 'bg-hot'}`}
+                                  style={{ width: `${Math.min(100, (pj.fatorRPercent / 28) * 100)}%` }}
+                                />
+                              </div>
+                              <p className="text-[11px] text-ink-muted leading-tight">
+                                {pj.anexo === 'III'
+                                  ? '✓ Folha ≥ 28% do faturamento: enquadrado na menor alíquota (Anexo III).'
+                                  : '💡 Dica: selecione o Pró-labore "Otimizado (28% Fator R)" acima para simular a redução do imposto para 6%.'}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Opções Específicas do Lucro Presumido (ISS) */}
+                        {regime === 'presumido' && (
+                          <div className="pt-2 border-t border-rule/50">
+                            <label id="label-iss" className="text-xs font-medium text-ink mb-2 block">
+                              Alíquota de ISS do seu município (2% a 5%)
+                            </label>
+                            <div role="radiogroup" aria-labelledby="label-iss" className="flex border border-rule rounded overflow-hidden">
+                              {['2', '3', '4', '5'].map((rate) => (
+                                <button
+                                  key={rate}
+                                  type="button"
+                                  role="radio"
+                                  aria-checked={issRate === rate}
+                                  onClick={() => setIssRate(rate)}
+                                  className={`flex-1 py-1.5 text-xs font-medium transition-colors border-r border-rule last:border-r-0 ${issRate === rate ? 'bg-ink text-paper' : 'text-ink-muted hover:bg-rule/30'}`}
+                                >
+                                  {rate}%
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                </div>
+                )}
               </fieldset>
             </div>
             <div className="mt-12 pt-8 border-t border-rule flex flex-col md:flex-row items-center justify-between gap-6">

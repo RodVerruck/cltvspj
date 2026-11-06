@@ -2,6 +2,28 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] UX da Calculadora: Revelação Progressiva (Modo Simplificado + Gaveta Avançada) e Input Mensal PJ
+
+**Contexto**: O usuário levantou um ponto fundamental de usabilidade na Home ([`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js)): a coluna PJ exibia 12 blocos simultaneamente (valor/hora, horas/mês, contador, 6 botões de pró-labore, RBT12, folha de 12m, fórmula de Fator R, alerta amarelo, termômetro, etc.), gerando sobrecarga cognitiva para quem ainda não tem CNPJ aberto e obrigando o usuário a dividir a proposta mensal por 160 horas para conseguir preencher.
+
+**Ações Implementadas**:
+1. **Alternador de Valor PJ (`Valor Mensal` vs `Por Hora`)**:
+   - Adicionado seletor `role="radiogroup"` no topo do bloco PJ permitindo preencher diretamente o **Faturamento Bruto Mensal** (`R$ 16.000/mês` por padrão) ou alternar para **Valor por Hora + Horas/mês** (`R$ 100/h × 160h`), mantendo ambos sincronizados em tempo real sem alterar `src/lib/calculator.js`.
+2. **Revelação Progressiva no Bloco PJ (`showPjAdvanced`)**:
+   - Na visão inicial (simplificada), ficam visíveis apenas: Valor da Proposta PJ, Seletor de Regime Tributário (`Simples Nacional`, `Lucro Presumido`, `MEI`) e um **Card de Resumo Líquido PJ Estimado** que já informa em tempo real o líquido estimado e as premissas ativas (pró-labore, contador e anexo).
+   - Os ajustes técnicos (`Configuração do Pró-labore`, `Mensalidade do Contador`, `Histórico de 12 meses RBT12/Folha`, `Termômetro de Fator R` e `Alíquota de ISS`) ficam recolhidos dentro da gaveta acessível **`⚙️ Personalizar Pró-labore, Contador e Fator R`** (`aria-expanded`, `aria-controls="pj-advanced-panel"`), com selo indicador `Customizado` quando alterados.
+3. **Simetria Visual e Revelação Progressiva no Bloco CLT (`showCltAdvanced`)**:
+   - Os 4 campos de Benefícios Mensais foram organizados em um **grid 2x2 compacto** com soma automática de benefícios no topo.
+   - Adicionado **Card de Resumo do Pacote CLT Estimado** (espelhando o card de resumo PJ).
+   - Movidos os campos secundários (`PLR Anual`, `Dependentes IRPF` e `Pensão Alimentícia Judicial`) para a gaveta acessível **`⚙️ Opções Avançadas (PLR, Dependentes e Pensão)`**, eliminando o antigo bloco superior avulso que empurrava a calculadora para baixo.
+4. **Impacto Visual e de Conversão**:
+   - As duas colunas (CLT e PJ) agora têm exatamente a mesma altura e peso visual na abertura da página, permitindo simular em 5 segundos sem perder nenhuma funcionalidade avançada.
+5. **Validação**:
+   - `test_regressao.mjs`: 100% aprovado.
+   - `http://localhost:3000/`: Status 200 OK.
+
+---
+
 ## [2026-11-06] Redesign Visual e Modernização do Componente AffiliateCTA
 
 **Contexto**: O usuário solicitou avaliação e melhoria visual do componente de rodapé [`AffiliateCTA.js`](file:///c:/Projetos/cltvspj/src/components/AffiliateCTA.js), que apresentava um estilo pesado e desbalanceado (fundo verde escuro com grid, excesso de itálico generalizado, padding vertical de mais de 250px e textos auxiliares esmaecidos com baixa taxa de contraste reprovados no WCAG AA).
