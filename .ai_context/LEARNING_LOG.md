@@ -2,6 +2,30 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-06] Redesign Visual do Card Hero de Resultado (`#resultado`) e Nota de Contexto Metodológica
+
+**Contexto**: O usuário compartilhou o screenshot da seção de resultado da calculadora apontando pontos visuais a serem aprimorados:
+1. O número do KPI `+ R$ 4.122` estava quebrando em 2 linhas devido ao tamanho de fonte e falta de controle de flex-wrap (`+ R$` no topo e `4.122` embaixo).
+2. O aviso de propostas assimétricas usava um amarelo pesado estilo "alerta de erro do Bootstrap", gerando apreensão desnecessária no usuário.
+3. O texto abaixo do título principal era um disclaimer jurídico genérico que não agregava valor informativo imediato.
+4. As barras comparativas visuais usavam cinza apagado sem distinção de acabamento e tracks muito finos.
+
+**Ações Implementadas**:
+1. **Correção de Alinhamento Numérico (`whitespace-nowrap`)**:
+   - Ajustada a estrutura flex do KPI no [`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js#L981-L990): o prefixo `+ R$` agora fica em `text-2xl sm:text-3xl` e o número em `text-4xl sm:text-5xl lg:text-[54px]` com `whitespace-nowrap items-baseline`, garantindo exibição em uma única linha contínua em qualquer viewport.
+2. **Transformação de Alerta de Erro em Nota de Contexto Metodológica**:
+   - Substituído o amarelo áspero por um card editorial em tom `amber-50/80` com borda suave, ícone de balança (`Scale`) e badge `Nota de Contexto · Propostas Assimétricas (2,0x)`. O tom consultivo explica com clareza matemática que a diferença reflete a assimetria negociada entre os brutos, agregando credibilidade.
+3. **Resumo Executivo Dinâmico**:
+   - O disclaimer burocrático foi substituído por um texto executivo claro que explicita a vantagem real líquida sobre o pacote CLT completo (salário líquido + FGTS + 13º + férias + benefícios).
+4. **Refinamento das Barras Comparativas**:
+   - Aumentada a espessura do track para `h-3.5` com acabamento `shadow-inner` e `rounded-full`.
+   - A barra secundária foi ajustada para um tom neutro aquecido (`bg-stone-400`), enquanto a vencedora utiliza o verde esmeralda institucional (`bg-money`), tornando a leitura visual imediata e elegante.
+5. **Validação**:
+   - Testes de regressão: 100% de sucesso.
+   - Dev server: HTTP 200 OK.
+
+---
+
 ## [2026-11-06] UX da Calculadora: Revelação Progressiva (Modo Simplificado + Gaveta Avançada) e Input Mensal PJ
 
 **Contexto**: O usuário levantou um ponto fundamental de usabilidade na Home ([`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js)): a coluna PJ exibia 12 blocos simultaneamente (valor/hora, horas/mês, contador, 6 botões de pró-labore, RBT12, folha de 12m, fórmula de Fator R, alerta amarelo, termômetro, etc.), gerando sobrecarga cognitiva para quem ainda não tem CNPJ aberto e obrigando o usuário a dividir a proposta mensal por 160 horas para conseguir preencher.

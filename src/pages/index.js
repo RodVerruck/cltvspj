@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, ArrowRight, Briefcase, Info, Users, Share2, Copy, Check, MessageCircle } from 'lucide-react';
+import { Calculator, TrendingUp, CheckCircle, AlertCircle, DollarSign, ArrowRight, Briefcase, Info, Users, Share2, Copy, Check, MessageCircle, Scale } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AdSense from '../components/AdSense';
@@ -909,31 +909,37 @@ ${url}`;
                 </div>
               )}
 
-              {/* ALERTA DE COMPARAÇÃO DESPROPORCIONAL — exibido antes do resultado para contexto imediato */}
+              {/* NOTA CONTEXTUAL: COMPARAÇÃO ASSIMÉTRICA — estilo editorial acolhedor */}
               {showAlertaDiscrepancia && (
-                <div className="bg-[#fff3cd] border border-[#ffeeba] rounded-xl p-5 mb-8 flex gap-4 items-start relative animate-fade-in overflow-hidden shadow-sm text-left">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ffc107]"></div>
-                  <AlertCircle className="text-[#856404] flex-shrink-0 mt-0.5" size={22} />
-                  <div>
-                    <h4 className="font-display text-lg text-ink font-bold mb-1 text-[#856404]">Alerta de Comparação Desproporcional</h4>
-                    <p className="text-xs text-ink-muted leading-relaxed font-sans">
-                      Você está comparando um salário CLT de <strong className="text-ink">R$ {clt.gross.toLocaleString('pt-BR')}/mês</strong> com um faturamento PJ de <strong className="text-ink">R$ {pj.gross.toLocaleString('pt-BR')}/mês</strong>. 
-                      Como os valores brutos informados diferem significativamente (relação de {(pj.gross / (clt.gross || 1)).toFixed(2).replace('.', ',')}x), parte da diferença financeira mostrada no resultado decorre da assimetria dos valores brutos simulados, e não exclusivamente da diferença de regimes tributários.
+                <div className="bg-amber-50/80 border border-amber-200/90 rounded-xl p-5 mb-8 flex gap-4 items-start relative animate-fade-in shadow-sm text-left">
+                  <div className="p-2.5 rounded-lg bg-amber-100/90 text-amber-900 flex-shrink-0 mt-0.5">
+                    <Scale size={20} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-amber-950 bg-amber-200/70 border border-amber-300/60 px-2 py-0.5 rounded">
+                        Nota de Contexto · Propostas Assimétricas ({(pj.gross / (clt.gross || 1)).toFixed(1).replace('.', ',')}x)
+                      </span>
+                    </div>
+                    <p className="text-xs text-ink/90 leading-relaxed font-sans">
+                      Você está comparando um salário CLT de <strong className="font-bold text-ink">R$ {clt.gross.toLocaleString('pt-BR')}/mês</strong> com um faturamento PJ de <strong className="font-bold text-ink">R$ {pj.gross.toLocaleString('pt-BR')}/mês</strong>. 
+                      Como o valor bruto PJ simulado é <strong className="text-ink">{(pj.gross / (clt.gross || 1)).toFixed(1).replace('.', ',')}× maior</strong> que o salário CLT, boa parte da vantagem apresentada decorre da diferença entre os valores brutos negociados, e não exclusivamente do regime tributário.
                     </p>
                   </div>
                 </div>
               )}
 
               {/* Passo 1: HERO RESULT CARD */}
-              <div className={`border rounded-xl p-8 md:p-10 mb-8 relative overflow-hidden transition-colors duration-500 shadow-sm ${
+              <div className={`border rounded-xl p-6 sm:p-8 md:p-10 mb-8 relative overflow-hidden transition-colors duration-500 shadow-sm ${
                 pj.net > clt.totalPackage 
-                  ? 'bg-money-light border-money/20' 
-                  : 'bg-hot-light border-hot/20'
+                  ? 'bg-money-light border-money/25' 
+                  : 'bg-hot-light border-hot/25'
               }`}>
-                <div className={`absolute top-0 left-0 w-2 h-full ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-hot'}`}></div>
+                {/* Linha de acento lateral com bordas suaves */}
+                <div className={`absolute top-0 left-0 bottom-0 w-2.5 rounded-l-xl ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-hot'}`} />
                 
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                  <div>
+                  <div className="max-w-xl">
                     <div className="flex flex-wrap items-center gap-2 mb-2.5">
                       <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">Recomendação</span>
                       <span className={`text-xs font-semibold font-mono uppercase tracking-wider px-2 py-0.5 rounded border flex items-center gap-1.5 shadow-sm ${impactoGeralCor}`}>
@@ -941,45 +947,63 @@ ${url}`;
                         <span>{impactoGeralLabel}</span>
                       </span>
                     </div>
-                    <h3 className="font-display text-3xl md:text-4xl text-ink font-bold leading-tight mb-3">
+
+                    <h3 className="font-display text-3xl sm:text-4xl text-ink font-bold leading-tight mb-3">
                       {pj.net > clt.totalPackage ? (
                         <>A opção <span className="text-money italic font-bold">PJ</span> é mais vantajosa para você.</>
                       ) : (
                         <>A opção <span className="text-hot italic font-bold">CLT</span> é mais vantajosa para você.</>
                       )}
                     </h3>
-                    <p className="text-sm text-ink-muted max-w-xl font-sans leading-relaxed">
-                      Desenvolvido com base nas regras tributárias vigentes e destinado a fins de simulação e apoio à tomada de decisão.
+
+                    {/* Resumo Executivo Claro e Útil */}
+                    <p className="text-sm sm:text-base text-ink-muted font-sans leading-relaxed">
+                      {pj.net > clt.totalPackage ? (
+                        <>No cenário simulado, o modelo <strong className="text-ink font-semibold">PJ</strong> entrega uma vantagem líquida real de <strong className="text-money font-bold">R$ {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês</strong> em relação a todo o pacote CLT (salário líquido + FGTS + 13º + férias + benefícios).</>
+                      ) : (
+                        <>No cenário simulado, o pacote <strong className="text-ink font-semibold">CLT completo</strong> supera a proposta PJ em <strong className="text-hot font-bold">R$ {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}/mês</strong> ao considerar FGTS, 13º, férias remuneradas e benefícios corporativos.</>
+                      )}
                     </p>
+
                     <p className="text-xs text-ink-fade font-mono mt-3 pt-3 border-t border-rule/30">
                       Comparação baseada em: CLT R$ {clt.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mês (salário bruto) vs PJ R$ {pj.gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/mês (faturamento bruto).
                     </p>
                   </div>
 
-                  <div className={`border rounded-lg p-6 min-w-[280px] lg:text-right flex flex-col justify-center bg-white/70 backdrop-blur-sm ${
-                    pj.net > clt.totalPackage ? 'border-money/15' : 'border-hot/15'
+                  {/* KPI Card com Valor sem quebra de linha */}
+                  <div className={`border rounded-xl p-5 sm:p-6 min-w-[280px] lg:max-w-[320px] lg:text-right flex flex-col justify-center bg-white/85 backdrop-blur-sm shadow-sm ${
+                    pj.net > clt.totalPackage ? 'border-money/20' : 'border-hot/20'
                   }`}>
-                    <span className="font-mono text-xs uppercase tracking-wider text-ink-muted block mb-1">
+                    <span className="font-mono text-xs uppercase tracking-wider text-ink-muted block mb-1.5">
                       {pj.net > clt.totalPackage ? 'Rendimento Extra Mensal (PJ)' : 'Rendimento Extra Mensal (CLT)'}
                     </span>
-                    <span className={`font-display text-5xl md:text-6xl lg:text-7xl font-black block leading-none mb-2 ${pj.net > clt.totalPackage ? 'text-money' : 'text-hot'}`}>
-                      + R$ {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                    </span>
+                    
+                    {/* Número Principal com R$ e Valor na mesma linha */}
+                    <div className="flex items-baseline justify-start lg:justify-end gap-1.5 mb-2 whitespace-nowrap overflow-hidden">
+                      <span className={`font-display text-2xl sm:text-3xl font-bold ${pj.net > clt.totalPackage ? 'text-money' : 'text-hot'}`}>
+                        + R$
+                      </span>
+                      <span className={`font-display text-4xl sm:text-5xl lg:text-[54px] font-black tracking-tight leading-none ${pj.net > clt.totalPackage ? 'text-money' : 'text-hot'}`}>
+                        {Math.abs(pj.net - clt.totalPackage).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                      </span>
+                    </div>
+
                     <span className="text-xs text-ink-muted font-sans block mb-3">
-                      Equivale a <strong className="text-ink">{Math.abs(((pj.net - clt.totalPackage) / (pj.net > clt.totalPackage ? clt.totalPackage : pj.net)) * 100).toFixed(1)}%</strong> a mais de rendimento.
+                      Equivale a <strong className="text-ink font-semibold">{Math.abs(((pj.net - clt.totalPackage) / (pj.net > clt.totalPackage ? clt.totalPackage : pj.net)) * 100).toFixed(1).replace('.', ',')}%</strong> a mais de rendimento.
                     </span>
+
                     <span className={`font-mono text-xs uppercase tracking-wider text-ink-muted block border-t pt-3 ${
                       pj.net > clt.totalPackage ? 'border-money/15' : 'border-hot/15'
                     }`}>
-                      Diferença anual: + R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano
+                      Diferença anual: <strong className="text-ink">+ R$ {Math.abs((pj.net - clt.totalPackage) * 12).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/ano</strong>
                     </span>
                   </div>
                 </div>
 
                 {/* Barra Visual Comparativa CLT vs PJ */}
                 <div className="mt-8 pt-6 border-t border-rule/50">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 text-xs font-mono uppercase tracking-wider text-ink-muted mb-3">
-                    <span className="font-bold flex items-center gap-1.5">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 text-xs font-mono uppercase tracking-wider text-ink-muted mb-3.5">
+                    <span className="font-bold flex items-center gap-1.5 text-ink">
                       📊 Comparativo Visual de Rendimento
                     </span>
                     <span className="text-[11px] font-sans font-normal text-ink-fade">
@@ -987,12 +1011,12 @@ ${url}`;
                     </span>
                   </div>
 
-                  <div className="space-y-3 font-sans">
+                  <div className="space-y-3.5 font-sans">
                     {/* Barra CLT */}
                     <div>
-                      <div className="flex justify-between text-xs mb-1">
+                      <div className="flex justify-between text-xs mb-1.5">
                         <span className="font-medium text-ink flex items-center gap-1.5">
-                          <span className={`w-2.5 h-2.5 rounded-full ${clt.totalPackage >= pj.net ? 'bg-money' : 'bg-slate-400'}`}></span>
+                          <span className={`w-2.5 h-2.5 rounded-full ${clt.totalPackage >= pj.net ? 'bg-money' : 'bg-stone-400'}`}></span>
                           Pacote Total CLT <span className="text-[11px] text-ink-fade hidden sm:inline">(Salário Líquido + Provisões + Benefícios)</span>
                         </span>
                         <span className="font-mono font-bold text-ink">
@@ -1000,9 +1024,9 @@ ${url}`;
                           <span className="text-[11px] font-normal text-ink-fade ml-1">({cltBarPercent}%)</span>
                         </span>
                       </div>
-                      <div className="w-full bg-white/80 border border-rule/60 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+                      <div className="w-full bg-white/90 border border-rule/70 h-3.5 rounded-full overflow-hidden p-0.5 shadow-inner">
                         <div 
-                          className={`h-full rounded-full transition-all duration-700 ease-out ${clt.totalPackage >= pj.net ? 'bg-money' : 'bg-slate-400'}`}
+                          className={`h-full rounded-full transition-all duration-700 ease-out ${clt.totalPackage >= pj.net ? 'bg-money' : 'bg-stone-400'}`}
                           style={{ width: `${Math.max(cltBarPercent, 5)}%` }}
                         />
                       </div>
@@ -1010,9 +1034,9 @@ ${url}`;
 
                     {/* Barra PJ */}
                     <div>
-                      <div className="flex justify-between text-xs mb-1">
+                      <div className="flex justify-between text-xs mb-1.5">
                         <span className="font-medium text-ink flex items-center gap-1.5">
-                          <span className={`w-2.5 h-2.5 rounded-full ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-slate-400'}`}></span>
+                          <span className={`w-2.5 h-2.5 rounded-full ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-stone-400'}`}></span>
                           Líquido Real PJ <span className="text-[11px] text-ink-fade hidden sm:inline">(Faturamento Bruto - Impostos - Custos)</span>
                         </span>
                         <span className="font-mono font-bold text-ink">
@@ -1020,9 +1044,9 @@ ${url}`;
                           <span className="text-[11px] font-normal text-ink-fade ml-1">({pjBarPercent}%)</span>
                         </span>
                       </div>
-                      <div className="w-full bg-white/80 border border-rule/60 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+                      <div className="w-full bg-white/90 border border-rule/70 h-3.5 rounded-full overflow-hidden p-0.5 shadow-inner">
                         <div 
-                          className={`h-full rounded-full transition-all duration-700 ease-out ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-slate-400'}`}
+                          className={`h-full rounded-full transition-all duration-700 ease-out ${pj.net > clt.totalPackage ? 'bg-money' : 'bg-stone-400'}`}
                           style={{ width: `${Math.max(pjBarPercent, 5)}%` }}
                         />
                       </div>
