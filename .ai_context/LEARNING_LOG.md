@@ -2,6 +2,30 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-12] Checagem de Desempenho (GSC + GA4 + Afiliados vs 07/11/2026)
+
+**Contexto**: Usuário solicitou atualização de desempenho em relação à checagem de 07/11/2026.
+**Dados**:
+- **GSC** (`fetch_gsc_full.mjs`, janela 12/10–09/11): **5 cliques** (+1 vs 07/11; anterior: 2), **473 impressões** (vs 486 na janela anterior, mas +21,6% sobre os 389 da janela precedente), **CTR 1,06%** (antes 0,82%), **Posição Média 31,0** (antes 28,6).
+  - Home `/`: **138 impressões** (+12), **2 cliques** (+1), posição **80,5** (antes 81,9).
+  - Comparativos em destaque: `desenvolvedor-pleno` (pos 3,6), `product-owner` (pos 4,2 / 29 imp), `desenvolvedor-senior` (pos 5,3); `qa-analista` oscilou de 4,5 para 11,8.
+- **GA4 (30d)** e **Afiliados**: Estáveis sem novas sessões ou cliques entre 07/11 e 12/11 (9 usuários, 11 sessões, 35 pageviews nos últimos 30d; Nov/2026 parcial com 2 usuários / 3 sessões / 23 pageviews; 20 `affiliate_click` acumulados, `/go/manasses` 18 views, `/go/agilize` 2).
+- **Observação**: `fetch_analytics_status.mjs` mantém erro `invalid_grant` no bloco GSC.
+
+---
+
+## [2026-11-07] Checagem de Desempenho (GA4 + GSC vs 05/11/2026)
+
+**Contexto**: Usuário perguntou como está o desempenho desde a última vez (auditoria de 05/11).
+**Dados**:
+- **GSC** (`fetch_gsc_full.mjs`, janela 08/10–05/11, defasagem normal do GSC): 486 impressões, 4 cliques, posição média 28,6 (anterior: 340 imp / 2 cliques). Home com 126 imp, posição 81,9 (problema persistente); comparativos de profissão em posição 3,7–6,4.
+- **GA4 (30d vs 30d anteriores)**: 9 usuários / 11 sessões / 35 pageviews (antes: 2 / 2 / 5); rejeição 36,4%; Organic Search 8 sessões, Direct 3. Nov/2026 parcial: 2 usuários, 3 sessões, 23 pageviews.
+- **Afiliados**: `affiliate_click` total 20 (+1 vs 19); `/go/manasses` 18 views, `/go/agilize` 2.
+**Alerta técnico**: `fetch_analytics_status.mjs` falha na parte GSC com `invalid_grant` (`GSC_REFRESH_TOKEN` expirado/revogado). Usar `fetch_gsc_full.mjs` (service account) ou renovar o token via `setup-gsc.mjs`.
+**Conclusão**: Não há dado novo de GSC após 05/11; a tendência segue de crescimento lento, em volume ainda muito baixo.
+
+---
+
 ## [2026-11-06] Otimização Above-the-Fold: Hero Editorial Compacto e Entrada Imediata da Calculadora
 
 **Contexto**: O usuário identificou que o Hero da Home ([`src/pages/index.js`](file:///c:/Projetos/cltvspj/src/pages/index.js)) estava consumindo 100% da primeira dobra de tela (viewport height), forçando rolagem obrigatória antes mesmo do usuário visualizar qualquer campo da calculadora. O layout anterior tinha paddings excessivos (`py-24`), tipografia desproporcional (`text-[110px]`) e 4 caixas verticais pesadas com mensagens redundantes ou conflitantes (título prometia "60 segundos" e o box dizia "3 min").
