@@ -2,6 +2,16 @@
 
 Este arquivo documenta decisões arquiteturais e melhorias feitas ao longo do tempo pela IA, evitando repetições de erros e permitindo a evolução constante do projeto.
 
+## [2026-11-16] Checagem de Desempenho (vs 12/11/2026)
+
+- **GSC** (janela 16/10–13/11; script usa defasagem de 3 dias): 3 cliques (antes 5), 480 impressões (antes 473), CTR 0,63% (antes 1,06%), posição média 31,0 (estável). Janela anterior: 4 cliques / 430 imp.
+- **GA4 30d**: 6 usuários / 9 sessões / 31 pageviews, rejeição 44,4%, duração 360s (antes 9/11/35 e 36,4%). Organic 7 sessões, Direct 2. Nov: 2 usuários, 4 sessões, 24 pageviews. Nova página vista: `/blog/vale-pena-pj-isencao-ir-lei-15270-2026`.
+- **Afiliados**: `affiliate_click` = 20 (sem mudança); `/go/manasses` 18, `/go/agilize` 2.
+- `invalid_grant` no `fetch_analytics_status.mjs` persiste.
+- **Leitura**: queda leve em cliques/sessões por saída de dias bons da janela; sem tração nova. Volumes minúsculos, oscilação é ruído estatístico.
+
+---
+
 ## [2026-11-12] Checagem de Desempenho (GSC + GA4 + Afiliados vs 07/11/2026)
 
 **Contexto**: Usuário solicitou atualização de desempenho em relação à checagem de 07/11/2026.
